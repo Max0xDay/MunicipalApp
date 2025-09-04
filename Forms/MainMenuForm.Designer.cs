@@ -61,7 +61,7 @@ namespace MunicipalApp.Forms
             this.btnReportIssues.Click += new EventHandler(this.btnReportIssues_Click);
             
             // btnLocalEvents
-            this.btnLocalEvents.BackColor = Color.FromArgb(158, 158, 158);
+            this.btnLocalEvents.BackColor = Color.FromArgb(33, 150, 243);
             this.btnLocalEvents.FlatAppearance.BorderSize = 0;
             this.btnLocalEvents.FlatStyle = FlatStyle.Flat;
             this.btnLocalEvents.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
@@ -70,9 +70,9 @@ namespace MunicipalApp.Forms
             this.btnLocalEvents.Name = "btnLocalEvents";
             this.btnLocalEvents.Size = new Size(200, 50);
             this.btnLocalEvents.TabIndex = 3;
-            this.btnLocalEvents.Text = "Local Events (Part 2)";
+            this.btnLocalEvents.Text = "Local Events";
             this.btnLocalEvents.UseVisualStyleBackColor = false;
-            this.btnLocalEvents.Enabled = false;
+            this.btnLocalEvents.Enabled = true;
             this.btnLocalEvents.Click += new EventHandler(this.btnLocalEvents_Click);
             
             // btnServiceStatus

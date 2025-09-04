@@ -24,8 +24,8 @@ namespace MunicipalApp.Forms
 
         private void btnLocalEvents_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This feature will be implemented in Part 2.", "Coming Soon", 
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var eventsForm = new LocalEventsForm();
+            eventsForm.ShowDialog();
         }
 
         private void btnServiceStatus_Click(object sender, EventArgs e)
