@@ -1,0 +1,140 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
+             xmlns:media="clr-namespace:Avalonia.Media;assembly=Avalonia.Base"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="750"
+             x:Class="MunicipalApp.Views.MainMenuView"
+             x:DataType="vm:MainMenuViewModel">
+    
+    <Design.DataContext>
+        <vm:MainMenuViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="40,30">
+        
+        <!-- Header with Accent Border -->
+        <Border Grid.Row="0" 
+                Background="Transparent" 
+                CornerRadius="25"
+                BorderThickness="3"
+                HorizontalAlignment="Center"
+                Padding="40,25">
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FF00D4FF" Offset="0" />
+                    <GradientStop Color="#FFFF6B6B" Offset="0.5" />
+                    <GradientStop Color="#FFFFDD59" Offset="1" />
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <Border.BoxShadow>0 0 20 0 #8000D4FF</Border.BoxShadow>
+            <StackPanel HorizontalAlignment="Center" Spacing="15">
+                <TextBlock Text="{Binding Title}" 
+                           Classes="title"
+                           TextAlignment="Center" />
+                <TextBlock Text="{Binding Subtitle}" 
+                           Classes="subtitle"
+                           TextAlignment="Center" />
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <StackPanel Grid.Row="1" 
+                    Spacing="20" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MaxWidth="700">
+
+            <!-- Report Issues Card -->
+            <Border Classes="card">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.3">
+                        <GradientStop Color="#FF1F1F23" Offset="0" />
+                        <GradientStop Color="#FF2A4A3A" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid ColumnDefinitions="220,*" Height="100">
+                    <Button Grid.Column="0" 
+                            Content="🚀 Report Issues"
+                            Classes="primary large"
+                            Command="{Binding ReportIssuesCommand}" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="30,0,0,0">
+                        <TextBlock Text="{Binding ReportIssuesTitle}"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Foreground="#FF00F5A0"
+                                   Margin="0,0,0,5" />
+                        <TextBlock Text="{Binding ReportIssuesDescription}"
+                                   Classes="description"
+                                   FontSize="13" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Local Events Card -->
+            <Border Classes="card">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.3">
+                        <GradientStop Color="#FF1F1F23" Offset="0" />
+                        <GradientStop Color="#FF2A3A4A" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid ColumnDefinitions="220,*" Height="100">
+                    <Button Grid.Column="0" 
+                            Content="🎉 Local Events"
+                            Classes="secondary large"
+                            Command="{Binding LocalEventsCommand}" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="30,0,0,0">
+                        <TextBlock Text="{Binding LocalEventsTitle}"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Foreground="#FF00D4FF"
+                                   Margin="0,0,0,5" />
+                        <TextBlock Text="{Binding LocalEventsDescription}"
+                                   Classes="description"
+                                   FontSize="13" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Service Status Card -->
+            <Border Classes="card">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.3">
+                        <GradientStop Color="#FF1F1F23" Offset="0" />
+                        <GradientStop Color="#FF3A2A2A" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid ColumnDefinitions="220,*" Height="100">
+                    <Button Grid.Column="0" 
+                            Content="⏳ Coming Soon"
+                            Classes="accent large"
+                            Command="{Binding ServiceStatusCommand}"
+                            IsEnabled="False" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="30,0,0,0">
+                        <TextBlock Text="{Binding ServiceStatusTitle}"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Foreground="#FFFF8E53"
+                                   Margin="0,0,0,5" />
+                        <TextBlock Text="{Binding ServiceStatusDescription}"
+                                   Classes="description"
+                                   FontSize="13"
+                                   Opacity="0.7" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+        </StackPanel>
+
+        <!-- Footer -->
+        <TextBlock Grid.Row="2" 
+                   Text="{Binding Version}"
+                   Classes="footer"
+                   TextAlignment="Center"
+                   Margin="0,20,0,0" />
+
+    </Grid>
+    
+</UserControl>

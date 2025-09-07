@@ -80,7 +80,7 @@ namespace MunicipalApp.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error saving events: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new InvalidOperationException($"Error saving events: {ex.Message}", ex);
             }
         }
 
@@ -233,6 +233,39 @@ namespace MunicipalApp.Services
             {
                 _searchPatterns[searchTerm] = 1;
             }
+        }
+
+        public List<Event> GetAllEvents()
+        {
+            return LoadEvents();
+        }
+
+        public List<Event> SearchEvents(string keyword)
+        {
+            if (string.IsNullOrWhiteSpace(keyword))
+                return new List<Event>();
+
+            TrackSearch(keyword);
+            var allEvents = LoadEvents();
+            
+            return allEvents.Where(e => 
+                e.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                e.Description.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                e.Category.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                e.Location.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                e.Organizer.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                e.Tags.Any(tag => tag.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+            ).ToList();
+        }
+
+        public List<Event> GetUpcomingEvents(int count = 10)
+        {
+            var allEvents = LoadEvents();
+            return allEvents
+                .Where(e => e.Date >= DateTime.Now)
+                .OrderBy(e => e.Date)
+                .Take(count)
+                .ToList();
         }
 
         public List<Event> GetRecommendedEvents()

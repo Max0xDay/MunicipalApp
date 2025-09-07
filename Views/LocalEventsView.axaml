@@ -1,0 +1,162 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
+             x:Class="MunicipalApp.Views.LocalEventsView"
+             x:DataType="vm:LocalEventsViewModel">
+
+    <Design.DataContext>
+        <vm:LocalEventsViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,20,*" Margin="30">
+        
+        <!-- Title -->
+        <TextBlock Grid.Row="0" 
+                   Text="{Binding Title}" 
+                   Classes="page-title"
+                   TextAlignment="Center" />
+
+        <!-- Main Content -->
+        <Grid Grid.Row="2" ColumnDefinitions="2*,25,*">
+            
+            <!-- Left Panel - Search and Events -->
+            <StackPanel Grid.Column="0" Spacing="20">
+                
+                <!-- Search Section -->
+                <Border Classes="card">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="Search Events" Classes="section-header" />
+                        
+                        <!-- Search Controls -->
+                        <Grid RowDefinitions="Auto,10,Auto,10,Auto,10,Auto" ColumnDefinitions="Auto,*,Auto">
+                            
+                            <!-- Category -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Category:" Classes="field-label" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="0" Grid.Column="1" 
+                                     SelectedItem="{Binding SelectedCategory}"
+                                     ItemsSource="{Binding Categories}"
+                                     Classes="modern" />
+
+                            <!-- Date Range -->
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="From Date:" Classes="field-label" VerticalAlignment="Center" />
+                            <DatePicker Grid.Row="2" Grid.Column="1" 
+                                       SelectedDate="{Binding FromDate}"
+                                       Classes="modern" />
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="To Date:" Classes="field-label" VerticalAlignment="Center" />
+                            <DatePicker Grid.Row="4" Grid.Column="1" 
+                                       SelectedDate="{Binding ToDate}"
+                                       Classes="modern" />
+
+                            <!-- Search Keyword -->
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="Keyword:" Classes="field-label" VerticalAlignment="Center" />
+                            <TextBox Grid.Row="6" Grid.Column="1" 
+                                    Text="{Binding SearchKeyword}"
+                                    Watermark="Search events..."
+                                    Classes="modern" />
+
+                        </Grid>
+                        
+                        <!-- Search Buttons -->
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <Button Content="Search" 
+                                   Command="{Binding SearchCommand}"
+                                   Classes="primary" />
+                            <Button Content="Clear" 
+                                   Command="{Binding ClearSearchCommand}"
+                                   Classes="secondary" />
+                            <Button Content="Priority Events" 
+                                   Command="{Binding ShowPriorityEventsCommand}"
+                                   Classes="accent" />
+                            <Button Content="Upcoming Events" 
+                                   Command="{Binding ShowUpcomingEventsCommand}"
+                                   Classes="accent" />
+                        </StackPanel>
+                        
+                    </StackPanel>
+                </Border>
+
+                <!-- Events List -->
+                <Border Classes="card">
+                    <StackPanel Spacing="15">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Grid.Column="0" Text="Events" Classes="section-header" />
+                            <TextBlock Grid.Column="1" 
+                                      Text="{Binding EventCount, StringFormat='({0} events)'}"
+                                      Classes="count" />
+                        </Grid>
+                        
+                        <DataGrid ItemsSource="{Binding Events}" 
+                                 SelectedItem="{Binding SelectedEvent}"
+                                 Height="300"
+                                 Classes="modern">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="2*" />
+                                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />
+                                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat='{}{0:MM/dd/yyyy}'}" Width="*" />
+                                <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="1.5*" />
+                                <DataGridTextColumn Header="Organizer" Binding="{Binding Organizer}" Width="1.5*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+
+            <!-- Right Panel - Details and Recommendations -->
+            <StackPanel Grid.Column="2" Spacing="20">
+                
+                <!-- Recommendations -->
+                <Border Classes="card">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="Recommended Events" Classes="section-header" />
+                        
+                        <DataGrid ItemsSource="{Binding Recommendations}" 
+                                 Height="150"
+                                 Classes="compact">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*" />
+                                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat='{}{0:MM/dd}'}" Width="Auto" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        
+                    </StackPanel>
+                </Border>
+
+                <!-- Event Details -->
+                <Border Classes="card">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="Event Details" Classes="section-header" />
+                        
+                        <ScrollViewer Height="250">
+                            <TextBlock Text="{Binding EventDetails}"
+                                      TextWrapping="Wrap"
+                                      Classes="details" />
+                        </ScrollViewer>
+                        
+                    </StackPanel>
+                </Border>
+
+                <!-- Recent Activity -->
+                <Border Classes="card">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="Recent Searches" Classes="section-header" />
+                        
+                        <ListBox ItemsSource="{Binding RecentSearches}" 
+                                Height="100"
+                                Classes="compact" />
+                        
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+
+        </Grid>
+        
+    </Grid>
+
+</UserControl>

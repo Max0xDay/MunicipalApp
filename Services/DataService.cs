@@ -49,7 +49,7 @@ namespace MunicipalApp.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error saving data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new InvalidOperationException($"Error saving data: {ex.Message}", ex);
             }
         }
 

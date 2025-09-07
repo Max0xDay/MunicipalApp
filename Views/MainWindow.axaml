@@ -1,0 +1,107 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
+        xmlns:converters="clr-namespace:MunicipalApp.Converters"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="750"
+        x:Class="MunicipalApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Municipal Services Hub • Futuristic Edition"
+        Width="1000" Height="750"
+        MinWidth="900" MinHeight="700"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="40"
+        SystemDecorations="BorderOnly"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Window.Resources>
+        <converters:IsNotMainMenuConverter x:Key="IsNotMainMenuConverter" />
+    </Window.Resources>
+
+    <!-- Futuristic Window Container -->
+    <Border CornerRadius="15" ClipToBounds="True">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FF0A0A0A" Offset="0" />
+                <GradientStop Color="#FF1A1A2E" Offset="0.3" />
+                <GradientStop Color="#FF16213E" Offset="0.7" />
+                <GradientStop Color="#FF0F1419" Offset="1" />
+            </LinearGradientBrush>
+        </Border.Background>
+        
+        <Grid RowDefinitions="40,*">
+            
+            <!-- Custom Futuristic Title Bar -->
+            <Border Grid.Row="0" 
+                    Background="Transparent"
+                    IsHitTestVisible="True"
+                    PointerPressed="OnTitleBarPointerPressed">
+                <Grid ColumnDefinitions="*,Auto">
+                    
+                    <!-- Title with Glow Effect -->
+                    <StackPanel Grid.Column="0" 
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Center"
+                                Margin="20,0">
+                        <TextBlock Text="⚡ Municipal Services Hub" 
+                                   FontSize="14" 
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center">
+                            <TextBlock.Foreground>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#FF00D4FF" Offset="0" />
+                                    <GradientStop Color="#FFFFDD59" Offset="0.5" />
+                                    <GradientStop Color="#FFFF6B6B" Offset="1" />
+                                </LinearGradientBrush>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+                    </StackPanel>
+                    
+                    <!-- Window Controls -->
+                    <StackPanel Grid.Column="1" 
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Center"
+                                Margin="10,0">
+                        <Button Content="—" 
+                                Width="35" Height="25" 
+                                Classes="window-control"
+                                Click="OnMinimizeClick" />
+                        <Button Content="□" 
+                                Width="35" Height="25" 
+                                Classes="window-control"
+                                Click="OnMaximizeClick" />
+                        <Button Content="✕" 
+                                Width="35" Height="25" 
+                                Classes="window-control close"
+                                Click="OnCloseClick" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+            
+            <!-- Main Content Area -->
+            <Grid Grid.Row="1">
+                <ContentControl Content="{Binding CurrentView}" />
+                
+                <!-- Navigation buttons that appear conditionally -->
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Bottom"
+                            Margin="20"
+                            IsVisible="{Binding CurrentView, Converter={StaticResource IsNotMainMenuConverter}}">
+                    <Button Content="🠈 Back to Main Menu" 
+                            Command="{Binding BackToMainCommand}"
+                            Classes="secondary futuristic" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+
+</Window>
