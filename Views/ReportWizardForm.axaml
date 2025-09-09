@@ -20,50 +20,55 @@
         <Border Grid.Row="1" Background="{StaticResource CardBrush}" 
                 BorderBrush="{StaticResource InputBorderBrush}" 
                 BorderThickness="0,1,0,0"
-                Padding="20,15">
-            <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
-                <!-- Back Button -->
-                <Button Grid.Column="0" 
-                        Content="Back"
-                        Command="{Binding BackCommand}"
-                        IsEnabled="{Binding CanGoBack}"
-                        Classes="secondary nofocus"
-                        Margin="0,0,20,0"/>
-                
-                <!-- Progress Bar -->
-                <Grid Grid.Column="1" VerticalAlignment="Center">
-                    <ProgressBar Value="{Binding ProgressPercentage}" 
-                                 Height="8"
-                                 Classes="modern"
-                                 Margin="0,0,0,5"/>
-                    <TextBlock Text="{Binding ProgressText}" 
-                               Classes="progress-text"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Bottom"/>
+                Padding="20,25,20,15">
+            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                <!-- Top Row with Buttons and Progress -->
+                <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                    <!-- Back Button -->
+                    <Button Grid.Column="0" 
+                            Content="Back"
+                            Command="{Binding BackCommand}"
+                            IsEnabled="{Binding CanGoBack}"
+                            Classes="secondary nofocus"
+                            Margin="0,0,20,0"/>
+                    
+                    <!-- Progress Bar -->
+                    <Grid Grid.Column="1" VerticalAlignment="Center">
+                        <ProgressBar Value="{Binding ProgressPercentage}" 
+                                     Height="8"
+                                     Classes="modern"
+                                     Margin="0,0,0,5"/>
+                        <TextBlock Text="{Binding ProgressText}" 
+                                   Classes="progress-text"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"/>
+                    </Grid>
+                    
+                    <!-- Next/Finish Button -->
+                    <Button Grid.Column="3" 
+                            Content="{Binding NextButtonText}"
+                            Command="{Binding NextCommand}"
+                            IsEnabled="{Binding CanGoNext}"
+                            Classes="primary large nofocus"
+                            Margin="0,0,20,0"/>
+                    
+                    <!-- Admin Button -->
+                    <Button Grid.Column="4" 
+                            Content="Admin"
+                            Command="{Binding AdminCommand}"
+                            Classes="accent nofocus"
+                            Width="60"
+                            Height="40"/>
                 </Grid>
                 
-                <!-- Step Indicator -->
-                <TextBlock Grid.Column="2" 
+                <!-- Step Indicator (lower) -->
+                <TextBlock Grid.Row="1" 
+                           Grid.Column="2"
                            Text="{Binding StepText}"
                            Classes="progress-text"
-                           VerticalAlignment="Center"
-                           Margin="20,0"/>
-                
-                <!-- Next/Finish Button -->
-                <Button Grid.Column="3" 
-                        Content="{Binding NextButtonText}"
-                        Command="{Binding NextCommand}"
-                        IsEnabled="{Binding CanGoNext}"
-                        Classes="primary large nofocus"
-                        Margin="0,0,20,0"/>
-                
-                <!-- Admin Button -->
-                <Button Grid.Column="4" 
-                        Content="Admin"
-                        Command="{Binding AdminCommand}"
-                        Classes="accent nofocus"
-                        Width="60"
-                        Height="40"/>
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Margin="0,15,0,0"/>
             </Grid>
         </Border>
     </Grid>

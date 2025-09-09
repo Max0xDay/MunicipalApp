@@ -25,7 +25,7 @@
                     Width="80"
                     Height="80"
                     HorizontalAlignment="Center">
-                <TextBlock Text="📋" 
+                <TextBlock Text="Category" 
                            FontSize="36"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"/>
@@ -90,7 +90,7 @@
                                 Padding="12"
                                 IsVisible="{Binding ShowDescriptionGuidelines}">
                             <StackPanel Spacing="8">
-                                <TextBlock Text="💡 Tips for a good description:"
+                                <TextBlock Text="Tips for a good description:"
                                            Classes="field-label"
                                            FontSize="13"/>
                                 <TextBlock Text="• Be specific about what you see"

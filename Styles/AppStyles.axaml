@@ -231,7 +231,7 @@
 
     <Style Selector="Button.secondary">
         <Setter Property="Background" Value="{StaticResource AccentGradientBrush}" />
-        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Foreground" Value="Black" />
         <Setter Property="ClipToBounds" Value="True" />
         <Setter Property="BorderThickness" Value="0" />
     </Style>

@@ -25,7 +25,7 @@
                     Width="80"
                     Height="80"
                     HorizontalAlignment="Center">
-                <TextBlock Text="✅" 
+                <TextBlock Text="Success" 
                            FontSize="36"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"/>
@@ -65,7 +65,7 @@
                     
                     <!-- Location -->
                     <Grid ColumnDefinitions="Auto,15,*">
-                        <TextBlock Grid.Column="0" Text="📍" FontSize="16"/>
+                        <TextBlock Grid.Column="0" Text="Loc" FontSize="16"/>
                         <StackPanel Grid.Column="2" Spacing="2">
                             <TextBlock Text="Location" Classes="field-label" FontSize="13"/>
                             <TextBlock Text="{Binding Location}" 
@@ -76,7 +76,7 @@
                     
                     <!-- Category -->
                     <Grid ColumnDefinitions="Auto,15,*">
-                        <TextBlock Grid.Column="0" Text="📋" FontSize="16"/>
+                        <TextBlock Grid.Column="0" Text="Cat" FontSize="16"/>
                         <StackPanel Grid.Column="2" Spacing="2">
                             <TextBlock Text="Category" Classes="field-label" FontSize="13"/>
                             <TextBlock Text="{Binding Category}" 
@@ -86,7 +86,7 @@
                     
                     <!-- Description -->
                     <Grid ColumnDefinitions="Auto,15,*">
-                        <TextBlock Grid.Column="0" Text="📝" FontSize="16"/>
+                        <TextBlock Grid.Column="0" Text="Desc" FontSize="16"/>
                         <StackPanel Grid.Column="2" Spacing="2">
                             <TextBlock Text="Description" Classes="field-label" FontSize="13"/>
                             <TextBlock Text="{Binding Description}" 
@@ -98,7 +98,7 @@
                     
                     <!-- Photos -->
                     <Grid ColumnDefinitions="Auto,15,*">
-                        <TextBlock Grid.Column="0" Text="📷" FontSize="16"/>
+                        <TextBlock Grid.Column="0" Text="Photo" FontSize="16"/>
                         <StackPanel Grid.Column="2" Spacing="2">
                             <TextBlock Text="Photos Attached" Classes="field-label" FontSize="13"/>
                             <TextBlock Text="{Binding PhotoCountText}" 
@@ -123,19 +123,19 @@
                     <Grid ColumnDefinitions="*,10,*,10,*"
                           HorizontalAlignment="Center">
                         <Button Grid.Column="0" 
-                                Content="📱 WhatsApp"
+                                Content="WhatsApp"
                                 Command="{Binding ShareWhatsAppCommand}"
                                 Classes="secondary nofocus"
                                 Padding="20,10"/>
                         
                         <Button Grid.Column="2" 
-                                Content="✉️ Email"
+                                Content="Email"
                                 Command="{Binding ShareEmailCommand}"
                                 Classes="secondary nofocus"
                                 Padding="20,10"/>
                         
                         <Button Grid.Column="4" 
-                                Content="💬 SMS"
+                                Content="SMS"
                                 Command="{Binding ShareSMSCommand}"
                                 Classes="secondary nofocus"
                                 Padding="20,10"/>

@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using MunicipalApp.ViewModels;
 using System;
 
@@ -15,7 +16,7 @@ namespace MunicipalApp.Views
             _viewModel = (LocationPageViewModel)DataContext;
         }
 
-        private void LocationTextBox_KeyUp(object sender, KeyEventArgs e)
+        private void LocationTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             var textBox = (TextBox)sender;
             _viewModel?.LocationTextChanged(textBox.Text);

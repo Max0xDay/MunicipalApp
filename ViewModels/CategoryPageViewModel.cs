@@ -74,12 +74,12 @@ namespace MunicipalApp.ViewModels
 
         public string SelectedCategoryIcon => SelectedCategory switch
         {
-            "Sanitation" => "🗑️",
-            "Roads" => "🛣️",
-            "Utilities" => "🔧",
-            "Water" => "💧",
-            "Electricity" => "⚡",
-            _ => "📋"
+            "Sanitation" => "Sanitation",
+            "Roads" => "Roads",
+            "Utilities" => "Utilities",
+            "Water" => "Water",
+            "Electricity" => "Electricity",
+            _ => "Category"
         };
 
         public void Clear()

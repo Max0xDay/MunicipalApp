@@ -27,7 +27,7 @@
                     Width="80"
                     Height="80"
                     HorizontalAlignment="Center">
-                <TextBlock Text="📍" 
+                <TextBlock Text="Location" 
                            FontSize="36"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"/>
@@ -57,7 +57,7 @@
                             <TextBox Text="{Binding Location, Mode=TwoWay}"
                                      Watermark="Start typing to search for location..."
                                      Classes="modern"
-                                     KeyUp="LocationTextBox_KeyUp"/>
+                                     TextChanged="LocationTextBox_TextChanged"/>
                             
                             <!-- Loading Indicator -->
                             <ProgressBar Grid.Column="0" 
@@ -117,7 +117,7 @@
                 <StackPanel Spacing="10">
                     <TextBlock Text="Location Preview" 
                                Classes="section-header"/>
-                    <TextBlock Text="🗺️ Map preview would be displayed here"
+                    <TextBlock Text="Map preview would be displayed here"
                                Classes="description"
                                TextAlignment="Center"
                                FontStyle="Italic"/>

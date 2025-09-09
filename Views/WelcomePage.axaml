@@ -25,7 +25,7 @@
                     Width="100"
                     Height="100"
                     HorizontalAlignment="Center">
-                <TextBlock Text="🏛️" 
+                <TextBlock Text="Welcome" 
                            FontSize="48"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"/>
@@ -88,7 +88,7 @@
             </Border>
             
             <!-- Important Note -->
-            <TextBlock Text="⚠️ Please ensure you have a stable internet connection for location services."
+            <TextBlock Text="Please ensure you have a stable internet connection for location services."
                        Classes="description"
                        TextAlignment="Center"
                        FontStyle="Italic"/>
