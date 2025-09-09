@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
              x:Class="MunicipalApp.Views.PhotoPage"
+             x:Name="PhotoPageControl"
              x:DataType="vm:PhotoPageViewModel">
 
     <Design.DataContext>
@@ -87,11 +88,11 @@
                     <ItemsControl ItemsSource="{Binding UploadedFiles}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" Spacing="10"/>
+                                <WrapPanel Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="vm:PhotoFile">
                                 <Border Background="#F0F8FA"
                                         CornerRadius="12"
                                         Width="120"
@@ -99,17 +100,16 @@
                                         Margin="5">
                                     <Grid RowDefinitions="*,Auto">
                                         <!-- Photo Preview -->
-                                        <Image Grid.Row="0"
-                                               Source="{Binding Preview}"
-                                               Stretch="UniformToFill"
-                                               Margin="5"
-                                               CornerRadius="8"/>
+                                        <Border Grid.Row="0"
+                                               CornerRadius="8"
+                                               Margin="5">
+                                            <Image Source="{Binding Preview}"
+                                                   Stretch="UniformToFill"/>
+                                        </Border>
                                         
                                         <!-- Remove Button -->
                                         <Button Grid.Row="1"
                                                 Content="❌"
-                                                Command="{Binding RemovePhotoCommand}"
-                                                CommandParameter="{Binding}"
                                                 Classes="warning nofocus"
                                                 FontSize="12"
                                                 Padding="5"

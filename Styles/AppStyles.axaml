@@ -23,6 +23,8 @@
             <GradientStop Color="#FF45A049" Offset="1" />
         </LinearGradientBrush>
         
+        <SolidColorBrush x:Key="SuccessBrush" Color="#FF4CAF50" />
+        
         <LinearGradientBrush x:Key="SuccessHoverGradientBrush" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#FF5CBF60" Offset="0" />
             <GradientStop Color="#FF51B059" Offset="1" />

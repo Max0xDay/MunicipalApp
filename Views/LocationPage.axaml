@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
+             xmlns:services="clr-namespace:MunicipalApp.Services"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
              x:Class="MunicipalApp.Views.LocationPage"
              x:Name="ThisControl"
@@ -81,28 +82,17 @@
                             BorderThickness="1"
                             CornerRadius="8"
                             MaxHeight="200">
-                        <ScrollViewer>
-                            <ItemsControl ItemsSource="{Binding Suggestions}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Button Content="{Binding Place_Name}"
-                                                Command="{Binding DataContext.SelectSuggestionCommand, ElementName=LocationPage}"
-                                                CommandParameter="{Binding}"
-                                                Classes="nofocus"
-                                                Background="Transparent"
-                                                HorizontalContentAlignment="Stretch"
-                                                HorizontalAlignment="Stretch"
-                                                Margin="5">
-                                            <Button.Styles>
-                                                <Style Selector="Button:pointerover">
-                                                    <Setter Property="Background" Value="#F0F8FA"/>
-                                                </Style>
-                                            </Button.Styles>
-                                        </Button>
+                        <ListBox ItemsSource="{Binding Suggestions}"
+                                    SelectedItem="{Binding SelectedSuggestion}"
+                                    Classes="location-suggestions">
+                                <ListBox.DataTemplates>
+                                    <DataTemplate x:DataType="services:MapboxSuggestion">
+                                        <TextBlock Text="{Binding Place_Name}" 
+                                                   TextWrapping="Wrap"
+                                                   Margin="5"/>
                                     </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
+                                </ListBox.DataTemplates>
+                            </ListBox>
                     </Border>
                     
                     <!-- Selected Location Info -->

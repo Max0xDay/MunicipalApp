@@ -49,6 +49,19 @@ namespace MunicipalApp.ViewModels
         public bool HasLocation => !string.IsNullOrWhiteSpace(Location);
         public string SelectedLocationDisplay => _selectedSuggestion?.Place_Name ?? Location ?? "No location selected";
 
+        public MapboxSuggestion? SelectedSuggestion
+        {
+            get => _selectedSuggestion;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _selectedSuggestion, value);
+                if (value != null)
+                {
+                    SelectSuggestion(value);
+                }
+            }
+        }
+
         public List<MapboxSuggestion> Suggestions
         {
             get => _suggestions;
