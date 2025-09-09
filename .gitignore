@@ -330,3 +330,4 @@ Instructions and files/
 
 # Environment-specific configuration (contains tokens / dev secrets)
 appsettings.Development.json
+appsettings.json
