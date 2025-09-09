@@ -24,7 +24,7 @@
             </StackPanel>
             
             <Button Grid.Column="1" 
-                    Content="🔄 Refresh"
+                    Content="Refresh"
                     Command="{Binding RefreshCommand}"
                     Classes="secondary nofocus"
                     Padding="15,10"/>
@@ -67,7 +67,7 @@
                     
                     <!-- Export Button -->
                     <Button Grid.Column="3"
-                            Content="📊 Export"
+                            Content="Export"
                             Command="{Binding ExportCommand}"
                             Classes="accent nofocus"
                             Padding="15,10"/>
@@ -124,7 +124,7 @@
                            VerticalAlignment="Center"/>
                 
                 <Button Grid.Column="1" 
-                        Content="📝 Update Status"
+                        Content="Update Status"
                         Command="{Binding UpdateStatusCommand}"
                         IsEnabled="{Binding HasSelectedIssue}"
                         Classes="secondary nofocus"
@@ -132,7 +132,7 @@
                         Margin="10,0,5,0"/>
                 
                 <Button Grid.Column="2" 
-                        Content="👁️ View Details"
+                        Content="View Details"
                         Command="{Binding ViewDetailsCommand}"
                         IsEnabled="{Binding HasSelectedIssue}"
                         Classes="primary nofocus"
@@ -140,7 +140,7 @@
                         Margin="0,0,5,0"/>
                 
                 <Button Grid.Column="3" 
-                        Content="❌ Close"
+                        Content="Close"
                         Command="{Binding CloseCommand}"
                         Classes="warning nofocus"
                         Padding="15,8"/>

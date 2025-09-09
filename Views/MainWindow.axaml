@@ -16,9 +16,8 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <!-- Main Window Content -->
     <Grid>
-        <views:ReportWizardForm/>
+        <ContentControl Content="{Binding CurrentView}"/>    
     </Grid>
 
 </Window>

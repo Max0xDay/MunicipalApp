@@ -12,17 +12,39 @@ public class ViewLocator : IDataTemplate
         if (data is null)
             return new TextBlock { Text = "No ViewModel specified" };
 
-        var name = data.GetType().FullName!.Replace("ViewModel", "View");
-        var type = Type.GetType(name);
+        var vmType = data.GetType();
+        var fullName = vmType.FullName!; // e.g. MunicipalApp.ViewModels.ReportWizardViewModel
+        // Normalize namespace from .ViewModels. -> .Views.
+        fullName = fullName.Replace(".ViewModels.", ".Views.");
 
-        if (type != null)
+        // Candidate name patterns in order of likelihood given existing files: *Form, *View, *Page
+        string baseName = fullName.EndsWith("ViewModel") ? fullName.Substring(0, fullName.Length - "ViewModel".Length) : fullName;
+
+        var candidates = new[]
         {
-            return (Control)Activator.CreateInstance(type)!;
-        }
-        else
+            baseName + "Form",   // ReportWizardForm, AdminReportForm
+            baseName + "View",   // Conventional *View
+            baseName + "Page"    // Any *Page pattern
+        };
+
+        var assembly = vmType.Assembly;
+        foreach (var candidate in candidates)
         {
-            return new TextBlock { Text = $"Not Found: {name}" };
+            var type = assembly.GetType(candidate);
+            if (type != null)
+            {
+                try
+                {
+                    return (Control)Activator.CreateInstance(type)!;
+                }
+                catch (Exception ex)
+                {
+                    return new TextBlock { Text = $"Error creating view {candidate}: {ex.Message}" };
+                }
+            }
         }
+
+        return new TextBlock { Text = $"Not Found: {string.Join(", ", candidates)}" };
     }
 
     public bool Match(object? data)

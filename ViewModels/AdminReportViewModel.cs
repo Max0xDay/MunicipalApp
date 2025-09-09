@@ -14,7 +14,7 @@ namespace MunicipalApp.ViewModels
 {
     public class AdminReportViewModel : ViewModelBase
     {
-        private readonly DataService _dataService;
+    private readonly SqliteDataService _dataService;
         private ObservableCollection<Issue> _issues;
         private ObservableCollection<Issue> _filteredIssues;
         private string _searchText = string.Empty;
@@ -31,7 +31,7 @@ namespace MunicipalApp.ViewModels
 
         public AdminReportViewModel()
         {
-            _dataService = new DataService();
+            _dataService = new SqliteDataService();
             _issues = new ObservableCollection<Issue>();
             _filteredIssues = new ObservableCollection<Issue>();
             
@@ -107,7 +107,7 @@ namespace MunicipalApp.ViewModels
         {
             try
             {
-                var issues = await _dataService.LoadIssuesAsync();
+                var issues = await Task.Run(() => _dataService.GetIssues());
                 _issues.Clear();
                 foreach (var issue in issues)
                 {

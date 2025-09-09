@@ -183,8 +183,8 @@ namespace MunicipalApp.ViewModels
 
         private void FinishWizard()
         {
-            var dataService = new DataService();
-            dataService.SaveIssue(_currentIssue);
+            var dataService = new SqliteDataService();
+            dataService.InsertIssue(_currentIssue);
             
             // Reset wizard for new report
             _currentIssue = new Issue();
@@ -209,9 +209,11 @@ namespace MunicipalApp.ViewModels
 
         public void OpenAdminPage()
         {
-            // Navigate to admin page - this will be handled by the parent window
-            // The command binding in XAML will handle the navigation
+            // Attempt to locate a MainWindowViewModel ancestor by messaging pattern
+            AdminNavigationRequested?.Invoke();
         }
+
+        public static event Action? AdminNavigationRequested;
 
         public ReactiveCommand<Unit, Unit> BackCommand => _backCommand;
         public ReactiveCommand<Unit, Unit> NextCommand => _nextCommand;

@@ -11,11 +11,12 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        _currentView = new MainMenuViewModel();
+    _currentView = new ReportWizardViewModel();
         
         ReportIssuesCommand = ReactiveCommand.Create(() => 
         {
             CurrentView = new ReportWizardViewModel();
+            HookWizardAdmin();
         });
         
         ServiceStatusCommand = ReactiveCommand.Create(() => 
@@ -30,8 +31,11 @@ public class MainWindowViewModel : ViewModelBase
 
         BackToMainCommand = ReactiveCommand.Create(() =>
         {
-            CurrentView = new MainMenuViewModel();
+            CurrentView = new ReportWizardViewModel();
+            HookWizardAdmin();
         });
+
+        HookWizardAdmin();
     }
 
     public ViewModelBase CurrentView
@@ -44,4 +48,15 @@ public class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> ServiceStatusCommand { get; }
     public ReactiveCommand<Unit, Unit> AdminCommand { get; }
     public ReactiveCommand<Unit, Unit> BackToMainCommand { get; }
+
+    private void HookWizardAdmin()
+    {
+        ReportWizardViewModel.AdminNavigationRequested -= OnAdminNav;
+        ReportWizardViewModel.AdminNavigationRequested += OnAdminNav;
+    }
+
+    private void OnAdminNav()
+    {
+        CurrentView = new AdminReportViewModel();
+    }
 }
