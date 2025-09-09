@@ -59,9 +59,9 @@
                                    Classes="field-label"/>
                         <Grid>
                             <TextBox Text="{Binding Location, Mode=TwoWay}"
-                                     Watermark="Start typing to search for location..."
+                                     Watermark="Type a location and press Enter to search..."
                                      Classes="modern"
-                                     TextChanged="LocationTextBox_TextChanged"/>
+                                     KeyDown="LocationTextBox_KeyDown"/>
                             
                             <!-- Loading Indicator -->
                             <ProgressBar Grid.Column="0" 
@@ -78,7 +78,7 @@
                                    HorizontalAlignment="Right"/>
                     </StackPanel>
                     
-                    <!-- Suggestions Dropdown -->
+                    <!-- Suggestions Dropdown (shown after pressing Enter) -->
                     <Border Grid.Row="1"
                             IsVisible="{Binding ShowSuggestions}"
                             Background="{StaticResource CardBrush}"
@@ -87,16 +87,17 @@
                             CornerRadius="8"
                             MaxHeight="200">
                         <ListBox ItemsSource="{Binding Suggestions}"
-                                    SelectedItem="{Binding SelectedSuggestion}"
-                                    Classes="location-suggestions">
-                                <ListBox.DataTemplates>
-                                    <DataTemplate x:DataType="services:MapboxSuggestion">
-                                        <TextBlock Text="{Binding Place_Name}" 
-                                                   TextWrapping="Wrap"
-                                                   Margin="5"/>
-                                    </DataTemplate>
-                                </ListBox.DataTemplates>
-                            </ListBox>
+                                 SelectedItem="{Binding SelectedSuggestion}"
+                                 Classes="location-suggestions">
+                            <ListBox.DataTemplates>
+                                <DataTemplate x:DataType="services:MapboxSuggestion">
+                                    <StackPanel Margin="6" Spacing="2">
+                                        <TextBlock Text="{Binding PlaceName}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding Text}" FontSize="11" Opacity="0.7" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.DataTemplates>
+                        </ListBox>
                     </Border>
                     
                     <!-- Selected Location Info -->

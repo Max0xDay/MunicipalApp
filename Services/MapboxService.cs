@@ -4,18 +4,41 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
+using Microsoft.Extensions.Configuration;
 
 namespace MunicipalApp.Services
 {
     public class MapboxService
     {
-        private readonly HttpClient _httpClient;
-        private const string BaseUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
-        private const string AccessToken = "pk.eyJ1IjoibWF4MHhkYXl2YyIsImEiOiJjbWVncTFkOXMxNmUwMmxzNGVnenRwaHRjIn0.h6CK_o-YpmYsimTqV1S2_Q";
+    private readonly HttpClient _httpClient;
+    private const string BaseUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
+    private readonly MapboxOptions _options;
 
-        public MapboxService()
+        public MapboxService(): this(null) {}
+
+        public MapboxService(MapboxOptions? options)
         {
             _httpClient = new HttpClient();
+            _options = options ?? LoadOptions();
+        }
+
+        private static MapboxOptions LoadOptions()
+        {
+            var config = ConfigurationHolder.Configuration;
+            var opts = new MapboxOptions();
+            if (config is not null)
+            {
+                var section = config.GetSection("Mapbox");
+                if (section.Exists())
+                {
+                    opts.AccessToken = section["AccessToken"] ?? opts.AccessToken;
+                    opts.CountryFilter = section["CountryFilter"] ?? opts.CountryFilter;
+                    if (int.TryParse(section["ResultLimit"], out var rl)) opts.ResultLimit = rl;
+                    opts.Types = section["Types"] ?? opts.Types;
+                }
+            }
+            return opts;
         }
 
         public async Task<List<MapboxSuggestion>> GetLocationSuggestions(string query)
@@ -28,7 +51,11 @@ namespace MunicipalApp.Services
                 }
 
                 var encodedQuery = Uri.EscapeDataString(query);
-                var url = $"{BaseUrl}{encodedQuery}.json?access_token={AccessToken}&limit=5&country=ZA&types=place,locality,neighborhood,address,poi";
+                var country = string.IsNullOrWhiteSpace(_options.CountryFilter) ? "ZA" : _options.CountryFilter;
+                var types = string.IsNullOrWhiteSpace(_options.Types) ? "place,locality,neighborhood,address,poi" : _options.Types;
+                var limit = _options.ResultLimit <= 0 ? 5 : _options.ResultLimit;
+                var token = string.IsNullOrWhiteSpace(_options.AccessToken) ? "MISSING_TOKEN" : _options.AccessToken;
+                var url = $"{BaseUrl}{encodedQuery}.json?access_token={token}&limit={limit}&country={country}&types={types}";
 
                 var response = await _httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
@@ -53,13 +80,13 @@ namespace MunicipalApp.Services
 
     public class MapboxSuggestion
     {
-        public string Id { get; set; } = string.Empty;
-        public string Type { get; set; } = string.Empty;
-        public MapboxGeometry Geometry { get; set; } = new();
-        public MapboxProperties Properties { get; set; } = new();
-        public string Text { get; set; } = string.Empty;
-        public string Place_Name { get; set; } = string.Empty;
-        public string[] Context { get; set; } = Array.Empty<string>();
+        [JsonPropertyName("id")] public string Id { get; set; } = string.Empty;
+        [JsonPropertyName("type")] public string Type { get; set; } = string.Empty;
+        [JsonPropertyName("geometry")] public MapboxGeometry Geometry { get; set; } = new();
+        [JsonPropertyName("properties")] public MapboxProperties Properties { get; set; } = new();
+        [JsonPropertyName("text")] public string Text { get; set; } = string.Empty;
+        [JsonPropertyName("place_name")] public string PlaceName { get; set; } = string.Empty;
+        [JsonPropertyName("context")] public object? Context { get; set; } // simplified
     }
 
     public class MapboxGeometry

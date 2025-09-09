@@ -327,3 +327,6 @@ Instructions and files/
 
 # Runtime data (optional - uncomment if you don't want to track user data)
 # Data/issues.json
+
+# Environment-specific configuration (contains tokens / dev secrets)
+appsettings.Development.json

@@ -7,8 +7,8 @@ namespace MunicipalApp.ViewModels
 {
     public class CategoryPageViewModel : ViewModelBase
     {
-        private string _selectedCategory;
-        private string _description;
+    private string _selectedCategory = string.Empty;
+    private string _description = string.Empty;
 
         public CategoryPageViewModel()
         {

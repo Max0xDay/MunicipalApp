@@ -7,14 +7,14 @@ namespace MunicipalApp.ViewModels
 {
     public class ConfirmationPageViewModel : ViewModelBase
     {
-        private string _reportNumber;
-        private string _location;
-        private string _category;
-        private string _description;
+    private string _reportNumber = string.Empty;
+    private string _location = string.Empty;
+    private string _category = string.Empty;
+    private string _description = string.Empty;
         private int _photoCount;
-        private ReactiveCommand<Unit, Unit> _shareWhatsAppCommand;
-        private ReactiveCommand<Unit, Unit> _shareEmailCommand;
-        private ReactiveCommand<Unit, Unit> _shareSMSCommand;
+    private ReactiveCommand<Unit, Unit> _shareWhatsAppCommand = null!;
+    private ReactiveCommand<Unit, Unit> _shareEmailCommand = null!;
+    private ReactiveCommand<Unit, Unit> _shareSMSCommand = null!;
 
         public ConfirmationPageViewModel()
         {

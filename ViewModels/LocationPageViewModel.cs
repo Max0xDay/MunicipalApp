@@ -12,13 +12,14 @@ namespace MunicipalApp.ViewModels
 {
     public class LocationPageViewModel : ViewModelBase
     {
-        private readonly MapboxService _mapboxService;
-        private string _location;
+    private readonly MapboxService _mapboxService;
+    private string _location = string.Empty;
         private List<MapboxSuggestion> _suggestions;
         private bool _isLoading;
         private bool _showSuggestions;
         private MapboxSuggestion? _selectedSuggestion;
-        private ReactiveCommand<MapboxSuggestion, Unit> _selectSuggestionCommand;
+    private ReactiveCommand<MapboxSuggestion, Unit> _selectSuggestionCommand = null!; // initialized in InitializeCommands
+    private System.Threading.CancellationTokenSource? _suggestCts;
 
         public LocationPageViewModel()
         {
@@ -47,7 +48,7 @@ namespace MunicipalApp.ViewModels
 
         public string LocationCharCount => $"{Location?.Length ?? 0}/200";
         public bool HasLocation => !string.IsNullOrWhiteSpace(Location);
-        public string SelectedLocationDisplay => _selectedSuggestion?.Place_Name ?? Location ?? "No location selected";
+    public string SelectedLocationDisplay => _selectedSuggestion?.PlaceName ?? Location ?? "No location selected";
 
         public MapboxSuggestion? SelectedSuggestion
         {
@@ -80,39 +81,52 @@ namespace MunicipalApp.ViewModels
             set => this.RaiseAndSetIfChanged(ref _showSuggestions, value);
         }
 
-        public async void LocationTextChanged(string text)
+        public async Task SearchAsync()
         {
-            Location = text;
+            var text = Location;
+            _suggestCts?.Cancel();
+            _suggestCts = null;
 
             if (string.IsNullOrWhiteSpace(text) || text.Length < 2)
             {
-                Suggestions.Clear();
+                Suggestions = new List<MapboxSuggestion>();
                 ShowSuggestions = false;
+                IsLoading = false;
                 return;
             }
 
+            var cts = new System.Threading.CancellationTokenSource();
+            _suggestCts = cts;
             IsLoading = true;
             ShowSuggestions = true;
 
             try
             {
                 var newSuggestions = await _mapboxService.GetLocationSuggestions(text);
+                if (cts.IsCancellationRequested) return;
                 Suggestions = newSuggestions;
             }
+            catch (OperationCanceledException) { }
             catch (Exception)
             {
-                Suggestions.Clear();
+                if (!cts.IsCancellationRequested)
+                {
+                    Suggestions = new List<MapboxSuggestion>();
+                }
             }
             finally
             {
-                IsLoading = false;
+                if (!cts.IsCancellationRequested)
+                {
+                    IsLoading = false;
+                }
             }
         }
 
         private Unit SelectSuggestion(MapboxSuggestion suggestion)
         {
             _selectedSuggestion = suggestion;
-            Location = suggestion.Place_Name;
+            Location = suggestion.PlaceName;
             ShowSuggestions = false;
             Suggestions.Clear();
             return Unit.Default;

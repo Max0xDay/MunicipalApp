@@ -8,18 +8,24 @@ namespace MunicipalApp.Views
 {
     public partial class LocationPage : UserControl
     {
-        private LocationPageViewModel _viewModel;
+        private LocationPageViewModel? _viewModel;
 
         public LocationPage()
         {
             InitializeComponent();
-            _viewModel = (LocationPageViewModel)DataContext;
+            _viewModel = DataContext as LocationPageViewModel;
         }
 
-        private void LocationTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void LocationTextBox_KeyDown(object? sender, KeyEventArgs e)
         {
-            var textBox = (TextBox)sender;
-            _viewModel?.LocationTextChanged(textBox.Text);
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                if (_viewModel != null)
+                {
+                    await _viewModel.SearchAsync();
+                }
+            }
         }
     }
 }

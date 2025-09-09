@@ -15,12 +15,12 @@ namespace MunicipalApp.ViewModels
 {
     public class ReportWizardViewModel : ViewModelBase
     {
-        private UserControl _currentPage;
+    private UserControl _currentPage = null!; // set after pages init
         private int _currentStep;
         private Issue _currentIssue;
-        private ReactiveCommand<Unit, Unit> _backCommand;
-        private ReactiveCommand<Unit, Unit> _nextCommand;
-        private ReactiveCommand<Unit, Unit> _adminCommand;
+    private ReactiveCommand<Unit, Unit> _backCommand = null!;
+    private ReactiveCommand<Unit, Unit> _nextCommand = null!;
+    private ReactiveCommand<Unit, Unit> _adminCommand = null!;
 
         public ReportWizardViewModel()
         {
@@ -34,12 +34,12 @@ namespace MunicipalApp.ViewModels
             UpdateProgress();
         }
 
-        private List<UserControl> _pages;
-        private WelcomePageViewModel _welcomePageVm;
-        private LocationPageViewModel _locationPageVm;
-        private CategoryPageViewModel _categoryPageVm;
-        private PhotoPageViewModel _photoPageVm;
-        private ConfirmationPageViewModel _confirmationPageVm;
+    private List<UserControl> _pages = null!;
+    private WelcomePageViewModel _welcomePageVm = null!;
+    private LocationPageViewModel _locationPageVm = null!;
+    private CategoryPageViewModel _categoryPageVm = null!;
+    private PhotoPageViewModel _photoPageVm = null!;
+    private ConfirmationPageViewModel _confirmationPageVm = null!;
 
         private void InitializePages()
         {

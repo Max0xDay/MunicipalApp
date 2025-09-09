@@ -20,14 +20,14 @@ namespace MunicipalApp.ViewModels
         private string _searchText = string.Empty;
         private string _selectedCategory = "All";
         private string _selectedStatus = "All";
-        private Issue _selectedIssue;
-        private List<string> _categories;
-        private List<string> _statuses;
-        private ReactiveCommand<Unit, Unit> _refreshCommand;
-        private ReactiveCommand<Unit, Unit> _exportCommand;
-        private ReactiveCommand<Unit, Unit> _updateStatusCommand;
-        private ReactiveCommand<Unit, Unit> _viewDetailsCommand;
-        private ReactiveCommand<Unit, Unit> _closeCommand;
+    private Issue _selectedIssue = null!;
+    private List<string> _categories = null!;
+    private List<string> _statuses = null!;
+    private ReactiveCommand<Unit, Unit> _refreshCommand = null!;
+    private ReactiveCommand<Unit, Unit> _exportCommand = null!;
+    private ReactiveCommand<Unit, Unit> _updateStatusCommand = null!;
+    private ReactiveCommand<Unit, Unit> _viewDetailsCommand = null!;
+    private ReactiveCommand<Unit, Unit> _closeCommand = null!;
 
         public AdminReportViewModel()
         {
@@ -99,8 +99,8 @@ namespace MunicipalApp.ViewModels
         }
 
         public bool HasSelectedIssue => SelectedIssue != null;
-        public List<string> Categories { get; }
-        public List<string> Statuses { get; }
+    public List<string> Categories => _categories;
+    public List<string> Statuses => _statuses;
         public string StatusText => $"Showing {FilteredIssues.Count} of {Issues.Count} issues";
 
         private async Task LoadIssues()
