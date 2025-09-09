@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
+             xmlns:views="clr-namespace:MunicipalApp.Views"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="750"
+             x:Class="MunicipalApp.Views.ReportWizardForm"
+             x:DataType="vm:ReportWizardViewModel">
+
+    <Design.DataContext>
+        <vm:ReportWizardViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="*,Auto">
+        <!-- Main Content Area -->
+        <ContentControl Grid.Row="0" Content="{Binding CurrentPage}" Margin="20"/>
+        
+        <!-- Bottom Progress Bar Section -->
+        <Border Grid.Row="1" Background="{StaticResource CardBrush}" 
+                BorderBrush="{StaticResource InputBorderBrush}" 
+                BorderThickness="0,1,0,0"
+                Padding="20,15">
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                <!-- Back Button -->
+                <Button Grid.Column="0" 
+                        Content="Back"
+                        Command="{Binding BackCommand}"
+                        IsEnabled="{Binding CanGoBack}"
+                        Classes="secondary nofocus"
+                        Margin="0,0,20,0"/>
+                
+                <!-- Progress Bar -->
+                <Grid Grid.Column="1" VerticalAlignment="Center">
+                    <ProgressBar Value="{Binding ProgressPercentage}" 
+                                 Height="8"
+                                 Classes="modern"
+                                 Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding ProgressText}" 
+                               Classes="progress-text"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Bottom"/>
+                </Grid>
+                
+                <!-- Step Indicator -->
+                <TextBlock Grid.Column="2" 
+                           Text="{Binding StepText}"
+                           Classes="progress-text"
+                           VerticalAlignment="Center"
+                           Margin="20,0"/>
+                
+                <!-- Next/Finish Button -->
+                <Button Grid.Column="3" 
+                        Content="{Binding NextButtonText}"
+                        Command="{Binding NextCommand}"
+                        IsEnabled="{Binding CanGoNext}"
+                        Classes="primary large nofocus"
+                        Margin="0,0,20,0"/>
+                
+                <!-- Admin Button -->
+                <Button Grid.Column="4" 
+                        Content="Admin"
+                        Command="{Binding AdminCommand}"
+                        Classes="accent nofocus"
+                        Width="60"
+                        Height="40"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

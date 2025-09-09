@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using MunicipalApp.Models;
+using System.Threading.Tasks;
 
 namespace MunicipalApp.Services
 {
@@ -58,6 +59,31 @@ namespace MunicipalApp.Services
             var issues = LoadIssues();
             issues.Add(issue);
             SaveIssues(issues);
+        }
+
+        public void SaveIssue(Issue issue)
+        {
+            var issues = LoadIssues();
+            issues.Add(issue);
+            SaveIssues(issues);
+        }
+
+        public async Task<List<Issue>> LoadIssuesAsync()
+        {
+            try
+            {
+                if (!File.Exists(_dataFilePath))
+                {
+                    return new List<Issue>();
+                }
+
+                var json = await File.ReadAllTextAsync(_dataFilePath);
+                return JsonConvert.DeserializeObject<List<Issue>>(json) ?? new List<Issue>();
+            }
+            catch
+            {
+                return new List<Issue>();
+            }
         }
     }
 }

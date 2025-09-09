@@ -1,0 +1,166 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             x:Class="MunicipalApp.Views.ConfirmationPage"
+             x:DataType="vm:ConfirmationPageViewModel">
+
+    <Design.DataContext>
+        <vm:ConfirmationPageViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="*,Auto">
+        <!-- Confirmation Content -->
+        <StackPanel Grid.Row="0" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Spacing="25"
+                    MaxWidth="600">
+            
+            <!-- Success Icon -->
+            <Border Background="{StaticResource SuccessGradientBrush}" 
+                    CornerRadius="50"
+                    Width="80"
+                    Height="80"
+                    HorizontalAlignment="Center">
+                <TextBlock Text="✅" 
+                           FontSize="36"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Border>
+            
+            <!-- Page Title -->
+            <TextBlock Text="Report Submitted Successfully!"
+                       Classes="page-title"
+                       TextAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            
+            <!-- Report Number -->
+            <Border Classes="card"
+                    Background="#E8F5E9">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Your Report Number"
+                               Classes="field-label"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="{Binding ReportNumber}"
+                               Classes="page-title"
+                               FontSize="20"
+                               TextAlignment="Center"
+                               Foreground="#4CAF50"/>
+                    <TextBlock Text="Please save this number for future reference"
+                               Classes="description"
+                               TextAlignment="Center"
+                               FontSize="12"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Report Summary -->
+            <Border Classes="card">
+                <StackPanel Spacing="20">
+                    <TextBlock Text="Report Summary" 
+                               Classes="section-header"
+                               TextAlignment="Center"/>
+                    
+                    <!-- Location -->
+                    <Grid ColumnDefinitions="Auto,15,*">
+                        <TextBlock Grid.Column="0" Text="📍" FontSize="16"/>
+                        <StackPanel Grid.Column="2" Spacing="2">
+                            <TextBlock Text="Location" Classes="field-label" FontSize="13"/>
+                            <TextBlock Text="{Binding Location}" 
+                                       Classes="description" 
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <!-- Category -->
+                    <Grid ColumnDefinitions="Auto,15,*">
+                        <TextBlock Grid.Column="0" Text="📋" FontSize="16"/>
+                        <StackPanel Grid.Column="2" Spacing="2">
+                            <TextBlock Text="Category" Classes="field-label" FontSize="13"/>
+                            <TextBlock Text="{Binding Category}" 
+                                       Classes="description"/>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <!-- Description -->
+                    <Grid ColumnDefinitions="Auto,15,*">
+                        <TextBlock Grid.Column="0" Text="📝" FontSize="16"/>
+                        <StackPanel Grid.Column="2" Spacing="2">
+                            <TextBlock Text="Description" Classes="field-label" FontSize="13"/>
+                            <TextBlock Text="{Binding Description}" 
+                                       Classes="description" 
+                                       TextWrapping="Wrap"
+                                       MaxHeight="60"/>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <!-- Photos -->
+                    <Grid ColumnDefinitions="Auto,15,*">
+                        <TextBlock Grid.Column="0" Text="📷" FontSize="16"/>
+                        <StackPanel Grid.Column="2" Spacing="2">
+                            <TextBlock Text="Photos Attached" Classes="field-label" FontSize="13"/>
+                            <TextBlock Text="{Binding PhotoCountText}" 
+                                       Classes="description"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            
+            <!-- Share Section -->
+            <Border Classes="card">
+                <StackPanel Spacing="15">
+                    <TextBlock Text="Share Your Report" 
+                               Classes="section-header"
+                               TextAlignment="Center"/>
+                    
+                    <TextBlock Text="Help spread awareness by sharing your report with others:"
+                               Classes="description"
+                               TextAlignment="Center"/>
+                    
+                    <!-- Share Buttons -->
+                    <Grid ColumnDefinitions="*,10,*,10,*"
+                          HorizontalAlignment="Center">
+                        <Button Grid.Column="0" 
+                                Content="📱 WhatsApp"
+                                Command="{Binding ShareWhatsAppCommand}"
+                                Classes="secondary nofocus"
+                                Padding="20,10"/>
+                        
+                        <Button Grid.Column="2" 
+                                Content="✉️ Email"
+                                Command="{Binding ShareEmailCommand}"
+                                Classes="secondary nofocus"
+                                Padding="20,10"/>
+                        
+                        <Button Grid.Column="4" 
+                                Content="💬 SMS"
+                                Command="{Binding ShareSMSCommand}"
+                                Classes="secondary nofocus"
+                                Padding="20,10"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            
+            <!-- Next Steps -->
+            <Border Classes="card"
+                    Background="#F0F8FA">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="What happens next?" 
+                               Classes="section-header"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="• Your report will be reviewed by municipal staff"
+                               Classes="description"
+                               FontSize="12"/>
+                    <TextBlock Text="• You may be contacted for additional information"
+                               Classes="description"
+                               FontSize="12"/>
+                    <TextBlock Text="• Updates will be provided on the status of your report"
+                               Classes="description"
+                               FontSize="12"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

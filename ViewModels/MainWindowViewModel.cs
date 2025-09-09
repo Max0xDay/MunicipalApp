@@ -15,7 +15,7 @@ public class MainWindowViewModel : ViewModelBase
         
         ReportIssuesCommand = ReactiveCommand.Create(() => 
         {
-            CurrentView = new ReportIssuesViewModel();
+            CurrentView = new ReportWizardViewModel();
         });
         
         LocalEventsCommand = ReactiveCommand.Create(() => 
@@ -26,6 +26,11 @@ public class MainWindowViewModel : ViewModelBase
         ServiceStatusCommand = ReactiveCommand.Create(() => 
         {
             // MessageBox equivalent will be handled in the View
+        });
+        
+        AdminCommand = ReactiveCommand.Create(() =>
+        {
+            CurrentView = new AdminReportViewModel();
         });
 
         BackToMainCommand = ReactiveCommand.Create(() =>
@@ -43,5 +48,6 @@ public class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> ReportIssuesCommand { get; }
     public ReactiveCommand<Unit, Unit> LocalEventsCommand { get; }
     public ReactiveCommand<Unit, Unit> ServiceStatusCommand { get; }
+    public ReactiveCommand<Unit, Unit> AdminCommand { get; }
     public ReactiveCommand<Unit, Unit> BackToMainCommand { get; }
 }

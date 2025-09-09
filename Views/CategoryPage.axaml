@@ -1,0 +1,133 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             x:Class="MunicipalApp.Views.CategoryPage"
+             x:DataType="vm:CategoryPageViewModel">
+
+    <Design.DataContext>
+        <vm:CategoryPageViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="*,Auto">
+        <!-- Category Content -->
+        <StackPanel Grid.Row="0" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Spacing="25"
+                    MaxWidth="600">
+            
+            <!-- Category Icon -->
+            <Border Background="{StaticResource PrimaryGradientBrush}" 
+                    CornerRadius="50"
+                    Width="80"
+                    Height="80"
+                    HorizontalAlignment="Center">
+                <TextBlock Text="📋" 
+                           FontSize="36"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Border>
+            
+            <!-- Page Title -->
+            <TextBlock Text="What type of issue are you reporting?"
+                       Classes="page-title"
+                       TextAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            
+            <!-- Category Description -->
+            <TextBlock Text="Select the category that best describes the issue and provide a detailed description to help us understand the problem."
+                       Classes="description"
+                       TextAlignment="Center"
+                       HorizontalAlignment="Center"
+                       LineHeight="24"/>
+            
+            <!-- Category Selection -->
+            <Border Classes="card">
+                <StackPanel Spacing="20">
+                    <!-- Category Dropdown -->
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Category:" 
+                                   Classes="field-label"/>
+                        <ComboBox ItemsSource="{Binding Categories}"
+                                  SelectedItem="{Binding SelectedCategory}"
+                                  PlaceholderText="Select a category..."
+                                  Classes="modern"
+                                  HorizontalAlignment="Stretch"/>
+                        
+                        <!-- Category Description -->
+                        <TextBlock Text="{Binding CategoryDescription}"
+                                   Classes="description"
+                                   FontStyle="Italic"
+                                   IsVisible="{Binding HasSelectedCategory}"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                    
+                    <!-- Description Input -->
+                    <StackPanel Spacing="10">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Grid.Column="0" 
+                                       Text="Description:" 
+                                       Classes="field-label"/>
+                            <TextBlock Grid.Column="1" 
+                                       Text="{Binding DescriptionCharCount}"
+                                       Classes="count"/>
+                        </Grid>
+                        
+                        <TextBox Text="{Binding Description, Mode=TwoWay}"
+                                 Watermark="Please provide a detailed description of the issue..."
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 Height="120"
+                                 MaxLength="1000"
+                                 Classes="modern multiline"/>
+                        
+                        <!-- Description Guidelines -->
+                        <Border Background="#F0F8FA"
+                                CornerRadius="8"
+                                Padding="12"
+                                IsVisible="{Binding ShowDescriptionGuidelines}">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="💡 Tips for a good description:"
+                                           Classes="field-label"
+                                           FontSize="13"/>
+                                <TextBlock Text="• Be specific about what you see"
+                                           Classes="description"
+                                           FontSize="12"/>
+                                <TextBlock Text="• Mention when you first noticed it"
+                                           Classes="description"
+                                           FontSize="12"/>
+                                <TextBlock Text="• Include any relevant details"
+                                           Classes="description"
+                                           FontSize="12"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            
+            <!-- Category Preview -->
+            <Border Classes="card"
+                    IsVisible="{Binding HasSelectedCategory}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Category Preview" 
+                               Classes="section-header"/>
+                    <Grid ColumnDefinitions="Auto,15,*">
+                        <TextBlock Grid.Column="0" 
+                                   Text="{Binding SelectedCategoryIcon}"
+                                   FontSize="24"/>
+                        <StackPanel Grid.Column="2" Spacing="5">
+                            <TextBlock Text="{Binding SelectedCategory}"
+                                       Classes="field-label"/>
+                            <TextBlock Text="{Binding CategoryLongDescription}"
+                                       Classes="description"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,97 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             x:Class="MunicipalApp.Views.WelcomePage"
+             x:DataType="vm:WelcomePageViewModel">
+
+    <Design.DataContext>
+        <vm:WelcomePageViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="*,Auto">
+        <!-- Welcome Content -->
+        <StackPanel Grid.Row="0" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Spacing="30"
+                    MaxWidth="600">
+            
+            <!-- Welcome Icon -->
+            <Border Background="{StaticResource PrimaryGradientBrush}" 
+                    CornerRadius="50"
+                    Width="100"
+                    Height="100"
+                    HorizontalAlignment="Center">
+                <TextBlock Text="🏛️" 
+                           FontSize="48"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Border>
+            
+            <!-- Welcome Title -->
+            <TextBlock Text="Welcome to Municipal Issue Reporting"
+                       Classes="page-title"
+                       TextAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            
+            <!-- Welcome Message -->
+            <TextBlock Text="Help us improve our community by reporting issues you encounter. This wizard will guide you through the process step by step."
+                       Classes="description"
+                       TextAlignment="Center"
+                       HorizontalAlignment="Center"
+                       LineHeight="24"/>
+            
+            <!-- Steps Overview -->
+            <Border Classes="card">
+                <StackPanel Spacing="20">
+                    <TextBlock Text="What you'll need to provide:"
+                               Classes="section-header"
+                               HorizontalAlignment="Center"/>
+                    
+                    <StackPanel Spacing="12">
+                        <Grid ColumnDefinitions="Auto,15,*">
+                            <TextBlock Grid.Column="0" Text="1." 
+                                       Classes="progress-text"
+                                       FontWeight="Bold"/>
+                            <TextBlock Grid.Column="2" Text="Location of the issue" 
+                                       Classes="description"/>
+                        </Grid>
+                        
+                        <Grid ColumnDefinitions="Auto,15,*">
+                            <TextBlock Grid.Column="0" Text="2." 
+                                       Classes="progress-text"
+                                       FontWeight="Bold"/>
+                            <TextBlock Grid.Column="2" Text="Category and detailed description" 
+                                       Classes="description"/>
+                        </Grid>
+                        
+                        <Grid ColumnDefinitions="Auto,15,*">
+                            <TextBlock Grid.Column="0" Text="3." 
+                                       Classes="progress-text"
+                                       FontWeight="Bold"/>
+                            <TextBlock Grid.Column="2" Text="Photos to help us understand the issue" 
+                                       Classes="description"/>
+                        </Grid>
+                        
+                        <Grid ColumnDefinitions="Auto,15,*">
+                            <TextBlock Grid.Column="0" Text="4." 
+                                       Classes="progress-text"
+                                       FontWeight="Bold"/>
+                            <TextBlock Grid.Column="2" Text="Review and submit your report" 
+                                       Classes="description"/>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            
+            <!-- Important Note -->
+            <TextBlock Text="⚠️ Please ensure you have a stable internet connection for location services."
+                       Classes="description"
+                       TextAlignment="Center"
+                       FontStyle="Italic"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

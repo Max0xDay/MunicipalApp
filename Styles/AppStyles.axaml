@@ -3,74 +3,60 @@
         xmlns:media="clr-namespace:Avalonia.Media;assembly=Avalonia.Base">
 
     <Styles.Resources>
-        <!-- Vibrant Dark Theme Colors -->
-        <LinearGradientBrush x:Key="BackgroundGradientBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF0B0B0F" Offset="0" />
-            <GradientStop Color="#FF1A1A2E" Offset="0.5" />
-            <GradientStop Color="#FF16213E" Offset="1" />
-        </LinearGradientBrush>
+        <!-- Light Cyan Theme Colors -->
+        <SolidColorBrush x:Key="BackgroundBrush" Color="#FFF8F9FA" />
+        <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFFFF" />
+        <SolidColorBrush x:Key="CardBrush" Color="#FFFFFFFF" />
         
-        <LinearGradientBrush x:Key="SurfaceGradientBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF1F1F23" Offset="0" />
-            <GradientStop Color="#FF2A2A30" Offset="1" />
-        </LinearGradientBrush>
-        
-        <!-- Vibrant Button Gradients -->
         <LinearGradientBrush x:Key="PrimaryGradientBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF00D4FF" Offset="0" />
-            <GradientStop Color="#FF5B73FF" Offset="1" />
+            <GradientStop Color="#FF00BCD4" Offset="0" />
+            <GradientStop Color="#FF00ACC1" Offset="1" />
         </LinearGradientBrush>
         
         <LinearGradientBrush x:Key="PrimaryHoverGradientBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF1AE5FF" Offset="0" />
-            <GradientStop Color="#FF6C84FF" Offset="1" />
+            <GradientStop Color="#FF1DD4E1" Offset="0" />
+            <GradientStop Color="#FF1BC1D1" Offset="1" />
         </LinearGradientBrush>
         
         <LinearGradientBrush x:Key="SuccessGradientBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF00F5A0" Offset="0" />
-            <GradientStop Color="#FF00D9C0" Offset="1" />
+            <GradientStop Color="#FF4CAF50" Offset="0" />
+            <GradientStop Color="#FF45A049" Offset="1" />
         </LinearGradientBrush>
         
         <LinearGradientBrush x:Key="SuccessHoverGradientBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF1AFFB1" Offset="0" />
-            <GradientStop Color="#FF1AEACB" Offset="1" />
+            <GradientStop Color="#FF5CBF60" Offset="0" />
+            <GradientStop Color="#FF51B059" Offset="1" />
         </LinearGradientBrush>
         
         <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFFF6B6B" Offset="0" />
-            <GradientStop Color="#FFFF8E53" Offset="0.5" />
-            <GradientStop Color="#FFFFDD59" Offset="1" />
+            <GradientStop Color="#FF26C6DA" Offset="0" />
+            <GradientStop Color="#FF00ACC1" Offset="1" />
         </LinearGradientBrush>
         
         <LinearGradientBrush x:Key="AccentHoverGradientBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFFF7C7C" Offset="0" />
-            <GradientStop Color="#FFFF9F64" Offset="0.5" />
-            <GradientStop Color="#FFFFEE6A" Offset="1" />
+            <GradientStop Color="#FF4FD7E1" Offset="0" />
+            <GradientStop Color="#FF26BED4" Offset="1" />
         </LinearGradientBrush>
         
         <LinearGradientBrush x:Key="WarningGradientBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFFFA726" Offset="0" />
-            <GradientStop Color="#FFFF7043" Offset="1" />
+            <GradientStop Color="#FFFF9800" Offset="0" />
+            <GradientStop Color="#FFF57C00" Offset="1" />
         </LinearGradientBrush>
         
-        <!-- Glassmorphism Effects -->
-        <SolidColorBrush x:Key="GlassBrush" Color="#40FFFFFF" />
-        <SolidColorBrush x:Key="GlassBorderBrush" Color="#60FFFFFF" />
-        
         <!-- Text Colors -->
-        <SolidColorBrush x:Key="TextPrimaryBrush">#FFFFFFFF</SolidColorBrush>
-        <SolidColorBrush x:Key="TextSecondaryBrush">#FFCFD8DC</SolidColorBrush>
-        <SolidColorBrush x:Key="TextAccentBrush">#FF00D4FF</SolidColorBrush>
-        <SolidColorBrush x:Key="TextDisabledBrush">#FF666666</SolidColorBrush>
+        <SolidColorBrush x:Key="TextPrimaryBrush">#FF212529</SolidColorBrush>
+        <SolidColorBrush x:Key="TextSecondaryBrush">#FF6C757D</SolidColorBrush>
+        <SolidColorBrush x:Key="TextAccentBrush">#FF00BCD4</SolidColorBrush>
+        <SolidColorBrush x:Key="TextDisabledBrush">#FFADB5BD</SolidColorBrush>
         
         <!-- Input Colors -->
-        <SolidColorBrush x:Key="InputBackgroundBrush">#FF2A2D3E</SolidColorBrush>
-        <SolidColorBrush x:Key="InputBorderBrush">#FF4A4E61</SolidColorBrush>
-        <SolidColorBrush x:Key="InputFocusBrush">#FF00D4FF</SolidColorBrush>
+        <SolidColorBrush x:Key="InputBackgroundBrush">#FFFFFFFF</SolidColorBrush>
+        <SolidColorBrush x:Key="InputBorderBrush">#FFDEE2E6</SolidColorBrush>
+        <SolidColorBrush x:Key="InputFocusBrush">#FF00BCD4</SolidColorBrush>
         
         <!-- Corner Radius -->
         <CornerRadius x:Key="CardCornerRadius">20</CornerRadius>
-        <CornerRadius x:Key="ButtonCornerRadius">10</CornerRadius>
+        <CornerRadius x:Key="ButtonCornerRadius">0</CornerRadius>
         <CornerRadius x:Key="InputCornerRadius">12</CornerRadius>
         
         <!-- Box Shadows -->
@@ -81,7 +67,7 @@
 
     <!-- Window Background -->
     <Style Selector="Window">
-        <Setter Property="Background" Value="{StaticResource BackgroundGradientBrush}" />
+        <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
         <Setter Property="FontFamily" Value="Inter, Segoe UI" />
         <Setter Property="FontSize" Value="14" />
@@ -168,12 +154,12 @@
 
     <!-- Card Style -->
     <Style Selector="Border.card">
-        <Setter Property="Background" Value="{StaticResource SurfaceGradientBrush}" />
+        <Setter Property="Background" Value="{StaticResource CardBrush}" />
         <Setter Property="CornerRadius" Value="{StaticResource CardCornerRadius}" />
         <Setter Property="Padding" Value="30,25" />
-        <Setter Property="BorderBrush" Value="{StaticResource GlassBorderBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource InputBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BoxShadow" Value="{StaticResource CardShadow}" />
+        <Setter Property="BoxShadow" Value="0 2 8 0 #20000000" />
         <Setter Property="Opacity" Value="0.95" />
     </Style>
     
@@ -190,9 +176,29 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="FontFamily" Value="Inter, Segoe UI" />
-        <Setter Property="ClipToBounds" Value="True" />
         <Setter Property="Background" Value="#FF2A2A30" />
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}"
+                        ClipToBounds="True">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      RecognizesAccessKey="True"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      TextBlock.Foreground="{TemplateBinding Foreground}"
+                                      TextBlock.FontFamily="{TemplateBinding FontFamily}"
+                                      TextBlock.FontSize="{TemplateBinding FontSize}"
+                                      TextBlock.FontWeight="{TemplateBinding FontWeight}"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
         <Setter Property="Transitions">
             <Transitions>
                 <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2" />
@@ -203,7 +209,7 @@
     </Style>
 
     <Style Selector="Button:pointerover">
-        <Setter Property="RenderTransform" Value="scale(1.05)" />
+        <Setter Property="RenderTransform" Value="scale(1.0)" />
     </Style>
 
     <Style Selector="Button:pressed">
@@ -212,23 +218,23 @@
     </Style>
 
     <Style Selector="Button.primary">
-        <Setter Property="Background" Value="#FF00C896" />
+        <Setter Property="Background" Value="{StaticResource PrimaryGradientBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="ClipToBounds" Value="True" />
         <Setter Property="BorderThickness" Value="0" />
     </Style>
     <Style Selector="Button.primary:pointerover">
-        <Setter Property="Background" Value="#FF1AD9A7" />
+        <Setter Property="Background" Value="{StaticResource PrimaryHoverGradientBrush}" />
     </Style>
 
     <Style Selector="Button.secondary">
-        <Setter Property="Background" Value="#FF00B4D8" />
+        <Setter Property="Background" Value="{StaticResource AccentGradientBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="ClipToBounds" Value="True" />
         <Setter Property="BorderThickness" Value="0" />
     </Style>
     <Style Selector="Button.secondary:pointerover">
-        <Setter Property="Background" Value="#FF1AC5E9" />
+        <Setter Property="Background" Value="{StaticResource AccentHoverGradientBrush}" />
     </Style>
 
     <Style Selector="Button.accent">
@@ -258,11 +264,17 @@
         <Setter Property="ClipToBounds" Value="True" />
     </Style>
 
+    <!-- Accessibility trade-off: hide focus ring for specific buttons showing corner artifacts -->
+    <Style Selector="Button.nofocus">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+    </Style>
+
     <Style Selector="Button.large">
         <Setter Property="Padding" Value="32,18" />
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FontWeight" Value="Black" />
-        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="CornerRadius" Value="0" />
         <Setter Property="ClipToBounds" Value="True" />
     </Style>
 

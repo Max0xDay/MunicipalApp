@@ -67,19 +67,19 @@
                 <StackPanel Spacing="8">
                     <TextBlock Text="File Attachments:" Classes="field-label" />
                     <Grid ColumnDefinitions="Auto,15,*,15,Auto">
-                        <Button Grid.Column="0" 
-                                Content="Attach Files"
-                                Command="{Binding AttachFilesCommand}"
-                                Classes="secondary" />
+            <Button Grid.Column="0" 
+                Content="Attach Files"
+                Command="{Binding AttachFilesCommand}"
+                Classes="secondary nofocus" />
                         <ListBox Grid.Column="2" 
                                  ItemsSource="{Binding AttachedFiles}"
                                  Height="60"
                                  Classes="files" />
-                        <Button Grid.Column="4" 
-                                Content="Remove"
-                                Command="{Binding RemoveFileCommand}"
-                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                Classes="warning" />
+            <Button Grid.Column="4" 
+                Content="Remove"
+                Command="{Binding RemoveFileCommand}"
+                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                Classes="warning nofocus" />
                     </Grid>
                 </StackPanel>
 
@@ -87,11 +87,11 @@
 
             <!-- Action Buttons -->
             <Grid ColumnDefinitions="*,20,Auto" Margin="0,30,0,0">
-                <Button Grid.Column="2" 
-                        Content="Submit Issue"
-                        Command="{Binding SubmitCommand}"
-                        Classes="primary large"
-                        IsEnabled="{Binding CanSubmit}" />
+        <Button Grid.Column="2" 
+            Content="Submit Issue"
+            Command="{Binding SubmitCommand}"
+            Classes="primary large nofocus"
+            IsEnabled="{Binding CanSubmit}" />
             </Grid>
 
         </StackPanel>

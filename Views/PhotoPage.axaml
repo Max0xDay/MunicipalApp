@@ -1,0 +1,142 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             x:Class="MunicipalApp.Views.PhotoPage"
+             x:DataType="vm:PhotoPageViewModel">
+
+    <Design.DataContext>
+        <vm:PhotoPageViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="*,Auto">
+        <!-- Photo Content -->
+        <StackPanel Grid.Row="0" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Spacing="25"
+                    MaxWidth="700">
+            
+            <!-- Photo Icon -->
+            <Border Background="{StaticResource PrimaryGradientBrush}" 
+                    CornerRadius="50"
+                    Width="80"
+                    Height="80"
+                    HorizontalAlignment="Center">
+                <TextBlock Text="📷" 
+                           FontSize="36"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Border>
+            
+            <!-- Page Title -->
+            <TextBlock Text="Add photos of the issue"
+                       Classes="page-title"
+                       TextAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            
+            <!-- Photo Description -->
+            <TextBlock Text="Photos help us better understand and address the issue. You can upload up to 10 photos (5MB each)."
+                       Classes="description"
+                       TextAlignment="Center"
+                       HorizontalAlignment="Center"
+                       LineHeight="24"/>
+            
+            <!-- Upload Section -->
+            <Border Classes="card">
+                <StackPanel Spacing="20">
+                    <!-- Upload Button -->
+                    <Button Content="📁 Choose Photos"
+                            Command="{Binding UploadPhotosCommand}"
+                            Classes="primary large nofocus"
+                            HorizontalAlignment="Center"
+                            Padding="30,15"/>
+                    
+                    <!-- Upload Guidelines -->
+                    <TextBlock Text="Supported formats: JPG, PNG, GIF | Max size: 5MB per file | Max 10 photos"
+                               Classes="description"
+                               TextAlignment="Center"
+                               FontSize="12"/>
+                    
+                    <!-- File Count -->
+                    <TextBlock Text="{Binding FileCountText}"
+                               Classes="progress-text"
+                               TextAlignment="Center"
+                               FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Photo Preview Grid -->
+            <Border Classes="card"
+                    IsVisible="{Binding HasPhotos}">
+                <StackPanel Spacing="15">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0" 
+                                   Text="Uploaded Photos" 
+                                   Classes="section-header"/>
+                        <Button Grid.Column="1" 
+                                Content="Clear All"
+                                Command="{Binding ClearAllCommand}"
+                                Classes="warning nofocus"
+                                Padding="15,8"/>
+                    </Grid>
+                    
+                    <!-- Photo Grid -->
+                    <ItemsControl ItemsSource="{Binding UploadedFiles}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" Spacing="10"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#F0F8FA"
+                                        CornerRadius="12"
+                                        Width="120"
+                                        Height="120"
+                                        Margin="5">
+                                    <Grid RowDefinitions="*,Auto">
+                                        <!-- Photo Preview -->
+                                        <Image Grid.Row="0"
+                                               Source="{Binding Preview}"
+                                               Stretch="UniformToFill"
+                                               Margin="5"
+                                               CornerRadius="8"/>
+                                        
+                                        <!-- Remove Button -->
+                                        <Button Grid.Row="1"
+                                                Content="❌"
+                                                Command="{Binding RemovePhotoCommand}"
+                                                CommandParameter="{Binding}"
+                                                Classes="warning nofocus"
+                                                FontSize="12"
+                                                Padding="5"
+                                                Margin="5,0,5,5"
+                                                HorizontalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+            
+            <!-- Upload Status -->
+            <Border Classes="card"
+                    Background="#E8F5E9"
+                    IsVisible="{Binding ShowUploadSuccess}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="✅ Photos uploaded successfully!"
+                               Classes="section-header"
+                               TextAlignment="Center"
+                               Foreground="#4CAF50"/>
+                    <TextBlock Text="Your photos have been added to the report. You can proceed to the next step."
+                               Classes="description"
+                               TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

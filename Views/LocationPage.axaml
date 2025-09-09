@@ -1,0 +1,138 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             x:Class="MunicipalApp.Views.LocationPage"
+             x:Name="ThisControl"
+             x:DataType="vm:LocationPageViewModel">
+
+    <Design.DataContext>
+        <vm:LocationPageViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="*,Auto">
+        <!-- Location Content -->
+        <StackPanel Grid.Row="0" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Spacing="25"
+                    MaxWidth="600">
+            
+            <!-- Location Icon -->
+            <Border Background="{StaticResource PrimaryGradientBrush}" 
+                    CornerRadius="50"
+                    Width="80"
+                    Height="80"
+                    HorizontalAlignment="Center">
+                <TextBlock Text="📍" 
+                           FontSize="36"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Border>
+            
+            <!-- Page Title -->
+            <TextBlock Text="Where is the issue located?"
+                       Classes="page-title"
+                       TextAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            
+            <!-- Location Description -->
+            <TextBlock Text="Enter the location or address where the issue is occurring. We'll help you find it with autocomplete suggestions."
+                       Classes="description"
+                       TextAlignment="Center"
+                       HorizontalAlignment="Center"
+                       LineHeight="24"/>
+            
+            <!-- Location Input Section -->
+            <Border Classes="card">
+                <StackPanel Spacing="20">
+                    <!-- Location Textbox -->
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Location or Address:" 
+                                   Classes="field-label"/>
+                        <Grid>
+                            <TextBox Text="{Binding Location, Mode=TwoWay}"
+                                     Watermark="Start typing to search for location..."
+                                     Classes="modern"
+                                     KeyUp="LocationTextBox_KeyUp"/>
+                            
+                            <!-- Loading Indicator -->
+                            <ProgressBar Grid.Column="0" 
+                                         IsIndeterminate="True"
+                                         Height="4"
+                                         VerticalAlignment="Bottom"
+                                         IsVisible="{Binding IsLoading}"
+                                         Classes="modern"/>
+                        </Grid>
+                        
+                        <!-- Character Count -->
+                        <TextBlock Text="{Binding LocationCharCount}"
+                                   Classes="count"
+                                   HorizontalAlignment="Right"/>
+                    </StackPanel>
+                    
+                    <!-- Suggestions Dropdown -->
+                    <Border Grid.Row="1"
+                            IsVisible="{Binding ShowSuggestions}"
+                            Background="{StaticResource CardBrush}"
+                            BorderBrush="{StaticResource InputBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            MaxHeight="200">
+                        <ScrollViewer>
+                            <ItemsControl ItemsSource="{Binding Suggestions}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Content="{Binding Place_Name}"
+                                                Command="{Binding DataContext.SelectSuggestionCommand, ElementName=LocationPage}"
+                                                CommandParameter="{Binding}"
+                                                Classes="nofocus"
+                                                Background="Transparent"
+                                                HorizontalContentAlignment="Stretch"
+                                                HorizontalAlignment="Stretch"
+                                                Margin="5">
+                                            <Button.Styles>
+                                                <Style Selector="Button:pointerover">
+                                                    <Setter Property="Background" Value="#F0F8FA"/>
+                                                </Style>
+                                            </Button.Styles>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+                    
+                    <!-- Selected Location Info -->
+                    <StackPanel Spacing="10"
+                                IsVisible="{Binding HasLocation}">
+                        <TextBlock Text="Selected Location:" 
+                                   Classes="field-label"/>
+                        <Border Background="#F0F8FA"
+                                CornerRadius="8"
+                                Padding="15">
+                            <TextBlock Text="{Binding SelectedLocationDisplay}"
+                                       Classes="description"
+                                       TextWrapping="Wrap"/>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            
+            <!-- Map Preview (Optional) -->
+            <Border Classes="card"
+                    IsVisible="{Binding HasLocation}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Location Preview" 
+                               Classes="section-header"/>
+                    <TextBlock Text="🗺️ Map preview would be displayed here"
+                               Classes="description"
+                               TextAlignment="Center"
+                               FontStyle="Italic"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>
