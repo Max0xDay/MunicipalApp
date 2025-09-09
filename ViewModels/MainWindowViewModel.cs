@@ -17,6 +17,8 @@ public class MainWindowViewModel : ViewModelBase
         {
             CurrentView = new ReportWizardViewModel();
             HookWizardAdmin();
+            // After returning to wizard, ensure admin events still hooked (they are static)
+            HookAdminEvents();
         });
         
         ServiceStatusCommand = ReactiveCommand.Create(() => 
@@ -27,15 +29,18 @@ public class MainWindowViewModel : ViewModelBase
         AdminCommand = ReactiveCommand.Create(() =>
         {
             CurrentView = new AdminReportViewModel();
+            HookAdminEvents();
         });
 
         BackToMainCommand = ReactiveCommand.Create(() =>
         {
             CurrentView = new ReportWizardViewModel();
             HookWizardAdmin();
+            HookAdminEvents();
         });
 
         HookWizardAdmin();
+        HookAdminEvents();
     }
 
     public ViewModelBase CurrentView
@@ -58,5 +63,21 @@ public class MainWindowViewModel : ViewModelBase
     private void OnAdminNav()
     {
         CurrentView = new AdminReportViewModel();
+        HookAdminEvents();
+    }
+
+    private void HookAdminEvents()
+    {
+        // Unsubscribe first to avoid multiple handlers
+        AdminReportViewModel.CloseRequested -= OnAdminClose;
+        AdminReportViewModel.CloseRequested += OnAdminClose;
+    }
+
+    private void OnAdminClose()
+    {
+        // Navigate back to a fresh wizard (start of quiz)
+        CurrentView = new ReportWizardViewModel();
+        HookWizardAdmin();
+        // Admin events remain hooked for future navigation
     }
 }

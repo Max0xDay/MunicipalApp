@@ -183,8 +183,24 @@ namespace MunicipalApp.ViewModels
 
         private void FinishWizard()
         {
-            var dataService = new SqliteDataService();
-            dataService.InsertIssue(_currentIssue);
+            SaveCurrentStepData();
+            
+            var completed = _currentIssue;
+            
+            System.Diagnostics.Debug.WriteLine($"=== SAVING ISSUE ===");
+            System.Diagnostics.Debug.WriteLine($"ID: {completed.Id}");
+            System.Diagnostics.Debug.WriteLine($"Location: {completed.Location}");
+            System.Diagnostics.Debug.WriteLine($"Category: {completed.Category}");
+            System.Diagnostics.Debug.WriteLine($"Description: {completed.Description}");
+            System.Diagnostics.Debug.WriteLine($"Photos: {completed.AttachedFiles.Count}");
+            System.Diagnostics.Debug.WriteLine($"Date: {completed.DateReported}");
+            System.Diagnostics.Debug.WriteLine($"Status: {completed.Status}");
+            
+            var dataService = new DataService();
+            dataService.AddIssue(completed);
+            IssueCreated?.Invoke(completed);
+            
+            System.Diagnostics.Debug.WriteLine($"Issue saved successfully!");
             
             // Reset wizard for new report
             _currentIssue = new Issue();
@@ -214,6 +230,7 @@ namespace MunicipalApp.ViewModels
         }
 
         public static event Action? AdminNavigationRequested;
+    public static event Action<Issue>? IssueCreated;
 
         public ReactiveCommand<Unit, Unit> BackCommand => _backCommand;
         public ReactiveCommand<Unit, Unit> NextCommand => _nextCommand;

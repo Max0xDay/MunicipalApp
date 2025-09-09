@@ -14,7 +14,7 @@ namespace MunicipalApp.ViewModels
 {
     public class AdminReportViewModel : ViewModelBase
     {
-    private readonly SqliteDataService _dataService;
+    private readonly DataService _dataService;
         private ObservableCollection<Issue> _issues;
         private ObservableCollection<Issue> _filteredIssues;
         private string _searchText = string.Empty;
@@ -31,13 +31,16 @@ namespace MunicipalApp.ViewModels
 
         public AdminReportViewModel()
         {
-            _dataService = new SqliteDataService();
+            _dataService = new DataService();
             _issues = new ObservableCollection<Issue>();
             _filteredIssues = new ObservableCollection<Issue>();
             
             InitializeCollections();
             InitializeCommands();
             _ = LoadIssues(); // Fire and forget
+            
+            ReportWizardViewModel.IssueCreated -= OnIssueCreated;
+            ReportWizardViewModel.IssueCreated += OnIssueCreated;
         }
 
         private void InitializeCollections()
@@ -107,18 +110,25 @@ namespace MunicipalApp.ViewModels
         {
             try
             {
-                var issues = await Task.Run(() => _dataService.GetIssues());
+                var issues = await Task.Run(() => _dataService.LoadIssues());
                 _issues.Clear();
                 foreach (var issue in issues)
                 {
                     _issues.Add(issue);
                 }
                 FilterIssues();
+                
+                System.Diagnostics.Debug.WriteLine($"=== LOADED ISSUES ===");
+                System.Diagnostics.Debug.WriteLine($"Total issues loaded: {issues.Count}");
+                foreach (var issue in issues)
+                {
+                    System.Diagnostics.Debug.WriteLine($"- {issue.Id}: {issue.Location} ({issue.Category})");
+                }
             }
             catch (Exception ex)
             {
-                // Handle loading errors
                 Console.WriteLine($"Error loading issues: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Error loading issues: {ex.Message}");
             }
         }
 
@@ -160,53 +170,98 @@ namespace MunicipalApp.ViewModels
 
         private void ExportData()
         {
-            // Placeholder for export functionality
-            // In a real implementation, this would export to CSV/Excel
             try
             {
-                var exportData = _filteredIssues.Select(i => new
+                if (_filteredIssues.Count == 0)
                 {
-                    i.Id,
-                    i.DateReported,
-                    i.Location,
-                    i.Category,
-                    i.Description,
-                    i.Status,
-                    PhotoCount = i.AttachedFiles.Count
-                }).ToList();
+                    StatusMessageRequested?.Invoke("No records to export.");
+                    return;
+                }
 
-                // Export logic would go here
-                Console.WriteLine($"Exporting {exportData.Count} records");
+                var lines = new List<string>();
+                lines.Add("Id,DateReported,Location,Category,Description,Status,PhotoCount");
+                foreach (var i in _filteredIssues)
+                {
+                    // Basic CSV escaping for commas and quotes
+                    string Esc(string? s) => string.IsNullOrEmpty(s) ? "" : "\"" + s.Replace("\"", "\"\"") + "\"";
+                    lines.Add(string.Join(',', new[]
+                    {
+                        Esc(i.Id),
+                        Esc(i.DateReported.ToString("o")),
+                        Esc(i.Location),
+                        Esc(i.Category),
+                        Esc(i.Description),
+                        Esc(i.Status),
+                        i.AttachedFiles.Count.ToString()
+                    }));
+                }
+
+                var exportDir = Path.Combine(AppContext.BaseDirectory, "Exports");
+                Directory.CreateDirectory(exportDir);
+                var fileName = $"issues_{DateTime.UtcNow:yyyyMMdd_HHmmss}.csv";
+                var path = Path.Combine(exportDir, fileName);
+                File.WriteAllLines(path, lines);
+                StatusMessageRequested?.Invoke($"Exported {_filteredIssues.Count} records to {fileName}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error exporting data: {ex.Message}");
+                StatusMessageRequested?.Invoke($"Export failed: {ex.Message}");
             }
         }
 
         private void UpdateStatus()
         {
-            // Placeholder for status update functionality
             if (SelectedIssue == null) return;
-
-            // In a real implementation, this would show a dialog to update status
-            Console.WriteLine($"Updating status for issue {SelectedIssue.Id}");
+            
+            var order = new[] { "Submitted", "In Progress", "Resolved", "Closed" };
+            var currentIndex = Array.IndexOf(order, SelectedIssue.Status);
+            var nextStatus = order[(currentIndex + 1) % order.Length];
+            try
+            {
+                var allIssues = _dataService.LoadIssues();
+                var issueToUpdate = allIssues.FirstOrDefault(i => i.Id == SelectedIssue.Id);
+                if (issueToUpdate != null)
+                {
+                    issueToUpdate.Status = nextStatus;
+                    _dataService.SaveIssues(allIssues);
+                    SelectedIssue.Status = nextStatus;
+                    this.RaisePropertyChanged(nameof(SelectedIssue));
+                    FilterIssues();
+                    StatusMessageRequested?.Invoke($"Status updated to {nextStatus}");
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusMessageRequested?.Invoke($"Status update failed: {ex.Message}");
+            }
         }
 
         private void ViewDetails()
         {
-            // Placeholder for view details functionality
             if (SelectedIssue == null) return;
-
-            // In a real implementation, this would show a detailed view
-            Console.WriteLine($"Viewing details for issue {SelectedIssue.Id}");
+            IssueDetailsRequested?.Invoke(SelectedIssue);
         }
 
         private void CloseAdmin()
         {
-            // This would be handled by the parent window/control
-            Console.WriteLine("Closing admin dashboard");
+            CloseRequested?.Invoke();
         }
+
+        private void OnIssueCreated(Issue issue)
+        {
+            // Avoid duplicates
+            if (!_issues.Any(i => i.Id == issue.Id))
+            {
+                _issues.Add(issue);
+                FilterIssues();
+                StatusMessageRequested?.Invoke($"New issue added: {issue.Id}");
+            }
+        }
+
+        // Events for the host window/view to react (show dialogs, navigate, toast, etc.)
+        public static event Action<Issue>? IssueDetailsRequested;
+        public static event Action<string>? StatusMessageRequested;
+        public static event Action? CloseRequested;
 
         public ReactiveCommand<Unit, Unit> RefreshCommand => _refreshCommand;
         public ReactiveCommand<Unit, Unit> ExportCommand => _exportCommand;
