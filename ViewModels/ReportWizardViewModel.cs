@@ -29,6 +29,7 @@ namespace MunicipalApp.ViewModels
             
             InitializePages();
             InitializeCommands();
+            WireUpProgressObservers();
             
             CurrentPage = _pages[0];
             UpdateProgress();
@@ -64,6 +65,32 @@ namespace MunicipalApp.ViewModels
             _backCommand = ReactiveCommand.Create(NavigateBack);
             _nextCommand = ReactiveCommand.Create(NavigateNext);
             _adminCommand = ReactiveCommand.Create(OpenAdminPage);
+        }
+
+        private void WireUpProgressObservers()
+        {
+            // Location changes affect step 1 validation
+            _locationPageVm.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName == nameof(LocationPageViewModel.Location))
+                    UpdateProgress();
+            };
+
+            // Category / Description changes affect step 2 validation
+            _categoryPageVm.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName == nameof(CategoryPageViewModel.SelectedCategory) ||
+                    e.PropertyName == nameof(CategoryPageViewModel.Description))
+                    UpdateProgress();
+            };
+
+            // Photo uploads affect step 3 validation (UploadedFiles list changes triggers UploadedFiles property changed)
+            _photoPageVm.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName == nameof(PhotoPageViewModel.UploadedFiles) ||
+                    e.PropertyName == nameof(PhotoPageViewModel.HasPhotos))
+                    UpdateProgress();
+            };
         }
 
         public UserControl CurrentPage

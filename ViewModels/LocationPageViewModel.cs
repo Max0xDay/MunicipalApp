@@ -20,6 +20,7 @@ namespace MunicipalApp.ViewModels
         private MapboxSuggestion? _selectedSuggestion;
     private ReactiveCommand<MapboxSuggestion, Unit> _selectSuggestionCommand = null!; // initialized in InitializeCommands
     private System.Threading.CancellationTokenSource? _suggestCts;
+    private string _statusMessage = string.Empty;
 
         public LocationPageViewModel()
         {
@@ -81,6 +82,18 @@ namespace MunicipalApp.ViewModels
             set => this.RaiseAndSetIfChanged(ref _showSuggestions, value);
         }
 
+        public string StatusMessage
+        {
+            get => _statusMessage;
+            private set
+            {
+                this.RaiseAndSetIfChanged(ref _statusMessage, value);
+                this.RaisePropertyChanged(nameof(HasStatusMessage));
+            }
+        }
+
+        public bool HasStatusMessage => !string.IsNullOrWhiteSpace(StatusMessage);
+
         public async Task SearchAsync()
         {
             var text = Location;
@@ -92,6 +105,7 @@ namespace MunicipalApp.ViewModels
                 Suggestions = new List<MapboxSuggestion>();
                 ShowSuggestions = false;
                 IsLoading = false;
+                StatusMessage = string.IsNullOrWhiteSpace(text) ? "Enter a location." : "Type at least 2 characters.";
                 return;
             }
 
@@ -99,12 +113,26 @@ namespace MunicipalApp.ViewModels
             _suggestCts = cts;
             IsLoading = true;
             ShowSuggestions = true;
+            StatusMessage = "Searching...";
 
             try
             {
                 var newSuggestions = await _mapboxService.GetLocationSuggestions(text);
                 if (cts.IsCancellationRequested) return;
                 Suggestions = newSuggestions;
+                if (newSuggestions.Count == 0)
+                {
+                    // Inspect token to see if it's placeholder
+                    var token = ConfigurationHolder.Configuration? ["Mapbox:AccessToken"];               
+                    if (string.IsNullOrWhiteSpace(token) || token == "YOUR_DEV_TOKEN_HERE")
+                        StatusMessage = "Mapbox token missing or placeholder. Add real token in appsettings.Development.json";
+                    else
+                        StatusMessage = "No results found.";
+                }
+                else
+                {
+                    StatusMessage = string.Empty;
+                }
             }
             catch (OperationCanceledException) { }
             catch (Exception)
@@ -112,6 +140,11 @@ namespace MunicipalApp.ViewModels
                 if (!cts.IsCancellationRequested)
                 {
                     Suggestions = new List<MapboxSuggestion>();
+                    var token = ConfigurationHolder.Configuration? ["Mapbox:AccessToken"];               
+                    if (string.IsNullOrWhiteSpace(token) || token == "YOUR_DEV_TOKEN_HERE")
+                        StatusMessage = "Mapbox token missing or invalid.";
+                    else
+                        StatusMessage = "Error searching location.";
                 }
             }
             finally
@@ -139,6 +172,7 @@ namespace MunicipalApp.ViewModels
             Suggestions.Clear();
             ShowSuggestions = false;
             IsLoading = false;
+            StatusMessage = string.Empty;
         }
 
         public ReactiveCommand<MapboxSuggestion, Unit> SelectSuggestionCommand => _selectSuggestionCommand;

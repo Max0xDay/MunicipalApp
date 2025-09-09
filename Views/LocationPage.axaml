@@ -79,6 +79,12 @@
                     </StackPanel>
                     
                     <!-- Suggestions Dropdown (shown after pressing Enter) -->
+                    <TextBlock Text="{Binding StatusMessage}" 
+                               Classes="description"
+                               Foreground="Gray"
+                               FontStyle="Italic"
+                               Margin="4,0,0,0"
+                               IsVisible="{Binding HasStatusMessage}"/>
                     <Border Grid.Row="1"
                             IsVisible="{Binding ShowSuggestions}"
                             Background="{StaticResource CardBrush}"

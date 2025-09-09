@@ -10,19 +10,26 @@ internal class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        // Build configuration (appsettings + environment specific + environment variables)
-        var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
-        var configBuilder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
-            .AddEnvironmentVariables();
+        try
+        {
+            // Build configuration (appsettings + environment specific + environment variables)
+            var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
+            var basePath = AppContext.BaseDirectory; // points to output folder with copied config files
+            var configBuilder = new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true) // make optional to avoid crash
+                .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
 
-        var configuration = configBuilder.Build();
-        ConfigurationHolder.Configuration = configuration; // store for later access
+            ConfigurationHolder.Configuration = configBuilder.Build();
+        }
+        catch (Exception ex)
+        {
+            // Fallback: continue without configuration
+            Console.WriteLine($"[Startup] Configuration load failed: {ex.Message}");
+        }
 
-        BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
 
     public static AppBuilder BuildAvaloniaApp()
