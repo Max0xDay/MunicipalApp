@@ -13,7 +13,10 @@
     </Design.DataContext>
 
     <Grid RowDefinitions="*,Auto">
-        <ContentControl Grid.Row="0" Content="{Binding CurrentPage}" Margin="20"/>
+        <!-- Scrollable main content area -->
+        <ScrollViewer Grid.Row="0" Margin="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ContentControl Content="{Binding CurrentPage}" Margin="20"/>
+        </ScrollViewer>
 
         <!-- Bottom Bar -->
     <Border Grid.Row="1" Background="{StaticResource CardBrush}"

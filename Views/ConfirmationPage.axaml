@@ -122,26 +122,12 @@
                                TextAlignment="Center"/>
                     
                     <!-- Share Buttons -->
-                    <Grid ColumnDefinitions="*,10,*,10,*"
-                          HorizontalAlignment="Center">
-                        <Button Grid.Column="0" 
-                                Content="WhatsApp"
-                                Command="{Binding ShareWhatsAppCommand}"
-                                Classes="secondary nofocus"
-                                Padding="20,10"/>
-                        
-                        <Button Grid.Column="2" 
-                                Content="Email"
-                                Command="{Binding ShareEmailCommand}"
-                                Classes="secondary nofocus"
-                                Padding="20,10"/>
-                        
-                        <Button Grid.Column="4" 
-                                Content="SMS"
-                                Command="{Binding ShareSMSCommand}"
-                                Classes="secondary nofocus"
-                                Padding="20,10"/>
-                    </Grid>
+                    <WrapPanel HorizontalAlignment="Center" Margin="0,0,0,0">
+                        <Button Content="WhatsApp" Command="{Binding ShareWhatsAppCommand}" Classes="secondary nofocus" Padding="16,10" Margin="5"/>
+                        <Button Content="Twitter" Command="{Binding ShareTwitterCommand}" Classes="secondary nofocus" Padding="16,10" Margin="5"/>
+                        <Button Content="Facebook" Command="{Binding ShareFacebookCommand}" Classes="secondary nofocus" Padding="16,10" Margin="5"/>
+                        <Button Content="Instagram" Command="{Binding ShareInstagramCommand}" Classes="secondary nofocus" Padding="16,10" Margin="5"/>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             
