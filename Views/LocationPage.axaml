@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
              xmlns:services="clr-namespace:MunicipalApp.Services"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
              x:Class="MunicipalApp.Views.LocationPage"
              x:Name="ThisControl"
              x:DataType="vm:LocationPageViewModel">
@@ -24,7 +24,7 @@
             <!-- Location Icon -->
             <Border Background="{StaticResource PrimaryGradientBrush}" 
                     CornerRadius="50"
-                    Width="80"
+                    Width="800"
                     Height="80"
                     HorizontalAlignment="Center">
                 <TextBlock Text="Location" 
@@ -37,14 +37,18 @@
             <TextBlock Text="Where is the issue located?"
                        Classes="page-title"
                        TextAlignment="Center"
-                       HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"
+                       MaxWidth="500"/>
             
             <!-- Location Description -->
             <TextBlock Text="Enter the location or address where the issue is occurring. We'll help you find it with autocomplete suggestions."
                        Classes="description"
                        TextAlignment="Center"
                        HorizontalAlignment="Center"
-                       LineHeight="24"/>
+                       TextWrapping="Wrap"
+                       LineHeight="24"
+                       MaxWidth="500"/>
             
             <!-- Location Input Section -->
             <Border Classes="card">

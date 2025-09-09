@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
              x:Class="MunicipalApp.Views.CategoryPage"
              x:DataType="vm:CategoryPageViewModel">
 
@@ -22,7 +22,7 @@
             <!-- Category Icon -->
             <Border Background="{StaticResource PrimaryGradientBrush}" 
                     CornerRadius="50"
-                    Width="80"
+                    Width="800"
                     Height="80"
                     HorizontalAlignment="Center">
                 <TextBlock Text="Category" 
@@ -35,14 +35,18 @@
             <TextBlock Text="What type of issue are you reporting?"
                        Classes="page-title"
                        TextAlignment="Center"
-                       HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"
+                       MaxWidth="500"/>
             
             <!-- Category Description -->
             <TextBlock Text="Select the category that best describes the issue and provide a detailed description to help us understand the problem."
                        Classes="description"
                        TextAlignment="Center"
                        HorizontalAlignment="Center"
-                       LineHeight="24"/>
+                       TextWrapping="Wrap"
+                       LineHeight="24"
+                       MaxWidth="500"/>
             
             <!-- Category Selection -->
             <Border Classes="card">

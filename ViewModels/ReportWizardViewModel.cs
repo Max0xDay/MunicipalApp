@@ -80,7 +80,6 @@ namespace MunicipalApp.ViewModels
 
         public double ProgressPercentage => (CurrentStep + 1) * 20.0;
         public string ProgressText => $"Step {CurrentStep + 1} of 5";
-        public string StepText => $"{CurrentStep + 1}/5";
         public string NextButtonText => CurrentStep == 4 ? "Finish" : "Next";
         public bool CanGoBack => CurrentStep > 0;
         public bool CanGoNext => CanProceedToNext();
@@ -176,7 +175,6 @@ namespace MunicipalApp.ViewModels
         {
             this.RaisePropertyChanged(nameof(ProgressPercentage));
             this.RaisePropertyChanged(nameof(ProgressText));
-            this.RaisePropertyChanged(nameof(StepText));
             this.RaisePropertyChanged(nameof(NextButtonText));
             this.RaisePropertyChanged(nameof(CanGoBack));
             this.RaisePropertyChanged(nameof(CanGoNext));

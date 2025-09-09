@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:MunicipalApp.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
              x:Class="MunicipalApp.Views.PhotoPage"
              x:Name="PhotoPageControl"
              x:DataType="vm:PhotoPageViewModel">
@@ -23,7 +23,7 @@
             <!-- Photo Icon -->
             <Border Background="{StaticResource PrimaryGradientBrush}" 
                     CornerRadius="50"
-                    Width="80"
+                    Width="800"
                     Height="80"
                     HorizontalAlignment="Center">
                 <TextBlock Text="Photos" 
@@ -36,14 +36,18 @@
             <TextBlock Text="Add photos of the issue"
                        Classes="page-title"
                        TextAlignment="Center"
-                       HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"
+                       MaxWidth="500"/>
             
             <!-- Photo Description -->
             <TextBlock Text="Photos help us better understand and address the issue. You can upload up to 10 photos (5MB each)."
                        Classes="description"
                        TextAlignment="Center"
                        HorizontalAlignment="Center"
-                       LineHeight="24"/>
+                       TextWrapping="Wrap"
+                       LineHeight="24"
+                       MaxWidth="500"/>
             
             <!-- Upload Section -->
             <Border Classes="card">

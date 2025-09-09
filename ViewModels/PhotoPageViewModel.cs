@@ -18,9 +18,9 @@ namespace MunicipalApp.ViewModels
     {
         private readonly List<PhotoFile> _uploadedFiles;
         private bool _showUploadSuccess;
-        private ReactiveCommand<Unit, Unit> _uploadPhotosCommand;
-        private ReactiveCommand<Unit, Unit> _clearAllCommand;
-        private ReactiveCommand<PhotoFile, Unit> _removePhotoCommand;
+    private ReactiveCommand<Unit, Unit> _uploadPhotosCommand = null!; // initialized in InitializeCommands
+    private ReactiveCommand<Unit, Unit> _clearAllCommand = null!;      // initialized in InitializeCommands
+    private ReactiveCommand<PhotoFile, Unit> _removePhotoCommand = null!; // initialized in InitializeCommands
 
         public PhotoPageViewModel()
         {
@@ -110,12 +110,8 @@ namespace MunicipalApp.ViewModels
             if (addedCount > 0)
             {
                 _showUploadSuccess = true;
-                // Hide success message after 3 seconds
-                Task.Delay(3000).ContinueWith(_ => 
-                {
-                    _showUploadSuccess = false;
-                    this.RaisePropertyChanged(nameof(ShowUploadSuccess));
-                });
+                // Launch background task to hide success message after delay
+                _ = HideSuccessMessageAsync();
             }
 
             this.RaisePropertyChanged(nameof(UploadedFiles));
@@ -170,6 +166,17 @@ namespace MunicipalApp.ViewModels
             this.RaisePropertyChanged(nameof(UploadedFiles));
             this.RaisePropertyChanged(nameof(HasPhotos));
             this.RaisePropertyChanged(nameof(FileCountText));
+        }
+
+        private async Task HideSuccessMessageAsync()
+        {
+            try
+            {
+                await Task.Delay(3000);
+                _showUploadSuccess = false;
+                this.RaisePropertyChanged(nameof(ShowUploadSuccess));
+            }
+            catch { /* ignore */ }
         }
 
         public void Clear()

@@ -18,11 +18,6 @@ public class MainWindowViewModel : ViewModelBase
             CurrentView = new ReportWizardViewModel();
         });
         
-        LocalEventsCommand = ReactiveCommand.Create(() => 
-        {
-            CurrentView = new LocalEventsViewModel();
-        });
-        
         ServiceStatusCommand = ReactiveCommand.Create(() => 
         {
             // MessageBox equivalent will be handled in the View
@@ -46,7 +41,6 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     public ReactiveCommand<Unit, Unit> ReportIssuesCommand { get; }
-    public ReactiveCommand<Unit, Unit> LocalEventsCommand { get; }
     public ReactiveCommand<Unit, Unit> ServiceStatusCommand { get; }
     public ReactiveCommand<Unit, Unit> AdminCommand { get; }
     public ReactiveCommand<Unit, Unit> BackToMainCommand { get; }

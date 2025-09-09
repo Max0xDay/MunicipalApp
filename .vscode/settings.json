@@ -1,0 +1,10 @@
+{
+    "avalonia.previewer.host": "net8.0",
+    "avalonia.previewer.targetFramework": "net8.0",
+    "avalonia.previewer.disableBuild": true,
+    "files.associations": {
+        "*.axaml": "xml"
+    },
+    "omnisharp.enableRoslynAnalyzers": true,
+    "omnisharp.enableEditorConfigSupport": true
+}
