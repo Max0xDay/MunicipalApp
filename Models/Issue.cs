@@ -1,9 +1,7 @@
 using System;
 
-namespace Sidequest_municiple_app
-{
-    public class Issue
-    {
+namespace Sidequest_municiple_app {
+    public class Issue {
         public int Id { get; set; }
         public string UniqueId { get; set; }
         public string Location { get; set; }
@@ -14,16 +12,14 @@ namespace Sidequest_municiple_app
         public ServiceRequestStatus Status { get; set; }
         public ServiceRequestPriority Priority { get; set; }
 
-        public Issue()
-        {
+        public Issue() {
             UniqueId = Guid.NewGuid().ToString();
             ReportDate = DateTime.Now;
             Status = ServiceRequestStatus.Pending;
             Priority = ServiceRequestPriority.Medium;
         }
 
-        public Issue(string location, string category, string description, string attachmentPath = "")
-        {
+        public Issue(string location, string category, string description, string attachmentPath = "") {
             UniqueId = Guid.NewGuid().ToString();
             Location = location;
             Category = category;

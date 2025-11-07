@@ -1,26 +1,22 @@
 using System;
 using System.Collections.Generic;
 
-namespace Sidequest_municiple_app
-{
-    public enum ServiceRequestStatus
-    {
+namespace Sidequest_municiple_app {
+    public enum ServiceRequestStatus {
         Pending,
         InProgress,
         Completed,
         Rejected
     }
 
-    public enum ServiceRequestPriority
-    {
+    public enum ServiceRequestPriority {
         Low = 1,
         Medium = 2,
         High = 3,
         Urgent = 4
     }
 
-    public class ServiceRequest
-    {
+    public class ServiceRequest {
         public string UniqueID { get; set; }
         public string Location { get; set; }
         public string Category { get; set; }
@@ -31,8 +27,7 @@ namespace Sidequest_municiple_app
         public ServiceRequestPriority Priority { get; set; }
         public List<string> RelatedRequestIDs { get; set; }
 
-        public ServiceRequest()
-        {
+        public ServiceRequest() {
             UniqueID = Guid.NewGuid().ToString();
             DateSubmitted = DateTime.Now;
             Status = ServiceRequestStatus.Pending;
@@ -40,8 +35,7 @@ namespace Sidequest_municiple_app
             RelatedRequestIDs = new List<string>();
         }
 
-        public ServiceRequest(string location, string category, string description, string attachmentPath = "", string uniqueId = null)
-        {
+        public ServiceRequest(string location, string category, string description, string attachmentPath = "", string uniqueId = null) {
             UniqueID = string.IsNullOrWhiteSpace(uniqueId) ? Guid.NewGuid().ToString() : uniqueId;
             Location = location;
             Category = category;
@@ -53,8 +47,7 @@ namespace Sidequest_municiple_app
             RelatedRequestIDs = new List<string>();
         }
 
-        public ServiceRequest(Issue issue)
-        {
+        public ServiceRequest(Issue issue) {
             UniqueID = string.IsNullOrWhiteSpace(issue.UniqueId) ? Guid.NewGuid().ToString() : issue.UniqueId;
             Location = issue.Location;
             Category = issue.Category;
@@ -64,19 +57,16 @@ namespace Sidequest_municiple_app
             Status = issue.Status;
             Priority = issue.Priority;
             RelatedRequestIDs = new List<string>();
-            if (string.IsNullOrWhiteSpace(issue.UniqueId))
-            {
+            if (string.IsNullOrWhiteSpace(issue.UniqueId)) {
                 issue.UniqueId = UniqueID;
             }
         }
 
-        public string GetStatusString()
-        {
+        public string GetStatusString() {
             return Status.ToString();
         }
 
-        public string GetPriorityString()
-        {
+        public string GetPriorityString() {
             return Priority.ToString();
         }
     }

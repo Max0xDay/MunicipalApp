@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 
-namespace Sidequest_municiple_app
-{
-    public class DatabaseHelper
-    {
+namespace Sidequest_municiple_app {
+    public class DatabaseHelper {
         private readonly string databasePath;
         private readonly string connectionString;
 
-        public DatabaseHelper()
-        {
+        public DatabaseHelper() {
             string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MunicipalApp");
             Directory.CreateDirectory(folderPath);
             databasePath = Path.Combine(folderPath, "municipal.db");
@@ -19,28 +16,22 @@ namespace Sidequest_municiple_app
             InitializeDatabase();
         }
 
-        public int SaveIssue(Issue issue)
-        {
-            if (issue == null)
-            {
+        public int SaveIssue(Issue issue) {
+            if (issue == null) {
                 throw new ArgumentNullException(nameof(issue));
             }
 
-            if (string.IsNullOrWhiteSpace(issue.UniqueId))
-            {
+            if (string.IsNullOrWhiteSpace(issue.UniqueId)) {
                 issue.UniqueId = Guid.NewGuid().ToString();
             }
 
-            try
-            {
-                using (SQLiteConnection connection = CreateConnection())
-                {
+            try {
+                using (SQLiteConnection connection = CreateConnection()) {
                     connection.Open();
                     string sql = @"INSERT INTO Issues (UniqueId, Location, Category, Description, AttachmentPath, ReportDate, Status, Priority)
                                    VALUES (@uniqueId, @location, @category, @description, @attachmentPath, @reportDate, @status, @priority);
                                    SELECT last_insert_rowid();";
-                    using (SQLiteCommand command = new SQLiteCommand(sql, connection))
-                    {
+                    using (SQLiteCommand command = new SQLiteCommand(sql, connection)) {
                         command.Parameters.AddWithValue("@uniqueId", issue.UniqueId);
                         command.Parameters.AddWithValue("@location", issue.Location);
                         command.Parameters.AddWithValue("@category", issue.Category);
@@ -55,28 +46,22 @@ namespace Sidequest_municiple_app
                     }
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 throw new InvalidOperationException("Error saving issue: " + ex.Message, ex);
             }
         }
 
-        public List<Issue> GetAllIssues()
-        {
-            try
-            {
+        public List<Issue> GetAllIssues() {
+            try {
                 List<Issue> issues = new List<Issue>();
-                using (SQLiteConnection connection = CreateConnection())
-                {
+                using (SQLiteConnection connection = CreateConnection()) {
                     connection.Open();
                     string sql = @"SELECT Id, UniqueId, Location, Category, Description, AttachmentPath, ReportDate, Status, Priority
                                    FROM Issues
                                    ORDER BY datetime(ReportDate) DESC";
                     using (SQLiteCommand command = new SQLiteCommand(sql, connection))
-                    using (SQLiteDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
+                    using (SQLiteDataReader reader = command.ExecuteReader()) {
+                        while (reader.Read()) {
                             Issue issue = new Issue();
                             issue.Id = reader.GetInt32(0);
                             issue.UniqueId = reader.IsDBNull(1) ? Guid.NewGuid().ToString() : reader.GetString(1);
@@ -97,33 +82,25 @@ namespace Sidequest_municiple_app
 
                 return issues;
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 throw new InvalidOperationException("Error loading issues: " + ex.Message, ex);
             }
         }
 
-        public Issue GetIssueByUniqueId(string uniqueId)
-        {
-            if (string.IsNullOrWhiteSpace(uniqueId))
-            {
+        public Issue GetIssueByUniqueId(string uniqueId) {
+            if (string.IsNullOrWhiteSpace(uniqueId)) {
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(uniqueId));
             }
 
-            try
-            {
-                using (SQLiteConnection connection = CreateConnection())
-                {
+            try {
+                using (SQLiteConnection connection = CreateConnection()) {
                     connection.Open();
                     string sql = @"SELECT Id, UniqueId, Location, Category, Description, AttachmentPath, ReportDate, Status, Priority
                                    FROM Issues WHERE UniqueId = @uniqueId";
-                    using (SQLiteCommand command = new SQLiteCommand(sql, connection))
-                    {
+                    using (SQLiteCommand command = new SQLiteCommand(sql, connection)) {
                         command.Parameters.AddWithValue("@uniqueId", uniqueId);
-                        using (SQLiteDataReader reader = command.ExecuteReader())
-                        {
-                            if (!reader.Read())
-                            {
+                        using (SQLiteDataReader reader = command.ExecuteReader()) {
+                            if (!reader.Read()) {
                                 return null;
                             }
 
@@ -145,30 +122,24 @@ namespace Sidequest_municiple_app
                     }
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 throw new InvalidOperationException("Error loading issue: " + ex.Message, ex);
             }
         }
 
-        public void UpdateIssueStatus(string uniqueId, ServiceRequestStatus status, ServiceRequestPriority priority)
-        {
-            if (string.IsNullOrWhiteSpace(uniqueId))
-            {
+        public void UpdateIssueStatus(string uniqueId, ServiceRequestStatus status, ServiceRequestPriority priority) {
+            if (string.IsNullOrWhiteSpace(uniqueId)) {
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(uniqueId));
             }
 
-            try
-            {
-                using (SQLiteConnection connection = CreateConnection())
-                {
+            try {
+                using (SQLiteConnection connection = CreateConnection()) {
                     connection.Open();
                     string sql = @"UPDATE Issues
                                    SET Status = @status,
                                        Priority = @priority
                                    WHERE UniqueId = @uniqueId";
-                    using (SQLiteCommand command = new SQLiteCommand(sql, connection))
-                    {
+                    using (SQLiteCommand command = new SQLiteCommand(sql, connection)) {
                         command.Parameters.AddWithValue("@status", status.ToString());
                         command.Parameters.AddWithValue("@priority", (int)priority);
                         command.Parameters.AddWithValue("@uniqueId", uniqueId);
@@ -176,16 +147,13 @@ namespace Sidequest_municiple_app
                     }
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 throw new InvalidOperationException("Error updating issue status: " + ex.Message, ex);
             }
         }
 
-        private void InitializeDatabase()
-        {
-            using (SQLiteConnection connection = CreateConnection())
-            {
+        private void InitializeDatabase() {
+            using (SQLiteConnection connection = CreateConnection()) {
                 connection.Open();
                 string sql = @"CREATE TABLE IF NOT EXISTS Issues (
                                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -198,47 +166,38 @@ namespace Sidequest_municiple_app
                                 Status TEXT NOT NULL,
                                 Priority INTEGER NOT NULL
                               )";
-                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
-                {
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection)) {
                     command.ExecuteNonQuery();
                 }
             }
         }
 
-        private SQLiteConnection CreateConnection()
-        {
+        private SQLiteConnection CreateConnection() {
             return new SQLiteConnection(connectionString);
         }
 
-        private DateTime ParseDate(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
+        private DateTime ParseDate(string value) {
+            if (string.IsNullOrWhiteSpace(value)) {
                 return DateTime.Now;
             }
 
-            if (DateTime.TryParse(value, out DateTime parsed))
-            {
+            if (DateTime.TryParse(value, out DateTime parsed)) {
                 return parsed;
             }
 
             return DateTime.Now;
         }
 
-        private ServiceRequestStatus ParseStatus(string value)
-        {
-            if (Enum.TryParse(value, true, out ServiceRequestStatus status))
-            {
+        private ServiceRequestStatus ParseStatus(string value) {
+            if (Enum.TryParse(value, true, out ServiceRequestStatus status)) {
                 return status;
             }
 
             return ServiceRequestStatus.Pending;
         }
 
-        private ServiceRequestPriority ParsePriority(int value)
-        {
-            if (Enum.IsDefined(typeof(ServiceRequestPriority), value))
-            {
+        private ServiceRequestPriority ParsePriority(int value) {
+            if (Enum.IsDefined(typeof(ServiceRequestPriority), value)) {
                 return (ServiceRequestPriority)value;
             }
 

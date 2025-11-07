@@ -4,10 +4,8 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Sidequest_municiple_app
-{
-    public partial class ServiceRequestStatusForm : Form
-    {
+namespace Sidequest_municiple_app {
+    public partial class ServiceRequestStatusForm : Form {
         private DataGridView dgvRequests;
         private TextBox txtSearchID;
         private Button btnSearch;
@@ -16,7 +14,6 @@ namespace Sidequest_municiple_app
         private ComboBox cmbStatusFilter;
         private ComboBox cmbCategoryFilter;
         private Label lblTitle;
-        private Label lblSearchLabel;
         private Label lblStatusFilter;
         private Label lblCategoryFilter;
         private Label lblTotalRequests;
@@ -26,7 +23,7 @@ namespace Sidequest_municiple_app
         private ComboBox cmbUpdateStatus;
         private Button btnUpdateStatus;
         private ListView lvPriorityQueue;
-        
+
         private List<ServiceRequest> allServiceRequests;
         private ServiceRequestBST requestTree;
         private ServiceRequestAVL requestBalancedTree;
@@ -34,22 +31,20 @@ namespace Sidequest_municiple_app
         private ServiceRequestGraph requestGraph;
         private DatabaseHelper dbHelper;
 
-        public ServiceRequestStatusForm()
-        {
+        public ServiceRequestStatusForm() {
             InitializeComponent();
             SetupForm();
             dbHelper = new DatabaseHelper();
             LoadServiceRequests();
         }
 
-        private void SetupForm()
-        {
-            this.Text = "Service Request Status";
-            this.Size = new Size(1000, 700);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.BackColor = AppPalette.Background;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
+        private void SetupForm() {
+            Text = "Service Request Status";
+            Size = new Size(1000, 700);
+            StartPosition = FormStartPosition.CenterScreen;
+            BackColor = AppPalette.Background;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
 
             lblTitle = new Label();
             lblTitle.Text = "Service Request Status Tracking";
@@ -57,16 +52,16 @@ namespace Sidequest_municiple_app
             lblTitle.ForeColor = AppPalette.TextPrimary;
             lblTitle.AutoSize = true;
             lblTitle.Location = new Point(30, 20);
-            this.Controls.Add(lblTitle);
+            Controls.Add(lblTitle);
 
             pnlControls = new Panel();
             pnlControls.Location = new Point(30, 60);
             pnlControls.Size = new Size(940, 100);
             pnlControls.BackColor = AppPalette.Surface;
             pnlControls.BorderStyle = BorderStyle.FixedSingle;
-            this.Controls.Add(pnlControls);
+            Controls.Add(pnlControls);
 
-            lblSearchLabel = new Label();
+            Label lblSearchLabel = new Label();
             lblSearchLabel.Text = "Search by ID:";
             lblSearchLabel.Font = new Font("Segoe UI", 10);
             lblSearchLabel.ForeColor = AppPalette.TextPrimary;
@@ -106,11 +101,7 @@ namespace Sidequest_municiple_app
             cmbStatusFilter.Size = new Size(150, 25);
             cmbStatusFilter.Font = new Font("Segoe UI", 10);
             cmbStatusFilter.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbStatusFilter.Items.Add("All");
-            cmbStatusFilter.Items.Add("Pending");
-            cmbStatusFilter.Items.Add("InProgress");
-            cmbStatusFilter.Items.Add("Completed");
-            cmbStatusFilter.Items.Add("Rejected");
+            cmbStatusFilter.Items.AddRange(new object[] { "All", "Pending", "InProgress", "Completed", "Rejected" });
             cmbStatusFilter.SelectedIndex = 0;
             cmbStatusFilter.SelectedIndexChanged += FilterChanged;
             pnlControls.Controls.Add(cmbStatusFilter);
@@ -128,12 +119,7 @@ namespace Sidequest_municiple_app
             cmbCategoryFilter.Size = new Size(150, 25);
             cmbCategoryFilter.Font = new Font("Segoe UI", 10);
             cmbCategoryFilter.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbCategoryFilter.Items.Add("All");
-            cmbCategoryFilter.Items.Add("Sanitation");
-            cmbCategoryFilter.Items.Add("Roads");
-            cmbCategoryFilter.Items.Add("Utilities");
-            cmbCategoryFilter.Items.Add("Water");
-            cmbCategoryFilter.Items.Add("Electricity");
+            cmbCategoryFilter.Items.AddRange(new object[] { "All", "Sanitation", "Roads", "Utilities", "Water", "Electricity" });
             cmbCategoryFilter.SelectedIndex = 0;
             cmbCategoryFilter.SelectedIndexChanged += FilterChanged;
             pnlControls.Controls.Add(cmbCategoryFilter);
@@ -170,7 +156,7 @@ namespace Sidequest_municiple_app
             lblTotalRequests.ForeColor = AppPalette.TextPrimary;
             lblTotalRequests.AutoSize = true;
             lblTotalRequests.Location = new Point(30, 175);
-            this.Controls.Add(lblTotalRequests);
+            Controls.Add(lblTotalRequests);
 
             dgvRequests = new DataGridView();
             dgvRequests.Location = new Point(30, 200);
@@ -192,7 +178,7 @@ namespace Sidequest_municiple_app
             dgvRequests.DefaultCellStyle.SelectionBackColor = AppPalette.AccentPrimary;
             dgvRequests.DefaultCellStyle.SelectionForeColor = AppPalette.TextOnAccent;
             dgvRequests.SelectionChanged += DgvRequests_SelectionChanged;
-            this.Controls.Add(dgvRequests);
+            Controls.Add(dgvRequests);
 
             lblUpdateStatus = new Label();
             lblUpdateStatus.Text = "Update Status:";
@@ -200,7 +186,7 @@ namespace Sidequest_municiple_app
             lblUpdateStatus.ForeColor = AppPalette.TextPrimary;
             lblUpdateStatus.AutoSize = true;
             lblUpdateStatus.Location = new Point(30, 520);
-            this.Controls.Add(lblUpdateStatus);
+            Controls.Add(lblUpdateStatus);
 
             cmbUpdateStatus = new ComboBox();
             cmbUpdateStatus.Location = new Point(150, 518);
@@ -209,7 +195,7 @@ namespace Sidequest_municiple_app
             cmbUpdateStatus.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbUpdateStatus.Items.AddRange(new object[] { "Pending", "InProgress", "Completed", "Rejected" });
             cmbUpdateStatus.SelectedIndex = 0;
-            this.Controls.Add(cmbUpdateStatus);
+            Controls.Add(cmbUpdateStatus);
 
             btnUpdateStatus = new Button();
             btnUpdateStatus.Text = "Apply";
@@ -223,7 +209,7 @@ namespace Sidequest_municiple_app
             btnUpdateStatus.UseVisualStyleBackColor = false;
             btnUpdateStatus.Click += BtnUpdateStatus_Click;
             btnUpdateStatus.Enabled = false;
-            this.Controls.Add(btnUpdateStatus);
+            Controls.Add(btnUpdateStatus);
 
             lblPriorityQueue = new Label();
             lblPriorityQueue.Text = "Priority Queue";
@@ -231,7 +217,7 @@ namespace Sidequest_municiple_app
             lblPriorityQueue.ForeColor = AppPalette.TextPrimary;
             lblPriorityQueue.AutoSize = true;
             lblPriorityQueue.Location = new Point(30, 560);
-            this.Controls.Add(lblPriorityQueue);
+            Controls.Add(lblPriorityQueue);
 
             lvPriorityQueue = new ListView();
             lvPriorityQueue.Location = new Point(30, 585);
@@ -245,7 +231,7 @@ namespace Sidequest_municiple_app
             lvPriorityQueue.Columns.Add("Location", 280);
             lvPriorityQueue.Columns.Add("Status", 120);
             lvPriorityQueue.Columns.Add("Submitted", 200);
-            this.Controls.Add(lvPriorityQueue);
+            Controls.Add(lvPriorityQueue);
 
             allServiceRequests = new List<ServiceRequest>();
             requestTree = new ServiceRequestBST();
@@ -254,10 +240,8 @@ namespace Sidequest_municiple_app
             requestGraph = new ServiceRequestGraph();
         }
 
-        private void LoadServiceRequests()
-        {
-            try
-            {
+        private void LoadServiceRequests() {
+            try {
                 allServiceRequests.Clear();
                 requestTree.Clear();
                 requestBalancedTree.Clear();
@@ -266,8 +250,7 @@ namespace Sidequest_municiple_app
 
                 List<Issue> issues = dbHelper.GetAllIssues();
 
-                foreach (Issue issue in issues)
-                {
+                foreach (Issue issue in issues) {
                     ServiceRequest request = new ServiceRequest(issue);
                     AssignPriorityBasedOnCategory(request);
                     allServiceRequests.Add(request);
@@ -281,45 +264,33 @@ namespace Sidequest_municiple_app
                 ApplyFilters();
                 PopulatePriorityQueueDisplay();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading service requests: " + ex.Message, 
+            catch (Exception ex) {
+                MessageBox.Show("Error loading service requests: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void AssignPriorityBasedOnCategory(ServiceRequest request)
-        {
-            if (request == null)
-            {
+        private void AssignPriorityBasedOnCategory(ServiceRequest request) {
+            if (request == null || request.Priority != ServiceRequestPriority.Medium) {
                 return;
             }
 
-            if (request.Priority != ServiceRequestPriority.Medium)
-            {
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(request.Category))
-            {
+            if (string.IsNullOrWhiteSpace(request.Category)) {
                 request.Priority = ServiceRequestPriority.Medium;
                 return;
             }
 
-            switch (request.Category.ToLower())
-            {
+            switch (request.Category.ToLowerInvariant()) {
                 case "water":
                 case "electricity":
                     request.Priority = ServiceRequestPriority.Urgent;
                     break;
                 case "sanitation":
+                case "utilities":
                     request.Priority = ServiceRequestPriority.High;
                     break;
                 case "roads":
                     request.Priority = ServiceRequestPriority.Medium;
-                    break;
-                case "utilities":
-                    request.Priority = ServiceRequestPriority.High;
                     break;
                 default:
                     request.Priority = ServiceRequestPriority.Low;
@@ -327,21 +298,17 @@ namespace Sidequest_municiple_app
             }
         }
 
-        private void DisplayServiceRequests(List<ServiceRequest> requests)
-        {
+        private void DisplayServiceRequests(List<ServiceRequest> requests) {
             List<ServiceRequestRow> rows = new List<ServiceRequestRow>();
 
-            foreach (ServiceRequest request in requests)
-            {
+            foreach (ServiceRequest request in requests) {
                 string reference = request.UniqueID.Length >= 8 ? request.UniqueID.Substring(0, 8) : request.UniqueID;
                 string description = string.IsNullOrWhiteSpace(request.Description) ? string.Empty : request.Description;
-                if (description.Length > 50)
-                {
+                if (description.Length > 50) {
                     description = description.Substring(0, 50) + "...";
                 }
 
-                rows.Add(new ServiceRequestRow
-                {
+                rows.Add(new ServiceRequestRow {
                     UniqueId = request.UniqueID,
                     Reference = reference,
                     Location = request.Location,
@@ -355,28 +322,23 @@ namespace Sidequest_municiple_app
 
             dgvRequests.DataSource = rows;
 
-            if (dgvRequests.Columns["UniqueId"] != null)
-            {
+            if (dgvRequests.Columns["UniqueId"] != null) {
                 dgvRequests.Columns["UniqueId"].Visible = false;
             }
 
-            if (dgvRequests.Columns["Reference"] != null)
-            {
+            if (dgvRequests.Columns["Reference"] != null) {
                 dgvRequests.Columns["Reference"].HeaderText = "Request";
             }
 
-            if (dgvRequests.Columns["DateSubmitted"] != null)
-            {
+            if (dgvRequests.Columns["DateSubmitted"] != null) {
                 dgvRequests.Columns["DateSubmitted"].HeaderText = "Submitted";
             }
 
             lblTotalRequests.Text = "Total Requests: " + requests.Count;
 
-            foreach (DataGridViewRow row in dgvRequests.Rows)
-            {
+            foreach (DataGridViewRow row in dgvRequests.Rows) {
                 string status = row.Cells["Status"].Value?.ToString();
-                switch (status)
-                {
+                switch (status) {
                     case "Pending":
                         row.DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 224);
                         break;
@@ -395,118 +357,100 @@ namespace Sidequest_municiple_app
             SyncStatusControls();
         }
 
-        private void BtnSearch_Click(object sender, EventArgs e)
-        {
-            string searchID = txtSearchID.Text.Trim();
-            
-            if (string.IsNullOrEmpty(searchID))
-            {
-                MessageBox.Show("Please enter a request ID to search.", 
+        private void BtnSearch_Click(object sender, EventArgs e) {
+            string searchId = txtSearchID.Text.Trim();
+
+            if (string.IsNullOrEmpty(searchId)) {
+                MessageBox.Show("Please enter a request ID to search.",
                     "Search", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            
-            var foundRequests = requestBalancedTree
+
+            List<ServiceRequest> foundRequests = requestBalancedTree
                 .InOrder()
-                .Where(r => r.UniqueID.StartsWith(searchID, StringComparison.OrdinalIgnoreCase))
+                .Where(r => r.UniqueID.StartsWith(searchId, StringComparison.OrdinalIgnoreCase))
                 .ToList();
-            
-            if (foundRequests.Count == 0)
-            {
-                MessageBox.Show("No service request found with ID starting with: " + searchID, 
+
+            if (foundRequests.Count == 0) {
+                MessageBox.Show("No service request found with ID starting with: " + searchId,
                     "Search Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else
-            {
+            else {
                 DisplayServiceRequests(foundRequests);
             }
         }
 
-        private void FilterChanged(object sender, EventArgs e)
-        {
+        private void FilterChanged(object sender, EventArgs e) {
             ApplyFilters();
         }
 
-        private void ApplyFilters()
-        {
-            var filteredRequests = requestBalancedTree.InOrder().AsEnumerable();
-            
-            if (cmbStatusFilter.SelectedItem.ToString() != "All")
-            {
+        private void ApplyFilters() {
+            IEnumerable<ServiceRequest> filteredRequests = requestBalancedTree.InOrder();
+
+            if (!string.Equals(cmbStatusFilter.SelectedItem?.ToString(), "All", StringComparison.OrdinalIgnoreCase)) {
                 string selectedStatus = cmbStatusFilter.SelectedItem.ToString();
                 filteredRequests = filteredRequests.Where(r => r.GetStatusString() == selectedStatus);
             }
-            
-            if (cmbCategoryFilter.SelectedItem.ToString() != "All")
-            {
+
+            if (!string.Equals(cmbCategoryFilter.SelectedItem?.ToString(), "All", StringComparison.OrdinalIgnoreCase)) {
                 string selectedCategory = cmbCategoryFilter.SelectedItem.ToString();
-                filteredRequests = filteredRequests.Where(r => 
+                filteredRequests = filteredRequests.Where(r =>
                     r.Category.Equals(selectedCategory, StringComparison.OrdinalIgnoreCase));
             }
-            
+
             DisplayServiceRequests(filteredRequests.ToList());
             PopulatePriorityQueueDisplay();
         }
 
-        private void BtnRefresh_Click(object sender, EventArgs e)
-        {
-            txtSearchID.Text = "";
+        private void BtnRefresh_Click(object sender, EventArgs e) {
+            txtSearchID.Text = string.Empty;
             cmbStatusFilter.SelectedIndex = 0;
             cmbCategoryFilter.SelectedIndex = 0;
             LoadServiceRequests();
         }
 
-        private void DgvRequests_SelectionChanged(object sender, EventArgs e)
-        {
+        private void DgvRequests_SelectionChanged(object sender, EventArgs e) {
             SyncStatusControls();
         }
 
-        private void BtnUpdateStatus_Click(object sender, EventArgs e)
-        {
+        private void BtnUpdateStatus_Click(object sender, EventArgs e) {
             string uniqueId = GetSelectedUniqueId();
-            if (string.IsNullOrWhiteSpace(uniqueId))
-            {
+            if (string.IsNullOrWhiteSpace(uniqueId)) {
                 MessageBox.Show("Select a service request first.", "Status Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            if (cmbUpdateStatus.SelectedItem == null)
-            {
+            if (cmbUpdateStatus.SelectedItem == null) {
                 MessageBox.Show("Choose a status before applying.", "Status Update", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             ServiceRequestStatus newStatus = (ServiceRequestStatus)Enum.Parse(typeof(ServiceRequestStatus), cmbUpdateStatus.SelectedItem.ToString());
             ServiceRequest request = allServiceRequests.FirstOrDefault(r => string.Equals(r.UniqueID, uniqueId, StringComparison.OrdinalIgnoreCase));
-            if (request == null)
-            {
+            if (request == null) {
                 MessageBox.Show("The selected request could not be found.", "Status Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            if (request.Status == newStatus)
-            {
+            if (request.Status == newStatus) {
                 MessageBox.Show("The request already has that status.", "Status Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            try
-            {
+            try {
                 request.Status = newStatus;
                 dbHelper.UpdateIssueStatus(uniqueId, newStatus, request.Priority);
                 LoadServiceRequests();
                 ReselectRow(uniqueId);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error updating request: " + ex.Message, "Status Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            catch (Exception ex) {
+                MessageBox.Show("Error updating request: " + ex.Message,
+                    "Status Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private string GetSelectedUniqueId()
-        {
-            if (dgvRequests.CurrentRow == null)
-            {
+        private string GetSelectedUniqueId() {
+            if (dgvRequests.CurrentRow == null) {
                 return null;
             }
 
@@ -514,23 +458,19 @@ namespace Sidequest_municiple_app
             return value?.ToString();
         }
 
-        private void SyncStatusControls()
-        {
-            if (cmbUpdateStatus == null)
-            {
+        private void SyncStatusControls() {
+            if (cmbUpdateStatus == null) {
                 return;
             }
 
             string uniqueId = GetSelectedUniqueId();
-            if (string.IsNullOrWhiteSpace(uniqueId))
-            {
+            if (string.IsNullOrWhiteSpace(uniqueId)) {
                 btnUpdateStatus.Enabled = false;
                 return;
             }
 
             ServiceRequest request = allServiceRequests.FirstOrDefault(r => string.Equals(r.UniqueID, uniqueId, StringComparison.OrdinalIgnoreCase));
-            if (request == null)
-            {
+            if (request == null) {
                 btnUpdateStatus.Enabled = false;
                 return;
             }
@@ -538,24 +478,19 @@ namespace Sidequest_municiple_app
             btnUpdateStatus.Enabled = true;
             string statusText = request.Status.ToString();
             int index = cmbUpdateStatus.Items.IndexOf(statusText);
-            if (index >= 0)
-            {
+            if (index >= 0) {
                 cmbUpdateStatus.SelectedIndex = index;
             }
         }
 
-        private void ReselectRow(string uniqueId)
-        {
-            if (string.IsNullOrWhiteSpace(uniqueId))
-            {
+        private void ReselectRow(string uniqueId) {
+            if (string.IsNullOrWhiteSpace(uniqueId)) {
                 return;
             }
 
-            foreach (DataGridViewRow row in dgvRequests.Rows)
-            {
+            foreach (DataGridViewRow row in dgvRequests.Rows) {
                 string value = row.Cells["UniqueId"].Value?.ToString();
-                if (string.Equals(value, uniqueId, StringComparison.OrdinalIgnoreCase))
-                {
+                if (string.Equals(value, uniqueId, StringComparison.OrdinalIgnoreCase)) {
                     row.Selected = true;
                     dgvRequests.CurrentCell = row.Cells["Reference"];
                     break;
@@ -565,14 +500,11 @@ namespace Sidequest_municiple_app
             SyncStatusControls();
         }
 
-        private void PopulatePriorityQueueDisplay()
-        {
+        private void PopulatePriorityQueueDisplay() {
             lvPriorityQueue.BeginUpdate();
             lvPriorityQueue.Items.Clear();
 
-            var queueItems = requestHeap.GetOrderedSnapshot().Take(10);
-            foreach (ServiceRequest request in queueItems)
-            {
+            foreach (ServiceRequest request in requestHeap.GetOrderedSnapshot().Take(10)) {
                 ListViewItem item = new ListViewItem(request.GetPriorityString());
                 item.SubItems.Add(request.Category);
                 item.SubItems.Add(request.Location);
@@ -584,21 +516,18 @@ namespace Sidequest_municiple_app
             lvPriorityQueue.EndUpdate();
         }
 
-        private void BtnBack_Click(object sender, EventArgs e)
-        {
-            this.Close();
+        private void BtnBack_Click(object sender, EventArgs e) {
+            Close();
         }
 
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            this.ClientSize = new Size(1000, 700);
-            this.Name = "ServiceRequestStatusForm";
-            this.ResumeLayout(false);
+        private void InitializeComponent() {
+            SuspendLayout();
+            ClientSize = new Size(1000, 700);
+            Name = "ServiceRequestStatusForm";
+            ResumeLayout(false);
         }
 
-        private class ServiceRequestRow
-        {
+        private class ServiceRequestRow {
             public string UniqueId { get; set; }
             public string Reference { get; set; }
             public string Location { get; set; }

@@ -4,10 +4,8 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Sidequest_municiple_app
-{
-    public partial class ReportIssuesForm : Form
-    {
+namespace Sidequest_municiple_app {
+    public partial class ReportIssuesForm : Form {
         private TextBox txtLocation;
         private ComboBox cmbCategory;
         private RichTextBox txtDescription;
@@ -29,8 +27,7 @@ namespace Sidequest_municiple_app
         private DatabaseHelper dbHelper;
         private List<Issue> issues;
 
-        public ReportIssuesForm()
-        {
+        public ReportIssuesForm() {
             InitializeComponent();
             SetupForm();
             dbHelper = new DatabaseHelper();
@@ -38,14 +35,13 @@ namespace Sidequest_municiple_app
             UpdateProgress();
         }
 
-        private void SetupForm()
-        {
-            this.Text = "Report Municipal Issues";
-            this.Size = new Size(700, 600);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.BackColor = AppPalette.Background;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
+        private void SetupForm() {
+            Text = "Report Municipal Issues";
+            Size = new Size(700, 600);
+            StartPosition = FormStartPosition.CenterScreen;
+            BackColor = AppPalette.Background;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
 
             lblLocation = new Label();
             lblLocation.Text = "Location:";
@@ -53,7 +49,7 @@ namespace Sidequest_municiple_app
             lblLocation.Size = new Size(80, 23);
             lblLocation.Font = new Font("Segoe UI", 10);
             lblLocation.ForeColor = AppPalette.TextPrimary;
-            this.Controls.Add(lblLocation);
+            Controls.Add(lblLocation);
 
             txtLocation = new TextBox();
             txtLocation.Location = new Point(120, 30);
@@ -63,7 +59,7 @@ namespace Sidequest_municiple_app
             txtLocation.ForeColor = AppPalette.TextPrimary;
             txtLocation.BorderStyle = BorderStyle.FixedSingle;
             txtLocation.TextChanged += Input_Changed;
-            this.Controls.Add(txtLocation);
+            Controls.Add(txtLocation);
 
             lblCategory = new Label();
             lblCategory.Text = "Category:";
@@ -71,7 +67,7 @@ namespace Sidequest_municiple_app
             lblCategory.Size = new Size(80, 23);
             lblCategory.Font = new Font("Segoe UI", 10);
             lblCategory.ForeColor = AppPalette.TextPrimary;
-            this.Controls.Add(lblCategory);
+            Controls.Add(lblCategory);
 
             cmbCategory = new ComboBox();
             cmbCategory.Location = new Point(120, 80);
@@ -83,7 +79,7 @@ namespace Sidequest_municiple_app
             cmbCategory.FlatStyle = FlatStyle.Flat;
             cmbCategory.Items.AddRange(new object[] { "Sanitation", "Roads", "Utilities", "Water", "Electricity" });
             cmbCategory.SelectedIndexChanged += Input_Changed;
-            this.Controls.Add(cmbCategory);
+            Controls.Add(cmbCategory);
 
             lblDescription = new Label();
             lblDescription.Text = "Description:";
@@ -91,7 +87,7 @@ namespace Sidequest_municiple_app
             lblDescription.Size = new Size(80, 23);
             lblDescription.Font = new Font("Segoe UI", 10);
             lblDescription.ForeColor = AppPalette.TextPrimary;
-            this.Controls.Add(lblDescription);
+            Controls.Add(lblDescription);
 
             txtDescription = new RichTextBox();
             txtDescription.Location = new Point(120, 130);
@@ -100,7 +96,7 @@ namespace Sidequest_municiple_app
             txtDescription.BackColor = AppPalette.Input;
             txtDescription.ForeColor = AppPalette.TextPrimary;
             txtDescription.TextChanged += Input_Changed;
-            this.Controls.Add(txtDescription);
+            Controls.Add(txtDescription);
 
             lblAttachment = new Label();
             lblAttachment.Text = "Attachment:";
@@ -108,7 +104,7 @@ namespace Sidequest_municiple_app
             lblAttachment.Size = new Size(80, 23);
             lblAttachment.Font = new Font("Segoe UI", 10);
             lblAttachment.ForeColor = AppPalette.TextPrimary;
-            this.Controls.Add(lblAttachment);
+            Controls.Add(lblAttachment);
 
             btnAttachment = new Button();
             btnAttachment.Text = "Browse Files...";
@@ -122,7 +118,7 @@ namespace Sidequest_municiple_app
             btnAttachment.Font = new Font("Segoe UI", 9);
             btnAttachment.UseVisualStyleBackColor = false;
             btnAttachment.Click += BtnAttachment_Click;
-            this.Controls.Add(btnAttachment);
+            Controls.Add(btnAttachment);
 
             btnSubmit = new Button();
             btnSubmit.Text = "Submit Report";
@@ -136,7 +132,7 @@ namespace Sidequest_municiple_app
             btnSubmit.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             btnSubmit.UseVisualStyleBackColor = false;
             btnSubmit.Click += BtnSubmit_Click;
-            this.Controls.Add(btnSubmit);
+            Controls.Add(btnSubmit);
 
             btnAdmin = new Button();
             btnAdmin.Text = "Admin";
@@ -150,14 +146,13 @@ namespace Sidequest_municiple_app
             btnAdmin.Font = new Font("Segoe UI", 9);
             btnAdmin.UseVisualStyleBackColor = false;
             btnAdmin.Click += BtnAdmin_Click;
-            this.Controls.Add(btnAdmin);
+            Controls.Add(btnAdmin);
 
             SetupSocialMediaPanel();
             SetupProgressBar();
         }
 
-        private void SetupSocialMediaPanel()
-        {
+        private void SetupSocialMediaPanel() {
             panelSocialMedia = new Panel();
             panelSocialMedia.Location = new Point(30, 370);
             panelSocialMedia.Size = new Size(400, 80);
@@ -214,18 +209,17 @@ namespace Sidequest_municiple_app
             btnSMS.Click += BtnShare_Click;
             panelSocialMedia.Controls.Add(btnSMS);
 
-            this.Controls.Add(panelSocialMedia);
+            Controls.Add(panelSocialMedia);
         }
 
-        private void SetupProgressBar()
-        {
+        private void SetupProgressBar() {
             progressBar = new ProgressBar();
             progressBar.Location = new Point(30, 520);
             progressBar.Size = new Size(400, 20);
             progressBar.Minimum = 0;
             progressBar.Maximum = 100;
             progressBar.Value = 0;
-            this.Controls.Add(progressBar);
+            Controls.Add(progressBar);
 
             lblProgress = new Label();
             lblProgress.Text = "Progress: 0%";
@@ -233,16 +227,14 @@ namespace Sidequest_municiple_app
             lblProgress.Size = new Size(100, 20);
             lblProgress.Font = new Font("Segoe UI", 9);
             lblProgress.ForeColor = AppPalette.TextPrimary;
-            this.Controls.Add(lblProgress);
+            Controls.Add(lblProgress);
         }
 
-        private void Input_Changed(object sender, EventArgs e)
-        {
+        private void Input_Changed(object sender, EventArgs e) {
             UpdateProgress();
         }
 
-        private void UpdateProgress()
-        {
+        private void UpdateProgress() {
             int progress = 0;
 
             if (!string.IsNullOrWhiteSpace(txtLocation.Text)) progress += 25;
@@ -254,24 +246,20 @@ namespace Sidequest_municiple_app
             lblProgress.Text = $"Progress: {progress}%";
         }
 
-        private void BtnAttachment_Click(object sender, EventArgs e)
-        {
+        private void BtnAttachment_Click(object sender, EventArgs e) {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif|Document Files|*.pdf;*.doc;*.docx|All Files|*.*";
             openFileDialog.Title = "Select Attachment";
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
+            if (openFileDialog.ShowDialog() == DialogResult.OK) {
                 attachmentPath = openFileDialog.FileName;
                 btnAttachment.Text = Path.GetFileName(attachmentPath);
                 UpdateProgress();
             }
         }
 
-        private void BtnSubmit_Click(object sender, EventArgs e)
-        {
-            if (ValidateInput())
-            {
+        private void BtnSubmit_Click(object sender, EventArgs e) {
+            if (ValidateInput()) {
                 Issue issue = new Issue(
                     txtLocation.Text,
                     cmbCategory.SelectedItem.ToString(),
@@ -280,8 +268,7 @@ namespace Sidequest_municiple_app
                 );
                 issue.Priority = DeterminePriority(issue.Category);
 
-                try
-                {
+                try {
                     int issueId = dbHelper.SaveIssue(issue);
                     issues.Add(issue);
 
@@ -290,42 +277,36 @@ namespace Sidequest_municiple_app
 
                     ClearForm();
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     MessageBox.Show("Error saving issue: " + ex.Message,
                                   "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        private bool ValidateInput()
-        {
-            if (string.IsNullOrWhiteSpace(txtLocation.Text))
-            {
-                MessageBox.Show("Please enter a location.", "Validation Error", 
-                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        private bool ValidateInput() {
+            if (string.IsNullOrWhiteSpace(txtLocation.Text)) {
+                MessageBox.Show("Please enter a location.", "Validation Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
-            if (cmbCategory.SelectedIndex < 0)
-            {
-                MessageBox.Show("Please select a category.", "Validation Error", 
-                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (cmbCategory.SelectedIndex < 0) {
+                MessageBox.Show("Please select a category.", "Validation Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtDescription.Text))
-            {
-                MessageBox.Show("Please provide a description.", "Validation Error", 
-                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (string.IsNullOrWhiteSpace(txtDescription.Text)) {
+                MessageBox.Show("Please provide a description.", "Validation Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
             return true;
         }
 
-        private void ClearForm()
-        {
+        private void ClearForm() {
             txtLocation.Clear();
             cmbCategory.SelectedIndex = -1;
             txtDescription.Clear();
@@ -334,27 +315,22 @@ namespace Sidequest_municiple_app
             UpdateProgress();
         }
 
-        private void BtnAdmin_Click(object sender, EventArgs e)
-        {
+        private void BtnAdmin_Click(object sender, EventArgs e) {
             AdminForm adminForm = new AdminForm();
             adminForm.ShowDialog();
         }
 
-        private void BtnShare_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Social media sharing feature is not yet implemented.", 
-                          "Feature Not Available", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        private void BtnShare_Click(object sender, EventArgs e) {
+            MessageBox.Show("Social media sharing feature is not yet implemented.",
+                "Feature Not Available", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private ServiceRequestPriority DeterminePriority(string category)
-        {
-            if (string.IsNullOrWhiteSpace(category))
-            {
+        private ServiceRequestPriority DeterminePriority(string category) {
+            if (string.IsNullOrWhiteSpace(category)) {
                 return ServiceRequestPriority.Medium;
             }
 
-            switch (category.ToLowerInvariant())
-            {
+            switch (category.ToLowerInvariant()) {
                 case "water":
                 case "electricity":
                     return ServiceRequestPriority.Urgent;
@@ -367,15 +343,14 @@ namespace Sidequest_municiple_app
             }
         }
 
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            this.AutoScaleDimensions = new SizeF(6F, 13F);
-            this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new Size(284, 261);
-            this.Name = "ReportIssuesForm";
-            this.Text = "ReportIssuesForm";
-            this.ResumeLayout(false);
+        private void InitializeComponent() {
+            SuspendLayout();
+            AutoScaleDimensions = new SizeF(6F, 13F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(284, 261);
+            Name = "ReportIssuesForm";
+            Text = "ReportIssuesForm";
+            ResumeLayout(false);
         }
     }
 }

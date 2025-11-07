@@ -3,29 +3,25 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Sidequest_municiple_app
-{
-    public partial class AdminForm : Form
-    {
+namespace Sidequest_municiple_app {
+    public partial class AdminForm : Form {
         private DataGridView dgvIssues;
         private Label lblTitle;
         private Button btnRefresh;
         private DatabaseHelper dbHelper;
 
-        public AdminForm()
-        {
+        public AdminForm() {
             InitializeComponent();
             SetupForm();
             dbHelper = new DatabaseHelper();
             LoadIssues();
         }
 
-        private void SetupForm()
-        {
-            this.Text = "Admin - View All Reports";
-            this.Size = new Size(900, 600);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.BackColor = AppPalette.Background;
+        private void SetupForm() {
+            Text = "Admin - View All Reports";
+            Size = new Size(900, 600);
+            StartPosition = FormStartPosition.CenterScreen;
+            BackColor = AppPalette.Background;
 
             lblTitle = new Label();
             lblTitle.Text = "Municipal Issues Reports";
@@ -33,7 +29,7 @@ namespace Sidequest_municiple_app
             lblTitle.ForeColor = AppPalette.TextPrimary;
             lblTitle.AutoSize = true;
             lblTitle.Location = new Point(30, 20);
-            this.Controls.Add(lblTitle);
+            Controls.Add(lblTitle);
 
             btnRefresh = new Button();
             btnRefresh.Text = "Refresh";
@@ -47,7 +43,7 @@ namespace Sidequest_municiple_app
             btnRefresh.Font = new Font("Segoe UI", 9);
             btnRefresh.UseVisualStyleBackColor = false;
             btnRefresh.Click += BtnRefresh_Click;
-            this.Controls.Add(btnRefresh);
+            Controls.Add(btnRefresh);
 
             dgvIssues = new DataGridView();
             dgvIssues.Location = new Point(30, 60);
@@ -60,26 +56,25 @@ namespace Sidequest_municiple_app
             dgvIssues.AllowUserToDeleteRows = false;
             dgvIssues.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvIssues.EnableHeadersVisualStyles = false;
-            
+
             dgvIssues.ColumnHeadersDefaultCellStyle.BackColor = AppPalette.AccentPrimary;
             dgvIssues.ColumnHeadersDefaultCellStyle.ForeColor = AppPalette.TextOnAccent;
             dgvIssues.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dgvIssues.ColumnHeadersHeight = 30;
-            
+
             dgvIssues.DefaultCellStyle.Font = new Font("Segoe UI", 9);
             dgvIssues.DefaultCellStyle.BackColor = AppPalette.Surface;
             dgvIssues.DefaultCellStyle.ForeColor = AppPalette.TextPrimary;
             dgvIssues.DefaultCellStyle.SelectionBackColor = AppPalette.AccentPrimary;
             dgvIssues.DefaultCellStyle.SelectionForeColor = AppPalette.TextOnAccent;
             dgvIssues.AlternatingRowsDefaultCellStyle.BackColor = AppPalette.SurfaceAlt;
-            
-            this.Controls.Add(dgvIssues);
+
+            Controls.Add(dgvIssues);
 
             SetupDataGridColumns();
         }
 
-        private void SetupDataGridColumns()
-        {
+        private void SetupDataGridColumns() {
             dgvIssues.Columns.Add("Id", "ID");
             dgvIssues.Columns.Add("Location", "Location");
             dgvIssues.Columns.Add("Category", "Category");
@@ -102,18 +97,15 @@ namespace Sidequest_municiple_app
             dgvIssues.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
         }
 
-        private void LoadIssues()
-        {
-            try
-            {
+        private void LoadIssues() {
+            try {
                 dgvIssues.Rows.Clear();
                 List<Issue> issues = dbHelper.GetAllIssues();
 
-                foreach (Issue issue in issues)
-                {
-                    string attachmentDisplay = string.IsNullOrEmpty(issue.AttachmentPath) ? 
-                                             "No attachment" : 
-                                             System.IO.Path.GetFileName(issue.AttachmentPath);
+                foreach (Issue issue in issues) {
+                    string attachmentDisplay = string.IsNullOrEmpty(issue.AttachmentPath)
+                        ? "No attachment"
+                        : System.IO.Path.GetFileName(issue.AttachmentPath);
 
                     dgvIssues.Rows.Add(
                         issue.Id.ToString("D6"),
@@ -127,32 +119,28 @@ namespace Sidequest_municiple_app
                     );
                 }
 
-                if (issues.Count == 0)
-                {
+                if (issues.Count == 0) {
                     dgvIssues.Rows.Add("", "No reports found", "", "", "", "", "", "");
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading issues: " + ex.Message, 
-                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            catch (Exception ex) {
+                MessageBox.Show("Error loading issues: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void BtnRefresh_Click(object sender, EventArgs e)
-        {
+        private void BtnRefresh_Click(object sender, EventArgs e) {
             LoadIssues();
         }
 
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            this.AutoScaleDimensions = new SizeF(6F, 13F);
-            this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new Size(284, 261);
-            this.Name = "AdminForm";
-            this.Text = "AdminForm";
-            this.ResumeLayout(false);
+        private void InitializeComponent() {
+            SuspendLayout();
+            AutoScaleDimensions = new SizeF(6F, 13F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(284, 261);
+            Name = "AdminForm";
+            Text = "AdminForm";
+            ResumeLayout(false);
         }
     }
 }
