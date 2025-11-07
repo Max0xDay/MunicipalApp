@@ -23,6 +23,14 @@ namespace Sidequest_municiple_app {
         private ComboBox cmbUpdateStatus;
         private Button btnUpdateStatus;
         private ListView lvPriorityQueue;
+        private Label lblRelatedRequests;
+        private ListView lvRelatedRequests;
+        private Label lblGraphTraversal;
+        private ComboBox cmbGraphTraversal;
+    private ListView lvGraphTraversal;
+    private Label lblSortBy;
+    private ComboBox cmbSortBy;
+    private Label lblStatistics;
 
         private List<ServiceRequest> allServiceRequests;
         private ServiceRequestBST requestTree;
@@ -124,10 +132,28 @@ namespace Sidequest_municiple_app {
             cmbCategoryFilter.SelectedIndexChanged += FilterChanged;
             pnlControls.Controls.Add(cmbCategoryFilter);
 
+            lblSortBy = new Label();
+            lblSortBy.Text = "Sort:";
+            lblSortBy.Font = new Font("Segoe UI", 10);
+            lblSortBy.ForeColor = AppPalette.TextPrimary;
+            lblSortBy.AutoSize = true;
+            lblSortBy.Location = new Point(540, 15);
+            pnlControls.Controls.Add(lblSortBy);
+
+            cmbSortBy = new ComboBox();
+            cmbSortBy.Location = new Point(580, 12);
+            cmbSortBy.Size = new Size(160, 25);
+            cmbSortBy.Font = new Font("Segoe UI", 10);
+            cmbSortBy.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbSortBy.Items.AddRange(new object[] { "Newest first", "Oldest first", "Priority high-low", "Priority low-high", "Category A-Z" });
+            cmbSortBy.SelectedIndex = 0;
+            cmbSortBy.SelectedIndexChanged += SortChanged;
+            pnlControls.Controls.Add(cmbSortBy);
+
             btnRefresh = new Button();
             btnRefresh.Text = "Refresh";
             btnRefresh.Size = new Size(100, 35);
-            btnRefresh.Location = new Point(550, 50);
+            btnRefresh.Location = new Point(580, 50);
             btnRefresh.BackColor = AppPalette.AccentSecondary;
             btnRefresh.FlatStyle = FlatStyle.Flat;
             btnRefresh.FlatAppearance.BorderColor = AppPalette.Border;
@@ -157,6 +183,13 @@ namespace Sidequest_municiple_app {
             lblTotalRequests.AutoSize = true;
             lblTotalRequests.Location = new Point(30, 175);
             Controls.Add(lblTotalRequests);
+
+            lblStatistics = new Label();
+            lblStatistics.Font = new Font("Segoe UI", 9);
+            lblStatistics.ForeColor = AppPalette.TextPrimary;
+            lblStatistics.AutoSize = true;
+            lblStatistics.Location = new Point(200, 175);
+            Controls.Add(lblStatistics);
 
             dgvRequests = new DataGridView();
             dgvRequests.Location = new Point(30, 200);
@@ -221,7 +254,7 @@ namespace Sidequest_municiple_app {
 
             lvPriorityQueue = new ListView();
             lvPriorityQueue.Location = new Point(30, 585);
-            lvPriorityQueue.Size = new Size(940, 90);
+            lvPriorityQueue.Size = new Size(440, 90);
             lvPriorityQueue.View = View.Details;
             lvPriorityQueue.FullRowSelect = true;
             lvPriorityQueue.GridLines = false;
@@ -232,6 +265,57 @@ namespace Sidequest_municiple_app {
             lvPriorityQueue.Columns.Add("Status", 120);
             lvPriorityQueue.Columns.Add("Submitted", 200);
             Controls.Add(lvPriorityQueue);
+
+            lblRelatedRequests = new Label();
+            lblRelatedRequests.Text = "Related Requests";
+            lblRelatedRequests.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lblRelatedRequests.ForeColor = AppPalette.TextPrimary;
+            lblRelatedRequests.AutoSize = true;
+            lblRelatedRequests.Location = new Point(500, 520);
+            Controls.Add(lblRelatedRequests);
+
+            lvRelatedRequests = new ListView();
+            lvRelatedRequests.Location = new Point(500, 545);
+            lvRelatedRequests.Size = new Size(460, 55);
+            lvRelatedRequests.View = View.Details;
+            lvRelatedRequests.FullRowSelect = true;
+            lvRelatedRequests.GridLines = false;
+            lvRelatedRequests.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            lvRelatedRequests.Columns.Add("Request", 150);
+            lvRelatedRequests.Columns.Add("Category", 150);
+            lvRelatedRequests.Columns.Add("Status", 140);
+            Controls.Add(lvRelatedRequests);
+
+            lblGraphTraversal = new Label();
+            lblGraphTraversal.Text = "Graph Traversal";
+            lblGraphTraversal.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lblGraphTraversal.ForeColor = AppPalette.TextPrimary;
+            lblGraphTraversal.AutoSize = true;
+            lblGraphTraversal.Location = new Point(500, 610);
+            Controls.Add(lblGraphTraversal);
+
+            cmbGraphTraversal = new ComboBox();
+            cmbGraphTraversal.Location = new Point(620, 608);
+            cmbGraphTraversal.Size = new Size(130, 25);
+            cmbGraphTraversal.Font = new Font("Segoe UI", 10);
+            cmbGraphTraversal.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbGraphTraversal.Items.AddRange(new object[] { "BFS", "DFS", "MST" });
+            cmbGraphTraversal.SelectedIndexChanged += GraphTraversalChanged;
+            Controls.Add(cmbGraphTraversal);
+
+            lvGraphTraversal = new ListView();
+            lvGraphTraversal.Location = new Point(500, 635);
+            lvGraphTraversal.Size = new Size(460, 55);
+            lvGraphTraversal.View = View.Details;
+            lvGraphTraversal.FullRowSelect = true;
+            lvGraphTraversal.GridLines = false;
+            lvGraphTraversal.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            lvGraphTraversal.Columns.Add("Step", 80);
+            lvGraphTraversal.Columns.Add("Details", 260);
+            lvGraphTraversal.Columns.Add("Extra", 120);
+            Controls.Add(lvGraphTraversal);
+
+            cmbGraphTraversal.SelectedIndex = 0;
 
             allServiceRequests = new List<ServiceRequest>();
             requestTree = new ServiceRequestBST();
@@ -263,6 +347,7 @@ namespace Sidequest_municiple_app {
                 requestGraph.BuildRelationships(allServiceRequests);
                 ApplyFilters();
                 PopulatePriorityQueueDisplay();
+                UpdateGraphDisplays();
             }
             catch (Exception ex) {
                 MessageBox.Show("Error loading service requests: " + ex.Message,
@@ -376,7 +461,9 @@ namespace Sidequest_municiple_app {
                     "Search Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else {
-                DisplayServiceRequests(foundRequests);
+                List<ServiceRequest> sortedResults = SortRequests(foundRequests).ToList();
+                DisplayServiceRequests(sortedResults);
+                UpdateStatistics(sortedResults);
             }
         }
 
@@ -398,8 +485,10 @@ namespace Sidequest_municiple_app {
                     r.Category.Equals(selectedCategory, StringComparison.OrdinalIgnoreCase));
             }
 
-            DisplayServiceRequests(filteredRequests.ToList());
+            List<ServiceRequest> sortedRequests = SortRequests(filteredRequests).ToList();
+            DisplayServiceRequests(sortedRequests);
             PopulatePriorityQueueDisplay();
+            UpdateStatistics(sortedRequests);
         }
 
         private void BtnRefresh_Click(object sender, EventArgs e) {
@@ -407,6 +496,10 @@ namespace Sidequest_municiple_app {
             cmbStatusFilter.SelectedIndex = 0;
             cmbCategoryFilter.SelectedIndex = 0;
             LoadServiceRequests();
+        }
+
+        private void SortChanged(object sender, EventArgs e) {
+            ApplyFilters();
         }
 
         private void DgvRequests_SelectionChanged(object sender, EventArgs e) {
@@ -466,12 +559,14 @@ namespace Sidequest_municiple_app {
             string uniqueId = GetSelectedUniqueId();
             if (string.IsNullOrWhiteSpace(uniqueId)) {
                 btnUpdateStatus.Enabled = false;
+                UpdateGraphDisplays();
                 return;
             }
 
             ServiceRequest request = allServiceRequests.FirstOrDefault(r => string.Equals(r.UniqueID, uniqueId, StringComparison.OrdinalIgnoreCase));
             if (request == null) {
                 btnUpdateStatus.Enabled = false;
+                UpdateGraphDisplays();
                 return;
             }
 
@@ -481,6 +576,8 @@ namespace Sidequest_municiple_app {
             if (index >= 0) {
                 cmbUpdateStatus.SelectedIndex = index;
             }
+
+            UpdateGraphDisplays();
         }
 
         private void ReselectRow(string uniqueId) {
@@ -518,6 +615,144 @@ namespace Sidequest_municiple_app {
 
         private void BtnBack_Click(object sender, EventArgs e) {
             Close();
+        }
+
+        private void GraphTraversalChanged(object sender, EventArgs e) {
+            PopulateTraversalDisplay(GetSelectedUniqueId());
+        }
+
+        private void UpdateGraphDisplays() {
+            PopulateRelatedRequests(GetSelectedUniqueId());
+            PopulateTraversalDisplay(GetSelectedUniqueId());
+        }
+
+        private void PopulateRelatedRequests(string uniqueId) {
+            if (lvRelatedRequests == null) {
+                return;
+            }
+
+            lvRelatedRequests.BeginUpdate();
+            lvRelatedRequests.Items.Clear();
+
+            if (string.IsNullOrWhiteSpace(uniqueId) || requestGraph == null) {
+                lvRelatedRequests.EndUpdate();
+                return;
+            }
+
+            IReadOnlyList<ServiceRequest> related = requestGraph.GetRelatedRequests(uniqueId);
+            foreach (ServiceRequest relatedRequest in related
+                .OrderByDescending(r => r.Priority)
+                .ThenBy(r => r.DateSubmitted)) {
+                ListViewItem item = new ListViewItem(ShortenId(relatedRequest.UniqueID));
+                item.SubItems.Add(relatedRequest.Category ?? string.Empty);
+                item.SubItems.Add(relatedRequest.GetStatusString());
+                lvRelatedRequests.Items.Add(item);
+            }
+
+            lvRelatedRequests.EndUpdate();
+        }
+
+        private void PopulateTraversalDisplay(string uniqueId) {
+            if (lvGraphTraversal == null) {
+                return;
+            }
+
+            lvGraphTraversal.BeginUpdate();
+            lvGraphTraversal.Items.Clear();
+
+            if (string.IsNullOrWhiteSpace(uniqueId) || requestGraph == null || cmbGraphTraversal == null || cmbGraphTraversal.SelectedItem == null) {
+                lvGraphTraversal.EndUpdate();
+                return;
+            }
+
+            string mode = cmbGraphTraversal.SelectedItem.ToString();
+
+            if (string.Equals(mode, "MST", StringComparison.OrdinalIgnoreCase)) {
+                IReadOnlyList<GraphEdge> edges = requestGraph.MinimumSpanningTree(uniqueId);
+                int step = 1;
+                foreach (GraphEdge edge in edges) {
+                    string details = ShortenId(edge.Source.Value.UniqueID) + " -> " + ShortenId(edge.Target.Value.UniqueID);
+                    ListViewItem item = new ListViewItem(step.ToString());
+                    item.SubItems.Add(details);
+                    item.SubItems.Add(edge.Weight.ToString("0.##"));
+                    lvGraphTraversal.Items.Add(item);
+                    step++;
+                }
+            }
+            else {
+                IReadOnlyList<ServiceRequest> traversal;
+                if (string.Equals(mode, "DFS", StringComparison.OrdinalIgnoreCase)) {
+                    traversal = requestGraph.DepthFirst(uniqueId);
+                }
+                else {
+                    traversal = requestGraph.BreadthFirst(uniqueId);
+                }
+
+                for (int i = 0; i < traversal.Count; i++) {
+                    ServiceRequest request = traversal[i];
+                    ListViewItem item = new ListViewItem((i + 1).ToString());
+                    item.SubItems.Add(ShortenId(request.UniqueID) + " | " + (request.Location ?? string.Empty));
+                    item.SubItems.Add(request.Category ?? string.Empty);
+                    lvGraphTraversal.Items.Add(item);
+                }
+            }
+
+            lvGraphTraversal.EndUpdate();
+        }
+
+        private static string ShortenId(string uniqueId) {
+            if (string.IsNullOrWhiteSpace(uniqueId)) {
+                return string.Empty;
+            }
+
+            return uniqueId.Length <= 8 ? uniqueId : uniqueId.Substring(0, 8);
+        }
+
+        private IEnumerable<ServiceRequest> SortRequests(IEnumerable<ServiceRequest> requests) {
+            if (requests == null) {
+                return Enumerable.Empty<ServiceRequest>();
+            }
+
+            string mode = cmbSortBy?.SelectedItem?.ToString() ?? string.Empty;
+
+            switch (mode) {
+                case "Oldest first":
+                    return requests.OrderBy(r => r.DateSubmitted);
+                case "Priority high-low":
+                    return requests.OrderByDescending(r => r.Priority).ThenByDescending(r => r.DateSubmitted);
+                case "Priority low-high":
+                    return requests.OrderBy(r => r.Priority).ThenByDescending(r => r.DateSubmitted);
+                case "Category A-Z":
+                    return requests.OrderBy(r => r.Category ?? string.Empty).ThenByDescending(r => r.DateSubmitted);
+                default:
+                    return requests.OrderByDescending(r => r.DateSubmitted);
+            }
+        }
+
+        private void UpdateStatistics(IEnumerable<ServiceRequest> requests) {
+            if (lblStatistics == null) {
+                return;
+            }
+
+            List<ServiceRequest> list = requests == null ? new List<ServiceRequest>() : (requests as List<ServiceRequest> ?? requests.ToList());
+
+            if (list.Count == 0) {
+                lblStatistics.Text = "No requests";
+                return;
+            }
+
+            int pending = list.Count(r => r.Status == ServiceRequestStatus.Pending);
+            int inProgress = list.Count(r => r.Status == ServiceRequestStatus.InProgress);
+            int completed = list.Count(r => r.Status == ServiceRequestStatus.Completed);
+            int rejected = list.Count(r => r.Status == ServiceRequestStatus.Rejected);
+            int highPriority = list.Count(r => r.Priority >= ServiceRequestPriority.High);
+
+            lblStatistics.Text = "Total: " + list.Count +
+                Environment.NewLine + "Pending: " + pending +
+                Environment.NewLine + "In progress: " + inProgress +
+                Environment.NewLine + "Completed: " + completed +
+                Environment.NewLine + "Rejected: " + rejected +
+                Environment.NewLine + "High or urgent: " + highPriority;
         }
 
         private void InitializeComponent() {
