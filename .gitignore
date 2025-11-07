@@ -1,0 +1,93 @@
+# Visual Studio Build Artifacts
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]uild/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio User Files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Visual Studio Cache
+.vs/
+.vscode/
+
+# NuGet Packages
+*.nupkg
+packages/
+!packages/build/
+
+# Build Results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Files
+*.pidb
+*.svclog
+*.scc
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.dotCover
+*.ncrunch*
+*.coverage
+*.coveragexml
+
+# Markdown files (except README)
+*.md
+!README.md
+
+# Zip files
+*.zip
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin
+$RECYCLE.BIN/
+
+# Mac
+.DS_Store
+
+# SQLite databases (optional - uncomment if needed)
+# *.db
+# *.sqlite
+# *.sqlite3
+
+# Claude settings
+.claude/
