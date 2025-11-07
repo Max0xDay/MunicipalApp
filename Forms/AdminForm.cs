@@ -83,6 +83,8 @@ namespace Sidequest_municiple_app
             dgvIssues.Columns.Add("Id", "ID");
             dgvIssues.Columns.Add("Location", "Location");
             dgvIssues.Columns.Add("Category", "Category");
+            dgvIssues.Columns.Add("Status", "Status");
+            dgvIssues.Columns.Add("Priority", "Priority");
             dgvIssues.Columns.Add("Description", "Description");
             dgvIssues.Columns.Add("AttachmentPath", "Attachment");
             dgvIssues.Columns.Add("ReportDate", "Report Date");
@@ -90,6 +92,8 @@ namespace Sidequest_municiple_app
             dgvIssues.Columns["Id"].Width = 60;
             dgvIssues.Columns["Location"].Width = 150;
             dgvIssues.Columns["Category"].Width = 100;
+            dgvIssues.Columns["Status"].Width = 100;
+            dgvIssues.Columns["Priority"].Width = 100;
             dgvIssues.Columns["Description"].Width = 300;
             dgvIssues.Columns["AttachmentPath"].Width = 120;
             dgvIssues.Columns["ReportDate"].Width = 120;
@@ -115,6 +119,8 @@ namespace Sidequest_municiple_app
                         issue.Id.ToString("D6"),
                         issue.Location,
                         issue.Category,
+                        issue.Status.ToString(),
+                        issue.Priority.ToString(),
                         issue.Description,
                         attachmentDisplay,
                         issue.ReportDate.ToString("yyyy-MM-dd HH:mm")
@@ -123,7 +129,7 @@ namespace Sidequest_municiple_app
 
                 if (issues.Count == 0)
                 {
-                    dgvIssues.Rows.Add("", "No reports found", "", "", "", "");
+                    dgvIssues.Rows.Add("", "No reports found", "", "", "", "", "", "");
                 }
             }
             catch (Exception ex)

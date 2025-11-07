@@ -278,20 +278,21 @@ namespace Sidequest_municiple_app
                     txtDescription.Text,
                     attachmentPath
                 );
+                issue.Priority = DeterminePriority(issue.Category);
 
                 try
                 {
                     int issueId = dbHelper.SaveIssue(issue);
                     issues.Add(issue);
 
-                    MessageBox.Show($"Issue reported successfully! Reference ID: {issueId:D6}", 
+                    MessageBox.Show($"Issue reported successfully! Reference ID: {issueId:D6}",
                                   "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     ClearForm();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error saving issue: " + ex.Message, 
+                    MessageBox.Show("Error saving issue: " + ex.Message,
                                   "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -343,6 +344,27 @@ namespace Sidequest_municiple_app
         {
             MessageBox.Show("Social media sharing feature is not yet implemented.", 
                           "Feature Not Available", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private ServiceRequestPriority DeterminePriority(string category)
+        {
+            if (string.IsNullOrWhiteSpace(category))
+            {
+                return ServiceRequestPriority.Medium;
+            }
+
+            switch (category.ToLowerInvariant())
+            {
+                case "water":
+                case "electricity":
+                    return ServiceRequestPriority.Urgent;
+                case "sanitation":
+                    return ServiceRequestPriority.High;
+                case "roads":
+                    return ServiceRequestPriority.Medium;
+                default:
+                    return ServiceRequestPriority.Low;
+            }
         }
 
         private void InitializeComponent()

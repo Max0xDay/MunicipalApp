@@ -1,51 +1,63 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Sidequest_municiple_app
 {
     public class DatabaseHelper
     {
-        private readonly string dataFilePath;
-        private static int nextId = 1;
+        private readonly string databasePath;
+        private readonly string connectionString;
 
         public DatabaseHelper()
         {
-            dataFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MunicipalApp.txt");
-            InitializeDataFile();
-        }
-
-        private void InitializeDataFile()
-        {
-            if (!File.Exists(dataFilePath))
-            {
-                SaveIssuesList(new List<Issue>());
-            }
-            else
-            {
-                var existingIssues = LoadIssuesList();
-                if (existingIssues.Any())
-                {
-                    nextId = existingIssues.Max(i => i.Id) + 1;
-                }
-            }
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MunicipalApp");
+            Directory.CreateDirectory(folderPath);
+            databasePath = Path.Combine(folderPath, "municipal.db");
+            connectionString = $"Data Source={databasePath};Version=3;";
+            InitializeDatabase();
         }
 
         public int SaveIssue(Issue issue)
         {
+            if (issue == null)
+            {
+                throw new ArgumentNullException(nameof(issue));
+            }
+
+            if (string.IsNullOrWhiteSpace(issue.UniqueId))
+            {
+                issue.UniqueId = Guid.NewGuid().ToString();
+            }
+
             try
             {
-                var issues = LoadIssuesList();
-                issue.Id = nextId++;
-                issues.Add(issue);
-                SaveIssuesList(issues);
-                return issue.Id;
+                using (SQLiteConnection connection = CreateConnection())
+                {
+                    connection.Open();
+                    string sql = @"INSERT INTO Issues (UniqueId, Location, Category, Description, AttachmentPath, ReportDate, Status, Priority)
+                                   VALUES (@uniqueId, @location, @category, @description, @attachmentPath, @reportDate, @status, @priority);
+                                   SELECT last_insert_rowid();";
+                    using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@uniqueId", issue.UniqueId);
+                        command.Parameters.AddWithValue("@location", issue.Location);
+                        command.Parameters.AddWithValue("@category", issue.Category);
+                        command.Parameters.AddWithValue("@description", issue.Description);
+                        command.Parameters.AddWithValue("@attachmentPath", string.IsNullOrWhiteSpace(issue.AttachmentPath) ? (object)DBNull.Value : issue.AttachmentPath);
+                        command.Parameters.AddWithValue("@reportDate", issue.ReportDate.ToString("o"));
+                        command.Parameters.AddWithValue("@status", issue.Status.ToString());
+                        command.Parameters.AddWithValue("@priority", (int)issue.Priority);
+                        object result = command.ExecuteScalar();
+                        issue.Id = Convert.ToInt32(result);
+                        return issue.Id;
+                    }
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception("Error saving issue: " + ex.Message);
+                throw new InvalidOperationException("Error saving issue: " + ex.Message, ex);
             }
         }
 
@@ -53,61 +65,184 @@ namespace Sidequest_municiple_app
         {
             try
             {
-                return LoadIssuesList().OrderByDescending(i => i.ReportDate).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error loading issues: " + ex.Message);
-            }
-        }
-
-        private List<Issue> LoadIssuesList()
-        {
-            try
-            {
-                if (!File.Exists(dataFilePath))
-                    return new List<Issue>();
-
-                string[] lines = File.ReadAllLines(dataFilePath);
                 List<Issue> issues = new List<Issue>();
-
-                foreach (string line in lines)
+                using (SQLiteConnection connection = CreateConnection())
                 {
-                    if (string.IsNullOrEmpty(line)) continue;
-                    
-                    string[] parts = line.Split('|');
-                    if (parts.Length >= 6)
+                    connection.Open();
+                    string sql = @"SELECT Id, UniqueId, Location, Category, Description, AttachmentPath, ReportDate, Status, Priority
+                                   FROM Issues
+                                   ORDER BY datetime(ReportDate) DESC";
+                    using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                    using (SQLiteDataReader reader = command.ExecuteReader())
                     {
-                        Issue issue = new Issue
+                        while (reader.Read())
                         {
-                            Id = int.Parse(parts[0]),
-                            Location = parts[1],
-                            Category = parts[2],
-                            Description = parts[3],
-                            AttachmentPath = parts[4],
-                            ReportDate = DateTime.Parse(parts[5])
-                        };
-                        issues.Add(issue);
+                            Issue issue = new Issue();
+                            issue.Id = reader.GetInt32(0);
+                            issue.UniqueId = reader.IsDBNull(1) ? Guid.NewGuid().ToString() : reader.GetString(1);
+                            issue.Location = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+                            issue.Category = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
+                            issue.Description = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
+                            issue.AttachmentPath = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
+                            string dateValue = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
+                            issue.ReportDate = ParseDate(dateValue);
+                            string statusValue = reader.IsDBNull(7) ? ServiceRequestStatus.Pending.ToString() : reader.GetString(7);
+                            issue.Status = ParseStatus(statusValue);
+                            int priorityValue = reader.IsDBNull(8) ? (int)ServiceRequestPriority.Medium : reader.GetInt32(8);
+                            issue.Priority = ParsePriority(priorityValue);
+                            issues.Add(issue);
+                        }
                     }
                 }
 
                 return issues;
             }
-            catch
+            catch (Exception ex)
             {
-                return new List<Issue>();
+                throw new InvalidOperationException("Error loading issues: " + ex.Message, ex);
             }
         }
 
-        private void SaveIssuesList(List<Issue> issues)
+        public Issue GetIssueByUniqueId(string uniqueId)
         {
-            List<string> lines = new List<string>();
-            foreach (Issue issue in issues)
+            if (string.IsNullOrWhiteSpace(uniqueId))
             {
-                string line = $"{issue.Id}|{issue.Location}|{issue.Category}|{issue.Description}|{issue.AttachmentPath ?? ""}|{issue.ReportDate:yyyy-MM-dd HH:mm:ss}";
-                lines.Add(line);
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(uniqueId));
             }
-            File.WriteAllLines(dataFilePath, lines);
+
+            try
+            {
+                using (SQLiteConnection connection = CreateConnection())
+                {
+                    connection.Open();
+                    string sql = @"SELECT Id, UniqueId, Location, Category, Description, AttachmentPath, ReportDate, Status, Priority
+                                   FROM Issues WHERE UniqueId = @uniqueId";
+                    using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@uniqueId", uniqueId);
+                        using (SQLiteDataReader reader = command.ExecuteReader())
+                        {
+                            if (!reader.Read())
+                            {
+                                return null;
+                            }
+
+                            Issue issue = new Issue();
+                            issue.Id = reader.GetInt32(0);
+                            issue.UniqueId = reader.IsDBNull(1) ? uniqueId : reader.GetString(1);
+                            issue.Location = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+                            issue.Category = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
+                            issue.Description = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
+                            issue.AttachmentPath = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
+                            string dateValue = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
+                            issue.ReportDate = ParseDate(dateValue);
+                            string statusValue = reader.IsDBNull(7) ? ServiceRequestStatus.Pending.ToString() : reader.GetString(7);
+                            issue.Status = ParseStatus(statusValue);
+                            int priorityValue = reader.IsDBNull(8) ? (int)ServiceRequestPriority.Medium : reader.GetInt32(8);
+                            issue.Priority = ParsePriority(priorityValue);
+                            return issue;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error loading issue: " + ex.Message, ex);
+            }
+        }
+
+        public void UpdateIssueStatus(string uniqueId, ServiceRequestStatus status, ServiceRequestPriority priority)
+        {
+            if (string.IsNullOrWhiteSpace(uniqueId))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(uniqueId));
+            }
+
+            try
+            {
+                using (SQLiteConnection connection = CreateConnection())
+                {
+                    connection.Open();
+                    string sql = @"UPDATE Issues
+                                   SET Status = @status,
+                                       Priority = @priority
+                                   WHERE UniqueId = @uniqueId";
+                    using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@status", status.ToString());
+                        command.Parameters.AddWithValue("@priority", (int)priority);
+                        command.Parameters.AddWithValue("@uniqueId", uniqueId);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error updating issue status: " + ex.Message, ex);
+            }
+        }
+
+        private void InitializeDatabase()
+        {
+            using (SQLiteConnection connection = CreateConnection())
+            {
+                connection.Open();
+                string sql = @"CREATE TABLE IF NOT EXISTS Issues (
+                                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                UniqueId TEXT NOT NULL,
+                                Location TEXT NOT NULL,
+                                Category TEXT NOT NULL,
+                                Description TEXT,
+                                AttachmentPath TEXT,
+                                ReportDate TEXT NOT NULL,
+                                Status TEXT NOT NULL,
+                                Priority INTEGER NOT NULL
+                              )";
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private SQLiteConnection CreateConnection()
+        {
+            return new SQLiteConnection(connectionString);
+        }
+
+        private DateTime ParseDate(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return DateTime.Now;
+            }
+
+            if (DateTime.TryParse(value, out DateTime parsed))
+            {
+                return parsed;
+            }
+
+            return DateTime.Now;
+        }
+
+        private ServiceRequestStatus ParseStatus(string value)
+        {
+            if (Enum.TryParse(value, true, out ServiceRequestStatus status))
+            {
+                return status;
+            }
+
+            return ServiceRequestStatus.Pending;
+        }
+
+        private ServiceRequestPriority ParsePriority(int value)
+        {
+            if (Enum.IsDefined(typeof(ServiceRequestPriority), value))
+            {
+                return (ServiceRequestPriority)value;
+            }
+
+            return ServiceRequestPriority.Medium;
         }
     }
 }
