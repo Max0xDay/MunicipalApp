@@ -40,9 +40,9 @@ namespace Sidequest_municiple_app
             RelatedRequestIDs = new List<string>();
         }
 
-        public ServiceRequest(string location, string category, string description, string attachmentPath = "")
+        public ServiceRequest(string location, string category, string description, string attachmentPath = "", string uniqueId = null)
         {
-            UniqueID = Guid.NewGuid().ToString();
+            UniqueID = string.IsNullOrWhiteSpace(uniqueId) ? Guid.NewGuid().ToString() : uniqueId;
             Location = location;
             Category = category;
             Description = description;
@@ -55,15 +55,19 @@ namespace Sidequest_municiple_app
 
         public ServiceRequest(Issue issue)
         {
-            UniqueID = Guid.NewGuid().ToString();
+            UniqueID = string.IsNullOrWhiteSpace(issue.UniqueId) ? Guid.NewGuid().ToString() : issue.UniqueId;
             Location = issue.Location;
             Category = issue.Category;
             Description = issue.Description;
             AttachmentPath = issue.AttachmentPath;
             DateSubmitted = issue.ReportDate;
-            Status = ServiceRequestStatus.Pending;
-            Priority = ServiceRequestPriority.Medium;
+            Status = issue.Status;
+            Priority = issue.Priority;
             RelatedRequestIDs = new List<string>();
+            if (string.IsNullOrWhiteSpace(issue.UniqueId))
+            {
+                issue.UniqueId = UniqueID;
+            }
         }
 
         public string GetStatusString()

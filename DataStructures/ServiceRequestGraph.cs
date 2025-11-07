@@ -87,6 +87,88 @@ namespace Sidequest_municiple_app
       return node.Edges.Select(edge => edge.Target.Value).ToList();
     }
 
+    public IReadOnlyList<ServiceRequest> BreadthFirst(string startKey, int maximumDepth = int.MaxValue)
+    {
+      if (startKey == null)
+      {
+        throw new ArgumentNullException(nameof(startKey));
+      }
+
+      if (!nodes.TryGetValue(startKey, out GraphNode startNode))
+      {
+        return Array.Empty<ServiceRequest>();
+      }
+
+      List<ServiceRequest> traversal = new List<ServiceRequest>();
+      HashSet<string> visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+      Queue<KeyValuePair<GraphNode, int>> queue = new Queue<KeyValuePair<GraphNode, int>>();
+
+      visited.Add(startNode.Key);
+      queue.Enqueue(new KeyValuePair<GraphNode, int>(startNode, 0));
+
+      while (queue.Count > 0)
+      {
+        KeyValuePair<GraphNode, int> item = queue.Dequeue();
+        traversal.Add(item.Key.Value);
+
+        if (item.Value >= maximumDepth)
+        {
+          continue;
+        }
+
+        foreach (GraphEdge edge in item.Key.Edges)
+        {
+          if (visited.Add(edge.Target.Key))
+          {
+            queue.Enqueue(new KeyValuePair<GraphNode, int>(edge.Target, item.Value + 1));
+          }
+        }
+      }
+
+      return traversal;
+    }
+
+    public IReadOnlyList<ServiceRequest> DepthFirst(string startKey)
+    {
+      if (startKey == null)
+      {
+        throw new ArgumentNullException(nameof(startKey));
+      }
+
+      if (!nodes.TryGetValue(startKey, out GraphNode startNode))
+      {
+        return Array.Empty<ServiceRequest>();
+      }
+
+      List<ServiceRequest> traversal = new List<ServiceRequest>();
+      HashSet<string> visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+      Stack<GraphNode> stack = new Stack<GraphNode>();
+
+      stack.Push(startNode);
+
+      while (stack.Count > 0)
+      {
+        GraphNode current = stack.Pop();
+        if (!visited.Add(current.Key))
+        {
+          continue;
+        }
+
+        traversal.Add(current.Value);
+
+        List<GraphEdge> neighbors = current.Edges.OrderByDescending(edge => edge.Target.Key, StringComparer.OrdinalIgnoreCase).ToList();
+        foreach (GraphEdge edge in neighbors)
+        {
+          if (!visited.Contains(edge.Target.Key))
+          {
+            stack.Push(edge.Target);
+          }
+        }
+      }
+
+      return traversal;
+    }
+
     public void BuildRelationships(IEnumerable<ServiceRequest> requests)
     {
       if (requests == null)
@@ -101,8 +183,6 @@ namespace Sidequest_municiple_app
         request.RelatedRequestIDs.Clear();
       }
 
-      // #COMPLETION_DRIVE: Assuming requests sharing category and location should be linked for related tracking
-      // #SUGGEST_VERIFY: Confirm the relationship criteria with module brief or lecturer before freezing graph edges
       var grouped = requestList
         .Where(r => !string.IsNullOrWhiteSpace(r.Category) && !string.IsNullOrWhiteSpace(r.Location))
         .GroupBy(
@@ -128,6 +208,53 @@ namespace Sidequest_municiple_app
           relatedList.TrimExcess();
         }
       }
+    }
+
+    public IReadOnlyList<GraphEdge> MinimumSpanningTree(string startKey)
+    {
+      if (startKey == null)
+      {
+        throw new ArgumentNullException(nameof(startKey));
+      }
+
+      if (!nodes.TryGetValue(startKey, out GraphNode startNode))
+      {
+        return Array.Empty<GraphEdge>();
+      }
+
+      List<GraphEdge> treeEdges = new List<GraphEdge>();
+      HashSet<string> visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+      List<GraphEdge> candidates = new List<GraphEdge>();
+
+      visited.Add(startNode.Key);
+      candidates.AddRange(startNode.Edges);
+
+      while (candidates.Count > 0)
+      {
+        GraphEdge edge = ExtractMinimumEdge(candidates);
+        if (edge == null)
+        {
+          break;
+        }
+
+        if (visited.Contains(edge.Target.Key))
+        {
+          continue;
+        }
+
+        treeEdges.Add(edge);
+        visited.Add(edge.Target.Key);
+
+        foreach (GraphEdge neighbor in edge.Target.Edges)
+        {
+          if (!visited.Contains(neighbor.Target.Key))
+          {
+            candidates.Add(neighbor);
+          }
+        }
+      }
+
+      return treeEdges;
     }
 
     private void UpdateRelatedRequestList(ServiceRequest source, ServiceRequest target)
@@ -165,6 +292,44 @@ namespace Sidequest_municiple_app
         int locationHash = obj.Location?.ToLowerInvariant().GetHashCode() ?? 0;
         return categoryHash ^ (locationHash * 397);
       }
+    }
+
+    private GraphEdge ExtractMinimumEdge(List<GraphEdge> edges)
+    {
+      if (edges.Count == 0)
+      {
+        return null;
+      }
+
+      int index = 0;
+      double weight = edges[0].Weight;
+
+      for (int i = 1; i < edges.Count; i++)
+      {
+        double candidateWeight = edges[i].Weight;
+        int comparison = candidateWeight.CompareTo(weight);
+        if (comparison < 0)
+        {
+          index = i;
+          weight = candidateWeight;
+          continue;
+        }
+
+        if (comparison == 0)
+        {
+          string currentKey = edges[index].Target.Key;
+          string candidateKey = edges[i].Target.Key;
+          if (string.Compare(candidateKey, currentKey, StringComparison.OrdinalIgnoreCase) < 0)
+          {
+            index = i;
+            weight = candidateWeight;
+          }
+        }
+      }
+
+      GraphEdge selected = edges[index];
+      edges.RemoveAt(index);
+      return selected;
     }
   }
 }
