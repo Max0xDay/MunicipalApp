@@ -63,6 +63,10 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PriorityCategoryQueue.cs" />
+    <Compile Include="ServiceRequest.cs" />
+    <Compile Include="ServiceRequestStatusForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainMenuForm.cs">
       <SubType>Form</SubType>
     </Compile>

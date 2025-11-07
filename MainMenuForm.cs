@@ -69,13 +69,14 @@ namespace Sidequest_municiple_app
             btnServiceStatus.Text = "Service Request Status";
             btnServiceStatus.Size = new Size(200, 50);
             btnServiceStatus.Location = new Point(200, 240);
-            btnServiceStatus.BackColor = AppPalette.SurfaceAlt;
+            btnServiceStatus.BackColor = AppPalette.AccentSecondary;
             btnServiceStatus.FlatStyle = FlatStyle.Flat;
             btnServiceStatus.FlatAppearance.BorderColor = AppPalette.Border;
             btnServiceStatus.FlatAppearance.BorderSize = 1;
-            btnServiceStatus.ForeColor = AppPalette.TextPrimary;
+            btnServiceStatus.ForeColor = AppPalette.TextOnAccent;
             btnServiceStatus.Font = new Font("Segoe UI", 12);
-            btnServiceStatus.Enabled = false;
+            btnServiceStatus.Enabled = true;
+            btnServiceStatus.Click += BtnServiceStatus_Click;
             btnServiceStatus.UseVisualStyleBackColor = false;
             this.Controls.Add(btnServiceStatus);
         }
@@ -96,6 +97,19 @@ namespace Sidequest_municiple_app
             catch (Exception ex)
             {
                 MessageBox.Show("Unable to open Local Events: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void BtnServiceStatus_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ServiceRequestStatusForm statusForm = new ServiceRequestStatusForm();
+                statusForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to open Service Request Status: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
