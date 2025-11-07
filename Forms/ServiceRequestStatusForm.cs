@@ -28,6 +28,7 @@ namespace Sidequest_municiple_app
     private ServiceRequestBST requestTree;
     private ServiceRequestAVL requestBalancedTree;
     private ServiceRequestHeap requestHeap;
+    private ServiceRequestGraph requestGraph;
 
         public ServiceRequestStatusForm()
         {
@@ -216,6 +217,7 @@ namespace Sidequest_municiple_app
             requestTree = new ServiceRequestBST();
             requestBalancedTree = new ServiceRequestAVL();
             requestHeap = new ServiceRequestHeap();
+            requestGraph = new ServiceRequestGraph();
         }
 
         private void LoadServiceRequests()
@@ -226,6 +228,7 @@ namespace Sidequest_municiple_app
                 requestTree.Clear();
                 requestBalancedTree.Clear();
                 requestHeap.Clear();
+                requestGraph.Clear();
                 
                 DatabaseHelper dbHelper = new DatabaseHelper();
                 List<Issue> issues = dbHelper.GetAllIssues();
@@ -238,8 +241,10 @@ namespace Sidequest_municiple_app
                     requestTree.Insert(request);
                     requestBalancedTree.Insert(request);
                     requestHeap.Insert(request);
+                    requestGraph.AddOrUpdate(request);
                 }
                 
+                requestGraph.BuildRelationships(allServiceRequests);
                 DisplayServiceRequests(requestBalancedTree.InOrder().ToList());
                 PopulatePriorityQueueDisplay();
             }
