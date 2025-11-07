@@ -752,7 +752,134 @@ namespace Sidequest_municiple_app {
                 Environment.NewLine + "In progress: " + inProgress +
                 Environment.NewLine + "Completed: " + completed +
                 Environment.NewLine + "Rejected: " + rejected +
-                Environment.NewLine + "High or urgent: " + highPriority;
+                Environment.NewLine + "High or urgent: " + highPriority +
+                Environment.NewLine + ValidateDataStructures(allServiceRequests);
+        }
+
+        private string ValidateDataStructures(IEnumerable<ServiceRequest> source) {
+            if (source == null) {
+                return "Validation: no data";
+            }
+
+            List<ServiceRequest> list = source as List<ServiceRequest> ?? source.ToList();
+            if (list.Count == 0) {
+                return "Validation: no data";
+            }
+
+            List<string> issues = new List<string>();
+
+            IReadOnlyList<ServiceRequest> bstOrder = requestTree.InOrder();
+            if (!IsRequestOrderAscending(bstOrder)) {
+                issues.Add("BST order");
+            }
+
+            IReadOnlyList<ServiceRequest> avlOrder = requestBalancedTree.InOrder();
+            if (!IsRequestOrderAscending(avlOrder)) {
+                issues.Add("AVL order");
+            }
+
+            IReadOnlyList<ServiceRequest> heapOrder = requestHeap.GetOrderedSnapshot();
+            if (!IsHeapOrderValid(heapOrder)) {
+                issues.Add("Heap order");
+            }
+
+            if (!IsGraphConsistent(list)) {
+                issues.Add("Graph links");
+            }
+
+            if (issues.Count == 0) {
+                return "Validation: ok";
+            }
+
+            return "Validation: " + string.Join(", ", issues);
+        }
+
+        private bool IsRequestOrderAscending(IEnumerable<ServiceRequest> requests) {
+            if (requests == null) {
+                return true;
+            }
+
+            string previous = null;
+            foreach (ServiceRequest request in requests) {
+                if (request == null) {
+                    continue;
+                }
+
+                string key = request.UniqueID ?? string.Empty;
+                if (previous != null && string.Compare(previous, key, StringComparison.OrdinalIgnoreCase) > 0) {
+                    return false;
+                }
+
+                previous = key;
+            }
+
+            return true;
+        }
+
+        private bool IsHeapOrderValid(IReadOnlyList<ServiceRequest> requests) {
+            if (requests == null) {
+                return true;
+            }
+
+            ServiceRequestPriority? lastPriority = null;
+            DateTime? lastTime = null;
+
+            foreach (ServiceRequest request in requests) {
+                if (request == null) {
+                    continue;
+                }
+
+                if (lastPriority != null) {
+                    int comparison = lastPriority.Value.CompareTo(request.Priority);
+                    if (comparison < 0) {
+                        return false;
+                    }
+
+                    if (comparison == 0 && lastTime != null && lastTime.Value > request.DateSubmitted) {
+                        return false;
+                    }
+                }
+
+                lastPriority = request.Priority;
+                lastTime = request.DateSubmitted;
+            }
+
+            return true;
+        }
+
+        private bool IsGraphConsistent(IEnumerable<ServiceRequest> requests) {
+            if (requests == null) {
+                return true;
+            }
+
+            Dictionary<string, ServiceRequest> lookup = requests
+                .Where(r => !string.IsNullOrWhiteSpace(r.UniqueID))
+                .ToDictionary(r => r.UniqueID, StringComparer.OrdinalIgnoreCase);
+
+            foreach (ServiceRequest request in requests) {
+                if (request == null || string.IsNullOrWhiteSpace(request.UniqueID)) {
+                    continue;
+                }
+
+                IReadOnlyList<ServiceRequest> related = requestGraph.GetRelatedRequests(request.UniqueID);
+
+                HashSet<string> relatedSet = new HashSet<string>(related.Select(r => r.UniqueID), StringComparer.OrdinalIgnoreCase);
+                foreach (string relatedId in request.RelatedRequestIDs) {
+                    if (!relatedSet.Contains(relatedId)) {
+                        return false;
+                    }
+
+                    if (!lookup.TryGetValue(relatedId, out ServiceRequest relatedRequest)) {
+                        return false;
+                    }
+
+                    if (!relatedRequest.RelatedRequestIDs.Any(id => string.Equals(id, request.UniqueID, StringComparison.OrdinalIgnoreCase))) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         private void InitializeComponent() {
