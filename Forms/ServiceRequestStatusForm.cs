@@ -19,10 +19,15 @@ namespace Sidequest_municiple_app
         private Label lblSearchLabel;
         private Label lblStatusFilter;
         private Label lblCategoryFilter;
-        private Label lblTotalRequests;
+    private Label lblTotalRequests;
+    private Label lblPriorityQueue;
         private Panel pnlControls;
+    private ListView lvPriorityQueue;
         
         private List<ServiceRequest> allServiceRequests;
+    private ServiceRequestBST requestTree;
+    private ServiceRequestAVL requestBalancedTree;
+    private ServiceRequestHeap requestHeap;
 
         public ServiceRequestStatusForm()
         {
@@ -163,7 +168,7 @@ namespace Sidequest_municiple_app
 
             dgvRequests = new DataGridView();
             dgvRequests.Location = new Point(30, 200);
-            dgvRequests.Size = new Size(940, 450);
+            dgvRequests.Size = new Size(940, 320);
             dgvRequests.BackgroundColor = AppPalette.Surface;
             dgvRequests.BorderStyle = BorderStyle.FixedSingle;
             dgvRequests.AllowUserToAddRows = false;
@@ -185,7 +190,32 @@ namespace Sidequest_municiple_app
             
             this.Controls.Add(dgvRequests);
 
+            lblPriorityQueue = new Label();
+            lblPriorityQueue.Text = "Priority Queue";
+            lblPriorityQueue.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lblPriorityQueue.ForeColor = AppPalette.TextPrimary;
+            lblPriorityQueue.AutoSize = true;
+            lblPriorityQueue.Location = new Point(30, 530);
+            this.Controls.Add(lblPriorityQueue);
+
+            lvPriorityQueue = new ListView();
+            lvPriorityQueue.Location = new Point(30, 555);
+            lvPriorityQueue.Size = new Size(940, 120);
+            lvPriorityQueue.View = View.Details;
+            lvPriorityQueue.FullRowSelect = true;
+            lvPriorityQueue.GridLines = false;
+            lvPriorityQueue.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            lvPriorityQueue.Columns.Add("Priority", 120);
+            lvPriorityQueue.Columns.Add("Category", 180);
+            lvPriorityQueue.Columns.Add("Location", 280);
+            lvPriorityQueue.Columns.Add("Status", 120);
+            lvPriorityQueue.Columns.Add("Submitted", 200);
+            this.Controls.Add(lvPriorityQueue);
+
             allServiceRequests = new List<ServiceRequest>();
+            requestTree = new ServiceRequestBST();
+            requestBalancedTree = new ServiceRequestAVL();
+            requestHeap = new ServiceRequestHeap();
         }
 
         private void LoadServiceRequests()
@@ -193,6 +223,9 @@ namespace Sidequest_municiple_app
             try
             {
                 allServiceRequests.Clear();
+                requestTree.Clear();
+                requestBalancedTree.Clear();
+                requestHeap.Clear();
                 
                 DatabaseHelper dbHelper = new DatabaseHelper();
                 List<Issue> issues = dbHelper.GetAllIssues();
@@ -202,9 +235,13 @@ namespace Sidequest_municiple_app
                     ServiceRequest request = new ServiceRequest(issue);
                     AssignPriorityBasedOnCategory(request);
                     allServiceRequests.Add(request);
+                    requestTree.Insert(request);
+                    requestBalancedTree.Insert(request);
+                    requestHeap.Insert(request);
                 }
                 
-                DisplayServiceRequests(allServiceRequests);
+                DisplayServiceRequests(requestBalancedTree.InOrder().ToList());
+                PopulatePriorityQueueDisplay();
             }
             catch (Exception ex)
             {
@@ -284,7 +321,8 @@ namespace Sidequest_municiple_app
                 return;
             }
             
-            var foundRequests = allServiceRequests
+            var foundRequests = requestBalancedTree
+                .InOrder()
                 .Where(r => r.UniqueID.StartsWith(searchID, StringComparison.OrdinalIgnoreCase))
                 .ToList();
             
@@ -306,7 +344,7 @@ namespace Sidequest_municiple_app
 
         private void ApplyFilters()
         {
-            var filteredRequests = allServiceRequests.AsEnumerable();
+            var filteredRequests = requestBalancedTree.InOrder().AsEnumerable();
             
             if (cmbStatusFilter.SelectedItem.ToString() != "All")
             {
@@ -322,6 +360,7 @@ namespace Sidequest_municiple_app
             }
             
             DisplayServiceRequests(filteredRequests.ToList());
+            PopulatePriorityQueueDisplay();
         }
 
         private void BtnRefresh_Click(object sender, EventArgs e)
@@ -330,6 +369,25 @@ namespace Sidequest_municiple_app
             cmbStatusFilter.SelectedIndex = 0;
             cmbCategoryFilter.SelectedIndex = 0;
             LoadServiceRequests();
+        }
+
+        private void PopulatePriorityQueueDisplay()
+        {
+            lvPriorityQueue.BeginUpdate();
+            lvPriorityQueue.Items.Clear();
+
+            var queueItems = requestHeap.GetOrderedSnapshot().Take(10);
+            foreach (ServiceRequest request in queueItems)
+            {
+                ListViewItem item = new ListViewItem(request.GetPriorityString());
+                item.SubItems.Add(request.Category);
+                item.SubItems.Add(request.Location);
+                item.SubItems.Add(request.GetStatusString());
+                item.SubItems.Add(request.DateSubmitted.ToString("yyyy-MM-dd HH:mm"));
+                lvPriorityQueue.Items.Add(item);
+            }
+
+            lvPriorityQueue.EndUpdate();
         }
 
         private void BtnBack_Click(object sender, EventArgs e)
