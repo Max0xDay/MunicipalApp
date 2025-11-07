@@ -4,6 +4,23 @@
 
 This is a South African Municipal Services Application built with .NET Framework 4.7.2 Windows Forms. The application allows citizens to report municipal issues and provides an admin interface to view all reported issues.
 
+## Project Structure
+
+The solution follows a clean, organized folder structure:
+
+```
+Sidequest municiple app/
+├── Forms/                      All UI Forms
+├── Models/                     Data Models (Issue, LocalEvent, ServiceRequest)
+├── DataAccess/                 Database Layer (DatabaseHelper)
+├── DataStructures/             Custom Data Structures (PriorityCategoryQueue)
+├── Utilities/                  Helper Classes (AppPalette)
+├── Properties/                 Assembly Info & Resources
+└── Program.cs                  Application Entry Point
+```
+
+All classes use the `Sidequest_municiple_app` namespace for simplified cross-referencing.
+
 ## Features Implemented (Part 1)
 
 ### Main Menu
