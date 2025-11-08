@@ -27,10 +27,11 @@ namespace Sidequest_municiple_app {
         private ListView lvRelatedRequests;
         private Label lblGraphTraversal;
         private ComboBox cmbGraphTraversal;
-    private ListView lvGraphTraversal;
-    private Label lblSortBy;
-    private ComboBox cmbSortBy;
-    private Label lblStatistics;
+        private ListView lvGraphTraversal;
+        private Label lblSortBy;
+        private ComboBox cmbSortBy;
+        private Label lblStatistics;
+        private Panel pnlBottom;
 
         private List<ServiceRequest> allServiceRequests;
         private ServiceRequestBST requestTree;
@@ -185,6 +186,7 @@ namespace Sidequest_municiple_app {
             Controls.Add(lblTotalRequests);
 
             lblStatistics = new Label();
+            lblStatistics.Text = string.Empty;
             lblStatistics.Font = new Font("Segoe UI", 9);
             lblStatistics.ForeColor = AppPalette.TextPrimary;
             lblStatistics.AutoSize = true;
@@ -213,27 +215,34 @@ namespace Sidequest_municiple_app {
             dgvRequests.SelectionChanged += DgvRequests_SelectionChanged;
             Controls.Add(dgvRequests);
 
+            pnlBottom = new Panel();
+            pnlBottom.Location = new Point(30, 520);
+            pnlBottom.Size = new Size(940, 190);
+            pnlBottom.BackColor = AppPalette.Surface;
+            pnlBottom.BorderStyle = BorderStyle.FixedSingle;
+            Controls.Add(pnlBottom);
+
             lblUpdateStatus = new Label();
             lblUpdateStatus.Text = "Update Status:";
             lblUpdateStatus.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             lblUpdateStatus.ForeColor = AppPalette.TextPrimary;
             lblUpdateStatus.AutoSize = true;
-            lblUpdateStatus.Location = new Point(30, 520);
-            Controls.Add(lblUpdateStatus);
+            lblUpdateStatus.Location = new Point(20, 15);
+            pnlBottom.Controls.Add(lblUpdateStatus);
 
             cmbUpdateStatus = new ComboBox();
-            cmbUpdateStatus.Location = new Point(150, 518);
+            cmbUpdateStatus.Location = new Point(150, 13);
             cmbUpdateStatus.Size = new Size(180, 25);
             cmbUpdateStatus.Font = new Font("Segoe UI", 10);
             cmbUpdateStatus.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbUpdateStatus.Items.AddRange(new object[] { "Pending", "InProgress", "Completed", "Rejected" });
             cmbUpdateStatus.SelectedIndex = 0;
-            Controls.Add(cmbUpdateStatus);
+            pnlBottom.Controls.Add(cmbUpdateStatus);
 
             btnUpdateStatus = new Button();
             btnUpdateStatus.Text = "Apply";
             btnUpdateStatus.Size = new Size(100, 28);
-            btnUpdateStatus.Location = new Point(340, 516);
+            btnUpdateStatus.Location = new Point(340, 12);
             btnUpdateStatus.BackColor = AppPalette.AccentPrimary;
             btnUpdateStatus.FlatStyle = FlatStyle.Flat;
             btnUpdateStatus.FlatAppearance.BorderColor = AppPalette.Border;
@@ -242,78 +251,78 @@ namespace Sidequest_municiple_app {
             btnUpdateStatus.UseVisualStyleBackColor = false;
             btnUpdateStatus.Click += BtnUpdateStatus_Click;
             btnUpdateStatus.Enabled = false;
-            Controls.Add(btnUpdateStatus);
+            pnlBottom.Controls.Add(btnUpdateStatus);
 
             lblPriorityQueue = new Label();
             lblPriorityQueue.Text = "Priority Queue";
             lblPriorityQueue.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             lblPriorityQueue.ForeColor = AppPalette.TextPrimary;
             lblPriorityQueue.AutoSize = true;
-            lblPriorityQueue.Location = new Point(30, 560);
-            Controls.Add(lblPriorityQueue);
+            lblPriorityQueue.Location = new Point(20, 55);
+            pnlBottom.Controls.Add(lblPriorityQueue);
 
             lvPriorityQueue = new ListView();
-            lvPriorityQueue.Location = new Point(30, 585);
-            lvPriorityQueue.Size = new Size(440, 90);
+            lvPriorityQueue.Location = new Point(20, 75);
+            lvPriorityQueue.Size = new Size(500, 100);
             lvPriorityQueue.View = View.Details;
             lvPriorityQueue.FullRowSelect = true;
             lvPriorityQueue.GridLines = false;
             lvPriorityQueue.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            lvPriorityQueue.Columns.Add("Priority", 120);
-            lvPriorityQueue.Columns.Add("Category", 180);
-            lvPriorityQueue.Columns.Add("Location", 280);
-            lvPriorityQueue.Columns.Add("Status", 120);
-            lvPriorityQueue.Columns.Add("Submitted", 200);
-            Controls.Add(lvPriorityQueue);
+            lvPriorityQueue.Columns.Add("Priority", 70);
+            lvPriorityQueue.Columns.Add("Category", 130);
+            lvPriorityQueue.Columns.Add("Location", 120);
+            lvPriorityQueue.Columns.Add("Status", 80);
+            lvPriorityQueue.Columns.Add("Submitted", 100);
+            pnlBottom.Controls.Add(lvPriorityQueue);
 
             lblRelatedRequests = new Label();
             lblRelatedRequests.Text = "Related Requests";
             lblRelatedRequests.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             lblRelatedRequests.ForeColor = AppPalette.TextPrimary;
             lblRelatedRequests.AutoSize = true;
-            lblRelatedRequests.Location = new Point(500, 520);
-            Controls.Add(lblRelatedRequests);
+            lblRelatedRequests.Location = new Point(540, 15);
+            pnlBottom.Controls.Add(lblRelatedRequests);
 
             lvRelatedRequests = new ListView();
-            lvRelatedRequests.Location = new Point(500, 545);
-            lvRelatedRequests.Size = new Size(460, 55);
+            lvRelatedRequests.Location = new Point(540, 40);
+            lvRelatedRequests.Size = new Size(360, 55);
             lvRelatedRequests.View = View.Details;
             lvRelatedRequests.FullRowSelect = true;
             lvRelatedRequests.GridLines = false;
             lvRelatedRequests.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            lvRelatedRequests.Columns.Add("Request", 150);
-            lvRelatedRequests.Columns.Add("Category", 150);
-            lvRelatedRequests.Columns.Add("Status", 140);
-            Controls.Add(lvRelatedRequests);
+            lvRelatedRequests.Columns.Add("Request", 140);
+            lvRelatedRequests.Columns.Add("Category", 120);
+            lvRelatedRequests.Columns.Add("Status", 100);
+            pnlBottom.Controls.Add(lvRelatedRequests);
 
             lblGraphTraversal = new Label();
             lblGraphTraversal.Text = "Graph Traversal";
             lblGraphTraversal.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             lblGraphTraversal.ForeColor = AppPalette.TextPrimary;
             lblGraphTraversal.AutoSize = true;
-            lblGraphTraversal.Location = new Point(500, 610);
-            Controls.Add(lblGraphTraversal);
+            lblGraphTraversal.Location = new Point(540, 105);
+            pnlBottom.Controls.Add(lblGraphTraversal);
 
             cmbGraphTraversal = new ComboBox();
-            cmbGraphTraversal.Location = new Point(620, 608);
+            cmbGraphTraversal.Location = new Point(660, 102);
             cmbGraphTraversal.Size = new Size(130, 25);
             cmbGraphTraversal.Font = new Font("Segoe UI", 10);
             cmbGraphTraversal.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbGraphTraversal.Items.AddRange(new object[] { "BFS", "DFS", "MST" });
             cmbGraphTraversal.SelectedIndexChanged += GraphTraversalChanged;
-            Controls.Add(cmbGraphTraversal);
+            pnlBottom.Controls.Add(cmbGraphTraversal);
 
             lvGraphTraversal = new ListView();
-            lvGraphTraversal.Location = new Point(500, 635);
-            lvGraphTraversal.Size = new Size(460, 55);
+            lvGraphTraversal.Location = new Point(540, 130);
+            lvGraphTraversal.Size = new Size(360, 45);
             lvGraphTraversal.View = View.Details;
             lvGraphTraversal.FullRowSelect = true;
             lvGraphTraversal.GridLines = false;
             lvGraphTraversal.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            lvGraphTraversal.Columns.Add("Step", 80);
-            lvGraphTraversal.Columns.Add("Details", 260);
-            lvGraphTraversal.Columns.Add("Extra", 120);
-            Controls.Add(lvGraphTraversal);
+            lvGraphTraversal.Columns.Add("Step", 70);
+            lvGraphTraversal.Columns.Add("Details", 180);
+            lvGraphTraversal.Columns.Add("Extra", 100);
+            pnlBottom.Controls.Add(lvGraphTraversal);
 
             cmbGraphTraversal.SelectedIndex = 0;
 

@@ -1,3 +1,14 @@
+/*
+The ServiceRequestHeap is the fast lane for urgent tickets. It wraps a binary heap around
+`HeapNode` instances, translating enum-based priorities into integer keys so the highest-
+importance request always lives at the root. Insertions bubble through `HeapifyUp`, while
+extractions rebalance with `HeapifyDown` to keep the structure honest.
+
+On the ServiceRequestStatus form the priority widget asks this heap for ordered snapshots that
+spotlight the top municipal fires. Because the heap recalculates after every status change, the UI
+can reveal who needs attention immediately without re-querying the database, ensuring dispatch
+decisions stay agile.
+*/
 using System;
 using System.Collections.Generic;
 

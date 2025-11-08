@@ -1,3 +1,13 @@
+/*
+The ServiceRequestBST class serves as our quick index for direct lookups and deletions by unique
+ID. It keeps a classic binary search tree structure but wraps it with municipal-specific
+validation so unexpected nulls or casing differences do not derail the reference checks.
+
+Whenever a user searches in the ServiceRequestStatus form or when we validate structural
+integrity, this tree accepts the load first. It mirrors the dataset in memory, allowing the UI to
+fetch a request instantly without waiting for database latency, while still preserving the ordered
+traversal needed for table exports and debugging.
+*/
 using System;
 using System.Collections.Generic;
 

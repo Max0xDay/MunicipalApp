@@ -1,3 +1,14 @@
+/*
+This generic priority queue takes the municipal workload and funnels it through a tiered
+structure built on sorted dictionaries of FIFO queues. Instead of a single min-heap we maintain
+discrete lanes per priority level, so equal-ranked items keep their submission order—a subtle
+requirement that keeps frontline support from being blindsided.
+
+Inside the application it backs the `ServiceRequestHeap` when we want an easy way to group
+requests by severity while still allowing category overrides. The ServiceRequestStatus form reads
+snapshots from this queue whenever it assembles the priority sidebar, ensuring the UI
+communicates urgency and fairness without hitting the database for every refresh.
+*/
 using System;
 using System.Collections.Generic;
 using System.Linq;

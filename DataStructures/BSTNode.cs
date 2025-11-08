@@ -1,3 +1,14 @@
+/*
+This binary search tree node is the calm center of our alphabetical indexing strategy, keeping
+each service request tied to its unique identifier while exposing direct links to its neighbors.
+Because the municipal dataset leans heavily on string-based IDs, the node compares using an
+ordinal-insensitive check to stay resilient against user input quirks.
+
+Within the broader application the node underpins the `ServiceRequestBST` class that feeds
+sorted listings and historical navigation. Every insert or lookup in that structure travels
+through these key comparisons, giving the ServiceRequestStatus form a deterministic way to
+surface records without hitting the database on each keystroke.
+*/
 using System;
 
 namespace Sidequest_municiple_app {

@@ -1,3 +1,14 @@
+/*
+This AVL node capsule gives us a self-balancing wrapper around service requests so the tree
+stays height-aware no matter how chaotic the municipal ticket stream becomes. By pairing each
+request with cached height data for its subtrees, we can reason about balance factors in
+constant time and keep rotations cheap even when the workload spikes.
+
+Inside the app this node is instantiated every time a request flows into the AVL structure that
+powers sorted views and integrity validation. The key mirrors the unique request identifier,
+while height snapshots feed the rotations that happen in `ServiceRequestAVL`, ensuring fast
+status lookups for the dashboard grids.
+*/
 using System;
 
 namespace Sidequest_municiple_app {

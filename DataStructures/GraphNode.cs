@@ -1,3 +1,15 @@
+/*
+This graph node lets us treat each service request as a vertex with a brain: it hoists the
+ticket metadata, exposes a key for adjacency hashing, and curates outbound edges in a
+dictionary tuned for fast lookups. The design deliberately favors write-through updates so the
+node stays synchronized even when requests shift status or priority.
+
+In practice the ServiceRequestGraph builds one of these for every issue pulled from SQLite,
+then uses the adjacency map to capture neighborhood relationships. When the dashboard asks
+for related requests or a traversal preview, the node hands back its edges without
+recalculating, keeping the user interface responsive while still reflecting the latest operational
+topology.
+*/
 using System;
 using System.Collections.Generic;
 

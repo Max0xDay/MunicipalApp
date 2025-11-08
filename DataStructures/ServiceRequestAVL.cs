@@ -1,3 +1,14 @@
+/*
+The ServiceRequestAVL class is our balanced guardian for chronological ordering. It layers an
+AVL tree over municipal tickets, using a custom comparer that sorts by submission time and then
+by identifier, which keeps the structure gracefully ordered even when the control room floods it
+with backdated adjustments.
+
+The ServiceRequestStatus form relies on this class for consistent ordering whenever it filters or
+validates records. Every refresh seeds the tree from the database; rotations happen
+transparently under the hood, and later the statistics panel leans on the AVL validations to
+confirm the algorithmic landscape is still healthy.
+*/
 using System;
 using System.Collections.Generic;
 
