@@ -136,7 +136,7 @@ namespace Sidequest_municiple_app {
                 Category = category,
                 Description = description,
                 AttachmentPath = attachmentPath,
-                DateTime = GenerateRandomDateTime()
+                ReportDate = GenerateRandomDateTime()
             };
 
             return issue;
@@ -168,12 +168,7 @@ namespace Sidequest_municiple_app {
 
         public void ClearAllData() {
             try {
-                List<Issue> allIssues = dbHelper.GetAllIssues();
-                foreach (Issue issue in allIssues) {
-                    if (!string.IsNullOrWhiteSpace(issue.UniqueID)) {
-                        dbHelper.DeleteIssue(issue.UniqueID);
-                    }
-                }
+                dbHelper.DeleteAllIssues();
             }
             catch (Exception ex) {
                 throw new Exception("Error clearing data: " + ex.Message, ex);

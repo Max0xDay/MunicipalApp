@@ -203,5 +203,20 @@ namespace Sidequest_municiple_app {
 
             return ServiceRequestPriority.Medium;
         }
+
+        public void DeleteAllIssues() {
+            try {
+                using (SQLiteConnection connection = CreateConnection()) {
+                    connection.Open();
+                    string sql = "DELETE FROM Issues";
+                    using (SQLiteCommand command = new SQLiteCommand(sql, connection)) {
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex) {
+                throw new InvalidOperationException("Error deleting all issues: " + ex.Message, ex);
+            }
+        }
     }
 }
