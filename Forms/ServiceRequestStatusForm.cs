@@ -38,7 +38,15 @@ namespace Sidequest_municiple_app {
         private ServiceRequestAVL requestBalancedTree;
         private ServiceRequestHeap requestHeap;
         private ServiceRequestGraph requestGraph;
+        private ServiceRequestRedBlackTree requestRedBlackTree;
+        private ServiceRequestTree requestHierarchyTree;
+        private ServiceRequestBinaryTree requestBinaryTree;
         private DatabaseHelper dbHelper;
+        
+        private TabControl tabControl;
+        private TabPage tabOverview;
+        private TabPage tabTreeAnalysis;
+        private Label lblDataStructureHints;
 
         public ServiceRequestStatusForm() {
             InitializeComponent();
@@ -62,6 +70,30 @@ namespace Sidequest_municiple_app {
             lblTitle.AutoSize = true;
             lblTitle.Location = new Point(30, 20);
             Controls.Add(lblTitle);
+            
+            Panel pnlAlgorithmInfo = new Panel();
+            pnlAlgorithmInfo.Location = new Point(600, 15);
+            pnlAlgorithmInfo.Size = new Size(370, 35);
+            pnlAlgorithmInfo.BackColor = Color.FromArgb(240, 248, 255);
+            pnlAlgorithmInfo.BorderStyle = BorderStyle.FixedSingle;
+            Controls.Add(pnlAlgorithmInfo);
+            
+            Label lblAlgoTitle = new Label();
+            lblAlgoTitle.Text = "Active Data Structures:";
+            lblAlgoTitle.Font = new Font("Segoe UI", 8, FontStyle.Bold);
+            lblAlgoTitle.ForeColor = Color.FromArgb(70, 70, 70);
+            lblAlgoTitle.AutoSize = true;
+            lblAlgoTitle.Location = new Point(5, 3);
+            pnlAlgorithmInfo.Controls.Add(lblAlgoTitle);
+            
+            Label lblAlgoList = new Label();
+            lblAlgoList.Text = "BST, AVL Tree, Red-Black Tree, Basic Tree, Binary Tree,\nHeap, Graph, BFS, DFS, MST";
+            lblAlgoList.Font = new Font("Segoe UI", 7);
+            lblAlgoList.ForeColor = Color.FromArgb(100, 100, 100);
+            lblAlgoList.AutoSize = false;
+            lblAlgoList.Size = new Size(360, 25);
+            lblAlgoList.Location = new Point(5, 15);
+            pnlAlgorithmInfo.Controls.Add(lblAlgoList);
 
             pnlControls = new Panel();
             pnlControls.Location = new Point(30, 60);
@@ -71,7 +103,7 @@ namespace Sidequest_municiple_app {
             Controls.Add(pnlControls);
 
             Label lblSearchLabel = new Label();
-            lblSearchLabel.Text = "Search by ID:";
+            lblSearchLabel.Text = "Search by ID (using BST):";
             lblSearchLabel.Font = new Font("Segoe UI", 10);
             lblSearchLabel.ForeColor = AppPalette.TextPrimary;
             lblSearchLabel.AutoSize = true;
@@ -134,7 +166,7 @@ namespace Sidequest_municiple_app {
             pnlControls.Controls.Add(cmbCategoryFilter);
 
             lblSortBy = new Label();
-            lblSortBy.Text = "Sort:";
+            lblSortBy.Text = "Sort (AVL):";
             lblSortBy.Font = new Font("Segoe UI", 10);
             lblSortBy.ForeColor = AppPalette.TextPrimary;
             lblSortBy.AutoSize = true;
@@ -254,11 +286,11 @@ namespace Sidequest_municiple_app {
             pnlBottom.Controls.Add(btnUpdateStatus);
 
             lblPriorityQueue = new Label();
-            lblPriorityQueue.Text = "Priority Queue";
+            lblPriorityQueue.Text = "Priority Queue (Heap Algorithm)";
             lblPriorityQueue.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             lblPriorityQueue.ForeColor = AppPalette.TextPrimary;
             lblPriorityQueue.AutoSize = true;
-            lblPriorityQueue.Location = new Point(20, 55);
+            lblPriorityQueue.Location = new Point(20, 50);
             pnlBottom.Controls.Add(lblPriorityQueue);
 
             lvPriorityQueue = new ListView();
@@ -276,7 +308,7 @@ namespace Sidequest_municiple_app {
             pnlBottom.Controls.Add(lvPriorityQueue);
 
             lblRelatedRequests = new Label();
-            lblRelatedRequests.Text = "Related Requests";
+            lblRelatedRequests.Text = "Related Requests (Graph Network)";
             lblRelatedRequests.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             lblRelatedRequests.ForeColor = AppPalette.TextPrimary;
             lblRelatedRequests.AutoSize = true;
@@ -296,7 +328,7 @@ namespace Sidequest_municiple_app {
             pnlBottom.Controls.Add(lvRelatedRequests);
 
             lblGraphTraversal = new Label();
-            lblGraphTraversal.Text = "Graph Traversal";
+            lblGraphTraversal.Text = "Graph Traversal Algorithm:";
             lblGraphTraversal.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             lblGraphTraversal.ForeColor = AppPalette.TextPrimary;
             lblGraphTraversal.AutoSize = true;
@@ -304,11 +336,11 @@ namespace Sidequest_municiple_app {
             pnlBottom.Controls.Add(lblGraphTraversal);
 
             cmbGraphTraversal = new ComboBox();
-            cmbGraphTraversal.Location = new Point(660, 102);
-            cmbGraphTraversal.Size = new Size(130, 25);
+            cmbGraphTraversal.Location = new Point(735, 102);
+            cmbGraphTraversal.Size = new Size(165, 25);
             cmbGraphTraversal.Font = new Font("Segoe UI", 10);
             cmbGraphTraversal.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbGraphTraversal.Items.AddRange(new object[] { "BFS", "DFS", "MST" });
+            cmbGraphTraversal.Items.AddRange(new object[] { "BFS (Breadth-First)", "DFS (Depth-First)", "MST (Min Span Tree)" });
             cmbGraphTraversal.SelectedIndexChanged += GraphTraversalChanged;
             pnlBottom.Controls.Add(cmbGraphTraversal);
 
@@ -331,6 +363,41 @@ namespace Sidequest_municiple_app {
             requestBalancedTree = new ServiceRequestAVL();
             requestHeap = new ServiceRequestHeap();
             requestGraph = new ServiceRequestGraph();
+            requestRedBlackTree = new ServiceRequestRedBlackTree();
+            requestHierarchyTree = new ServiceRequestTree();
+            requestBinaryTree = new ServiceRequestBinaryTree();
+            
+            SetupDataStructureHints();
+        }
+        
+        private void SetupDataStructureHints() {
+            lblDataStructureHints = new Label();
+            lblDataStructureHints.Location = new Point(30, 650);
+            lblDataStructureHints.Size = new Size(940, 40);
+            lblDataStructureHints.Font = new Font("Segoe UI", 8, FontStyle.Italic);
+            lblDataStructureHints.ForeColor = Color.FromArgb(100, 100, 100);
+            lblDataStructureHints.Text = "Active Algorithms: BST (ID search) | AVL Tree (balanced sort) | Red-Black Tree (category sort) | " +
+                "Basic Tree (hierarchy) | Binary Tree (insertion order) | Heap (priority) | Graph (relationships) | BFS/DFS (traversal) | MST (network)";
+            Controls.Add(lblDataStructureHints);
+        }
+        
+        private void UpdateDataStructureHints() {
+            if (lblDataStructureHints == null) {
+                return;
+            }
+            
+            int bstCount = requestTree.Count;
+            int avlCount = requestBalancedTree.Count;
+            int heapCount = requestHeap.Count;
+            int graphCount = requestGraph.Count;
+            int rbCount = requestRedBlackTree.Count;
+            int hierarchyCount = requestHierarchyTree.Count;
+            int binaryCount = requestBinaryTree.Count;
+            
+            lblDataStructureHints.Text = string.Format(
+                "Algorithms Active - BST: {0} nodes | AVL Tree: {1} nodes | Red-Black Tree: {2} nodes | " +
+                "Basic Tree: {3} nodes | Binary Tree: {4} nodes | Heap: {5} priority items | Graph: {6} vertices with BFS/DFS/MST",
+                bstCount, avlCount, rbCount, hierarchyCount, binaryCount, heapCount, graphCount);
         }
 
         private void LoadServiceRequests() {
@@ -340,6 +407,9 @@ namespace Sidequest_municiple_app {
                 requestBalancedTree.Clear();
                 requestHeap.Clear();
                 requestGraph.Clear();
+                requestRedBlackTree.Clear();
+                requestHierarchyTree.Clear();
+                requestBinaryTree.Clear();
 
                 List<Issue> issues = dbHelper.GetAllIssues();
 
@@ -351,12 +421,16 @@ namespace Sidequest_municiple_app {
                     requestBalancedTree.Insert(request);
                     requestHeap.Insert(request);
                     requestGraph.AddOrUpdate(request);
+                    requestRedBlackTree.Insert(request);
+                    requestHierarchyTree.Insert(request);
+                    requestBinaryTree.Insert(request);
                 }
 
                 requestGraph.BuildRelationships(allServiceRequests);
                 ApplyFilters();
                 PopulatePriorityQueueDisplay();
                 UpdateGraphDisplays();
+                UpdateDataStructureHints();
             }
             catch (Exception ex) {
                 MessageBox.Show("Error loading service requests: " + ex.Message,
@@ -676,7 +750,7 @@ namespace Sidequest_municiple_app {
 
             string mode = cmbGraphTraversal.SelectedItem.ToString();
 
-            if (string.Equals(mode, "MST", StringComparison.OrdinalIgnoreCase)) {
+            if (mode.Contains("MST")) {
                 IReadOnlyList<GraphEdge> edges = requestGraph.MinimumSpanningTree(uniqueId);
                 int step = 1;
                 foreach (GraphEdge edge in edges) {
@@ -690,7 +764,7 @@ namespace Sidequest_municiple_app {
             }
             else {
                 IReadOnlyList<ServiceRequest> traversal;
-                if (string.Equals(mode, "DFS", StringComparison.OrdinalIgnoreCase)) {
+                if (mode.Contains("DFS")) {
                     traversal = requestGraph.DepthFirst(uniqueId);
                 }
                 else {
