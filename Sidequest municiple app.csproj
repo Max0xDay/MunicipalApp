@@ -91,6 +91,7 @@
     <Compile Include="DataStructures\BinaryTreeNode.cs" />
     <Compile Include="DataStructures\ServiceRequestBinaryTree.cs" />
     <Compile Include="Utilities\AppPalette.cs" />
+    <Compile Include="Utilities\DataSeeder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Form1.resx">

@@ -9,6 +9,7 @@ namespace Sidequest_municiple_app
         private Button btnReportIssues;
         private Button btnLocalEvents;
         private Button btnServiceStatus;
+        private Button btnGenerateTestData;
         private Label lblTitle;
 
         public MainMenuForm()
@@ -79,6 +80,20 @@ namespace Sidequest_municiple_app
             btnServiceStatus.Click += BtnServiceStatus_Click;
             btnServiceStatus.UseVisualStyleBackColor = false;
             this.Controls.Add(btnServiceStatus);
+            
+            btnGenerateTestData = new Button();
+            btnGenerateTestData.Text = "Generate Test Data";
+            btnGenerateTestData.Size = new Size(200, 40);
+            btnGenerateTestData.Location = new Point(200, 305);
+            btnGenerateTestData.BackColor = Color.FromArgb(100, 149, 237);
+            btnGenerateTestData.FlatStyle = FlatStyle.Flat;
+            btnGenerateTestData.FlatAppearance.BorderColor = AppPalette.Border;
+            btnGenerateTestData.FlatAppearance.BorderSize = 1;
+            btnGenerateTestData.ForeColor = Color.White;
+            btnGenerateTestData.Font = new Font("Segoe UI", 9);
+            btnGenerateTestData.UseVisualStyleBackColor = false;
+            btnGenerateTestData.Click += BtnGenerateTestData_Click;
+            this.Controls.Add(btnGenerateTestData);
         }
 
         private void BtnReportIssues_Click(object sender, EventArgs e)
@@ -110,6 +125,61 @@ namespace Sidequest_municiple_app
             catch (Exception ex)
             {
                 MessageBox.Show("Unable to open Service Request Status: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
+        private void BtnGenerateTestData_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                "This will generate test data. Choose:\n\n" +
+                "YES - Generate 100 records (comprehensive test)\n" +
+                "NO - Generate 25 records (quick test)\n" +
+                "CANCEL - Skip generation",
+                "Generate Test Data",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            int recordCount = result == DialogResult.Yes ? 100 : 25;
+
+            try
+            {
+                DataSeeder seeder = new DataSeeder();
+                
+                DialogResult clearResult = MessageBox.Show(
+                    "Clear existing data first?",
+                    "Clear Data",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (clearResult == DialogResult.Yes)
+                {
+                    seeder.ClearAllData();
+                }
+
+                seeder.SeedData(recordCount);
+                seeder.SeedRelatedIssues(10, 5);
+
+                MessageBox.Show(
+                    string.Format("Successfully generated {0} test records plus 50 related cluster records!\n\n" +
+                    "Data includes:\n" +
+                    "- Mixed categories (Water, Electricity, Sanitation, Roads, Utilities)\n" +
+                    "- Varied locations across 30 streets\n" +
+                    "- Random dates over 6 months\n" +
+                    "- Related issue clusters for graph testing\n\n" +
+                    "Open Service Request Status to see all data structures in action!", 
+                    recordCount),
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error generating test data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
