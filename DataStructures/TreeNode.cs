@@ -13,10 +13,6 @@ namespace Sidequest_municiple_app {
                 throw new ArgumentException("Key cannot be empty", nameof(key));
             }
 
-            if (request == null) {
-                throw new ArgumentNullException(nameof(request));
-            }
-
             Key = key;
             Value = request;
             Children = new List<TreeNode>();

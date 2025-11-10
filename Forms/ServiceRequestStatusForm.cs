@@ -30,6 +30,7 @@ namespace Sidequest_municiple_app {
         private ListView lvGraphTraversal;
         private Label lblSortBy;
         private ComboBox cmbSortBy;
+        private ComboBox cmbTreeView;
         private Label lblStatistics;
         private Panel pnlBottom;
 
@@ -174,7 +175,7 @@ namespace Sidequest_municiple_app {
             pnlControls.Controls.Add(lblSortBy);
 
             cmbSortBy = new ComboBox();
-            cmbSortBy.Location = new Point(580, 12);
+            cmbSortBy.Location = new Point(610, 12);
             cmbSortBy.Size = new Size(160, 25);
             cmbSortBy.Font = new Font("Segoe UI", 10);
             cmbSortBy.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -182,6 +183,28 @@ namespace Sidequest_municiple_app {
             cmbSortBy.SelectedIndex = 0;
             cmbSortBy.SelectedIndexChanged += SortChanged;
             pnlControls.Controls.Add(cmbSortBy);
+            
+            Label lblTreeView = new Label();
+            lblTreeView.Text = "Tree View:";
+            lblTreeView.Font = new Font("Segoe UI", 9);
+            lblTreeView.ForeColor = AppPalette.TextPrimary;
+            lblTreeView.AutoSize = true;
+            lblTreeView.Location = new Point(540, 55);
+            pnlControls.Controls.Add(lblTreeView);
+            
+            cmbTreeView = new ComboBox();
+            cmbTreeView.Location = new Point(610, 52);
+            cmbTreeView.Size = new Size(160, 25);
+            cmbTreeView.Font = new Font("Segoe UI", 9);
+            cmbTreeView.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTreeView.Items.AddRange(new object[] { 
+                "Red-Black by Category", 
+                "Hierarchy Tree", 
+                "Binary Tree Order" 
+            });
+            cmbTreeView.SelectedIndex = 0;
+            cmbTreeView.SelectedIndexChanged += TreeViewChanged;
+            pnlControls.Controls.Add(cmbTreeView);
 
             btnRefresh = new Button();
             btnRefresh.Text = "Refresh";
@@ -963,6 +986,28 @@ namespace Sidequest_municiple_app {
             }
 
             return true;
+        }
+        
+        private void TreeViewChanged(object sender, EventArgs e) {
+            if (cmbTreeView == null || cmbTreeView.SelectedItem == null) {
+                return;
+            }
+            
+            string selectedView = cmbTreeView.SelectedItem.ToString();
+            List<ServiceRequest> displayRequests = new List<ServiceRequest>();
+            
+            if (selectedView.Contains("Red-Black")) {
+                displayRequests = requestRedBlackTree.InOrder().ToList();
+            }
+            else if (selectedView.Contains("Hierarchy")) {
+                displayRequests = requestHierarchyTree.GetAll().ToList();
+            }
+            else if (selectedView.Contains("Binary Tree")) {
+                displayRequests = requestBinaryTree.LevelOrder().ToList();
+            }
+            
+            DisplayServiceRequests(displayRequests);
+            UpdateStatistics(displayRequests);
         }
 
         private void InitializeComponent() {
