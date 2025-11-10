@@ -35,6 +35,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>packages\System.Data.SQLite.Core.1.0.118.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,6 +75,15 @@
     <Compile Include="Models\ServiceRequest.cs" />
     <Compile Include="DataAccess\DatabaseHelper.cs" />
     <Compile Include="DataStructures\PriorityCategoryQueue.cs" />
+    <Compile Include="DataStructures\BSTNode.cs" />
+    <Compile Include="DataStructures\AVLNode.cs" />
+    <Compile Include="DataStructures\HeapNode.cs" />
+    <Compile Include="DataStructures\GraphNode.cs" />
+    <Compile Include="DataStructures\GraphEdge.cs" />
+    <Compile Include="DataStructures\ServiceRequestBST.cs" />
+    <Compile Include="DataStructures\ServiceRequestAVL.cs" />
+    <Compile Include="DataStructures\ServiceRequestHeap.cs" />
+    <Compile Include="DataStructures\ServiceRequestGraph.cs" />
     <Compile Include="Utilities\AppPalette.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
