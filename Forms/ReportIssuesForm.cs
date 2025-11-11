@@ -153,7 +153,7 @@ namespace Sidequest_municiple_app {
             lblSuggestion.BringToFront();
 
             Label lblTitleHint = new Label {
-                Text = "Start typing common issues like 'burst', 'pothole', 'blocked' and press TAB to autocomplete",
+                Text = "Start typing and press SPACE to accept suggestions",
                 Location = new Point(30, 85),
                 AutoSize = true,
                 Font = new Font("Segoe UI", 8, FontStyle.Italic),
@@ -558,9 +558,13 @@ namespace Sidequest_municiple_app {
         }
 
         private void TxtTitle_KeyDown(object sender, KeyEventArgs e) {
-            if (e.KeyCode == Keys.Tab && !string.IsNullOrEmpty(currentSuggestion)) {
+            if (e.KeyCode == Keys.Space && !string.IsNullOrEmpty(currentSuggestion)) {
                 e.SuppressKeyPress = true;
                 ApplySuggestion();
+            }
+            else if (e.KeyCode != Keys.Space && !string.IsNullOrEmpty(currentSuggestion)) {
+                lblSuggestion.Visible = false;
+                currentSuggestion = string.Empty;
             }
         }
 
@@ -569,28 +573,20 @@ namespace Sidequest_municiple_app {
                 return;
             }
 
-            string text = txtTitle.Text.Trim();
+            string text = txtTitle.Text;
             
-            if (text.Length < 3) {
+            if (text.Length < 2) {
                 lblSuggestion.Visible = false;
                 currentSuggestion = string.Empty;
                 return;
             }
 
-            string lastWord = GetLastPartialWord(text);
+            string suggestion = predictionTrie.GetTopSuggestion(text);
             
-            if (string.IsNullOrWhiteSpace(lastWord) || lastWord.Length < 3) {
-                lblSuggestion.Visible = false;
-                currentSuggestion = string.Empty;
-                return;
-            }
-
-            string suggestion = predictionTrie.GetTopSuggestion(lastWord);
-            
-            if (!string.IsNullOrEmpty(suggestion) && suggestion.ToLower().StartsWith(lastWord.ToLower())) {
+            if (!string.IsNullOrEmpty(suggestion) && suggestion.ToLower().StartsWith(text.ToLower())) {
                 currentSuggestion = suggestion;
-                string remainingSuggestion = suggestion.Substring(lastWord.Length);
-                lblSuggestion.Text = string.Format("{0} (suggested: {1})", lastWord, remainingSuggestion);
+                string remainingSuggestion = suggestion.Substring(text.Length);
+                lblSuggestion.Text = text + remainingSuggestion;
                 lblSuggestion.Visible = true;
             }
             else {
@@ -599,37 +595,12 @@ namespace Sidequest_municiple_app {
             }
         }
 
-        private string GetLastPartialWord(string text) {
-            if (string.IsNullOrWhiteSpace(text)) {
-                return string.Empty;
-            }
-
-            text = text.TrimEnd();
-            int lastSpaceIndex = text.LastIndexOf(' ');
-            
-            if (lastSpaceIndex == -1) {
-                return text;
-            }
-            
-            return text.Substring(lastSpaceIndex + 1);
-        }
-
         private void ApplySuggestion() {
             if (string.IsNullOrEmpty(currentSuggestion) || txtTitle == null) {
                 return;
             }
 
-            string currentText = txtTitle.Text.Trim();
-            string lastWord = GetLastPartialWord(currentText);
-            
-            if (string.IsNullOrEmpty(lastWord)) {
-                return;
-            }
-
-            int lastSpaceIndex = currentText.LastIndexOf(' ');
-            string beforeLastWord = lastSpaceIndex >= 0 ? currentText.Substring(0, lastSpaceIndex + 1) : string.Empty;
-            
-            txtTitle.Text = beforeLastWord + currentSuggestion + " ";
+            txtTitle.Text = currentSuggestion + " ";
             txtTitle.SelectionStart = txtTitle.Text.Length;
             
             lblSuggestion.Visible = false;
