@@ -1,4 +1,9 @@
 /*
+========  GraphEdge.cs  ========
+Purpose: GraphEdges represent weighted connections between service request nodes in a graph structure.
+Why its used: In the Sidequest municipal app, graph edges encode relationships between related incidents.
+
+In detail:
 Each graph edge is the connective tissue that lets us treat service requests as a network of
 related incidents rather than isolated tickets. By capturing both endpoints plus a floating-point
 weight we can encode nuanced similarities—shared categories, overlapping locations, or
@@ -8,6 +13,7 @@ The ServiceRequestStatus form leans on these edges when it draws traversal lists
 spanning trees. During refreshes the graph builder computes weights and hands them to this
 class, and later the traversal panel reads them back to explain why two requests are traveling
 together or how strongly they influence the prioritization overlay.
+=============================
 */
 using System;
 

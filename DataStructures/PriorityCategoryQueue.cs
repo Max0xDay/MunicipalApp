@@ -1,4 +1,9 @@
 /*
+========  PriorityCategoryQueue.cs  ========
+Purpose: PriorityCategoryQueue implements a multi-level priority queue with FIFO ordering within each tier.
+Why its used: In the Sidequest municipal app, this queue ensures fair processing of same-priority requests.
+
+In detail:
 This generic priority queue takes the municipal workload and funnels it through a tiered
 structure built on sorted dictionaries of FIFO queues. Instead of a single min-heap we maintain
 discrete lanes per priority level, so equal-ranked items keep their submission order—a subtle
@@ -8,6 +13,7 @@ Inside the application it backs the `ServiceRequestHeap` when we want an easy wa
 requests by severity while still allowing category overrides. The ServiceRequestStatus form reads
 snapshots from this queue whenever it assembles the priority sidebar, ensuring the UI
 communicates urgency and fairness without hitting the database for every refresh.
+=============================
 */
 using System;
 using System.Collections.Generic;

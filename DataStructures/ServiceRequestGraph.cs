@@ -1,4 +1,9 @@
 /*
+========  ServiceRequestGraph.cs  ========
+Purpose: ServiceRequestGraph manages a network of municipal tickets with weighted relationships between them.
+Why its used: In the Sidequest municipal app, graphs reveal how service requests relate and influence each other.
+
+In detail:
 The ServiceRequestGraph weaves every municipal ticket into a broader relational fabric. It stores
 nodes keyed by the request identifier, builds edges to express contextual overlap, and exposes
 traversal algorithms that our UI uses to narrate the ripple effects of each issue across the city.
@@ -7,6 +12,7 @@ During refresh cycles the ServiceRequestStatus form pumps records from SQLite in
 structure, then asks it to construct adjacency lists, related-request groupings, and graph
 traversals. Those outputs drive the panels that show citizens which incidents are linked, how the
 network evolves, and where minimum spanning trees uncover efficient resolution pathways.
+=============================
 */
 using System;
 using System.Collections.Generic;

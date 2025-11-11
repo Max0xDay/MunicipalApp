@@ -1,4 +1,9 @@
 /*
+========  ServiceRequestAVL.cs  ========
+Purpose: ServiceRequestAVL maintains a self-balancing AVL tree for chronologically ordered service requests.
+Why its used: In the Sidequest municipal app, AVL trees guarantee balanced searches and insertions for time-sorted data.
+
+In detail:
 The ServiceRequestAVL class is our balanced guardian for chronological ordering. It layers an
 AVL tree over municipal tickets, using a custom comparer that sorts by submission time and then
 by identifier, which keeps the structure gracefully ordered even when the control room floods it
@@ -8,6 +13,7 @@ The ServiceRequestStatus form relies on this class for consistent ordering whene
 validates records. Every refresh seeds the tree from the database; rotations happen
 transparently under the hood, and later the statistics panel leans on the AVL validations to
 confirm the algorithmic landscape is still healthy.
+=============================
 */
 using System;
 using System.Collections.Generic;

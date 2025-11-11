@@ -1,4 +1,9 @@
 /*
+========  ServiceRequestHeap.cs  ========
+Purpose: ServiceRequestHeap implements a min-heap for priority-based extraction of urgent service requests.
+Why its used: In the Sidequest municipal app, heaps ensure highest-priority tickets are always accessible in constant time.
+
+In detail:
 The ServiceRequestHeap is the fast lane for urgent tickets. It wraps a binary heap around
 `HeapNode` instances, translating enum-based priorities into integer keys so the highest-
 importance request always lives at the root. Insertions bubble through `HeapifyUp`, while
@@ -8,6 +13,7 @@ On the ServiceRequestStatus form the priority widget asks this heap for ordered 
 spotlight the top municipal fires. Because the heap recalculates after every status change, the UI
 can reveal who needs attention immediately without re-querying the database, ensuring dispatch
 decisions stay agile.
+=============================
 */
 using System;
 using System.Collections.Generic;
