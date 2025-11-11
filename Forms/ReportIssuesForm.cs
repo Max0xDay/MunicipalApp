@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace Sidequest_municiple_app {
     public partial class ReportIssuesForm : Form {
+        private TextBox txtTitle;
         private TextBox txtLocation;
         private ComboBox cmbCategory;
         private RichTextBox txtDescription;
@@ -16,11 +17,13 @@ namespace Sidequest_municiple_app {
         private ProgressBar progressBar;
         private Label lblProgress;
         private Label lblProgressMessage;
+        private Label lblTitle;
+        private Label lblTitleField;
         private Label lblLocation;
         private Label lblCategory;
         private Label lblDescription;
         private Label lblAttachment;
-        private Label lblTitle;
+        private Label lblSuggestion;
         private Panel pnlHeader;
         private Panel pnlForm;
         private Panel pnlSocialMedia;
@@ -35,6 +38,8 @@ namespace Sidequest_municiple_app {
         private List<string> attachmentPaths;
         private DatabaseHelper dbHelper;
         private List<Issue> issues;
+        private IssuePredictionTrie predictionTrie;
+        private string currentSuggestion;
 
         public ReportIssuesForm() {
             InitializeComponent();
@@ -42,6 +47,8 @@ namespace Sidequest_municiple_app {
             dbHelper = new DatabaseHelper();
             issues = new List<Issue>();
             attachmentPaths = new List<string>();
+            predictionTrie = new IssuePredictionTrie();
+            currentSuggestion = string.Empty;
             UpdateProgress();
         }
 
@@ -112,9 +119,51 @@ namespace Sidequest_municiple_app {
             };
             Controls.Add(pnlForm);
 
+            lblTitleField = new Label {
+                Text = "Issue Title:",
+                Location = new Point(30, 25),
+                Size = new Size(150, 23),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = AppPalette.TextPrimary
+            };
+            pnlForm.Controls.Add(lblTitleField);
+
+            txtTitle = new TextBox {
+                Location = new Point(30, 50),
+                Size = new Size(800, 30),
+                Font = new Font("Segoe UI", 11),
+                BackColor = AppPalette.CodeBlock,
+                ForeColor = AppPalette.TextPrimary,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            txtTitle.TextChanged += TxtTitle_TextChanged;
+            txtTitle.KeyDown += TxtTitle_KeyDown;
+            pnlForm.Controls.Add(txtTitle);
+
+            lblSuggestion = new Label {
+                Text = string.Empty,
+                Location = new Point(35, 55),
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10, FontStyle.Italic),
+                ForeColor = AppPalette.TextMuted,
+                BackColor = Color.Transparent,
+                Visible = false
+            };
+            pnlForm.Controls.Add(lblSuggestion);
+            lblSuggestion.BringToFront();
+
+            Label lblTitleHint = new Label {
+                Text = "Start typing common issues like 'burst', 'pothole', 'blocked' and press TAB to autocomplete",
+                Location = new Point(30, 85),
+                AutoSize = true,
+                Font = new Font("Segoe UI", 8, FontStyle.Italic),
+                ForeColor = AppPalette.TextMuted
+            };
+            pnlForm.Controls.Add(lblTitleHint);
+
             lblLocation = new Label {
                 Text = "Location of Issue:",
-                Location = new Point(30, 25),
+                Location = new Point(30, 120),
                 Size = new Size(150, 23),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
                 ForeColor = AppPalette.TextPrimary
@@ -122,7 +171,7 @@ namespace Sidequest_municiple_app {
             pnlForm.Controls.Add(lblLocation);
 
             txtLocation = new TextBox {
-                Location = new Point(30, 50),
+                Location = new Point(30, 145),
                 Size = new Size(500, 30),
                 Font = new Font("Segoe UI", 11),
                 BackColor = AppPalette.CodeBlock,
@@ -134,7 +183,7 @@ namespace Sidequest_municiple_app {
 
             Label lblLocationHint = new Label {
                 Text = "e.g., 123 Main Street, Ward 5, or Near Central Park",
-                Location = new Point(30, 85),
+                Location = new Point(30, 180),
                 AutoSize = true,
                 Font = new Font("Segoe UI", 8, FontStyle.Italic),
                 ForeColor = AppPalette.TextMuted
@@ -143,7 +192,7 @@ namespace Sidequest_municiple_app {
 
             lblCategory = new Label {
                 Text = "Issue Category:",
-                Location = new Point(580, 25),
+                Location = new Point(580, 120),
                 Size = new Size(150, 23),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
                 ForeColor = AppPalette.TextPrimary
@@ -151,7 +200,7 @@ namespace Sidequest_municiple_app {
             pnlForm.Controls.Add(lblCategory);
 
             cmbCategory = new ComboBox {
-                Location = new Point(580, 50),
+                Location = new Point(580, 145),
                 Size = new Size(250, 30),
                 Font = new Font("Segoe UI", 11),
                 DropDownStyle = ComboBoxStyle.DropDownList,
@@ -171,7 +220,7 @@ namespace Sidequest_municiple_app {
 
             Label lblCategoryHint = new Label {
                 Text = "Select the type of issue you're reporting",
-                Location = new Point(580, 85),
+                Location = new Point(580, 180),
                 AutoSize = true,
                 Font = new Font("Segoe UI", 8, FontStyle.Italic),
                 ForeColor = AppPalette.TextMuted
@@ -180,7 +229,7 @@ namespace Sidequest_municiple_app {
 
             lblDescription = new Label {
                 Text = "Detailed Description:",
-                Location = new Point(30, 120),
+                Location = new Point(30, 210),
                 Size = new Size(200, 23),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
                 ForeColor = AppPalette.TextPrimary
@@ -188,8 +237,8 @@ namespace Sidequest_municiple_app {
             pnlForm.Controls.Add(lblDescription);
 
             txtDescription = new RichTextBox {
-                Location = new Point(30, 145),
-                Size = new Size(800, 120),
+                Location = new Point(30, 235),
+                Size = new Size(800, 90),
                 Font = new Font("Segoe UI", 10),
                 BackColor = AppPalette.CodeBlock,
                 ForeColor = AppPalette.TextPrimary,
@@ -199,8 +248,8 @@ namespace Sidequest_municiple_app {
             pnlForm.Controls.Add(txtDescription);
 
             Label lblDescriptionHint = new Label {
-                Text = "Please provide as much detail as possible to help us address the issue quickly",
-                Location = new Point(30, 270),
+                Text = "Provide additional details to help us address the issue",
+                Location = new Point(30, 330),
                 AutoSize = true,
                 Font = new Font("Segoe UI", 8, FontStyle.Italic),
                 ForeColor = AppPalette.TextMuted
@@ -408,7 +457,7 @@ namespace Sidequest_municiple_app {
             pnlProgress.Controls.Add(lblProgress);
 
             lblProgressMessage = new Label {
-                Text = "Start by entering the location of the issue",
+                Text = "Start by entering a title for the issue",
                 Location = new Point(230, 11),
                 AutoSize = true,
                 Font = new Font("Segoe UI", 9, FontStyle.Italic),
@@ -435,28 +484,50 @@ namespace Sidequest_municiple_app {
             int progress = 0;
             string message = "";
 
+            bool hasTitle = !string.IsNullOrWhiteSpace(txtTitle.Text);
             bool hasLocation = !string.IsNullOrWhiteSpace(txtLocation.Text);
             bool hasCategory = cmbCategory.SelectedIndex >= 0;
             bool hasDescription = !string.IsNullOrWhiteSpace(txtDescription.Text);
             bool hasAttachment = attachmentPaths.Count > 0;
 
-            if (hasLocation) progress += 25;
-            if (hasCategory) progress += 25;
-            if (hasDescription) progress += 25;
-            if (hasAttachment) progress += 25;
+            if (hasTitle) progress += 20;
+            if (hasLocation) progress += 20;
+            if (hasCategory) progress += 20;
+            if (hasDescription) progress += 20;
+            if (hasAttachment) progress += 20;
 
             if (progress == 0) {
-                message = "Start by entering the location of the issue";
+                message = "Start by entering a title for the issue";
             }
-            else if (progress == 25) {
-                if (hasLocation) {
-                    message = "Great start! Now select the category";
+            else if (progress == 20) {
+                if (hasTitle) {
+                    message = "Great start! Now enter the location";
+                }
+                else if (hasLocation) {
+                    message = "Good! Now add a title";
                 }
                 else if (hasCategory) {
-                    message = "Good! Now enter the location";
+                    message = "Good! Now add a title";
+                }
+                else if (hasDescription) {
+                    message = "Good! Now add a title";
+                }
+                else if (hasAttachment) {
+                    message = "Good! Now add a title";
                 }
             }
-            else if (progress == 50) {
+            else if (progress == 40) {
+                if (!hasCategory) {
+                    message = "Nice! Now select the category";
+                }
+                else if (!hasLocation) {
+                    message = "Nice! Now enter the location";
+                }
+                else if (!hasDescription) {
+                    message = "Nice! Now describe the issue";
+                }
+            }
+            else if (progress == 60) {
                 if (!hasDescription) {
                     message = "Almost there! Please describe the issue";
                 }
@@ -464,10 +535,10 @@ namespace Sidequest_municiple_app {
                     message = "Looking good! Please select a category";
                 }
                 else if (!hasLocation) {
-                    message = "Nice! Now enter the location";
+                    message = "Looking good! Please enter the location";
                 }
             }
-            else if (progress == 75) {
+            else if (progress == 80) {
                 message = "Excellent! You can add photos or submit now";
             }
             else if (progress == 100) {
@@ -479,6 +550,90 @@ namespace Sidequest_municiple_app {
             if (lblProgressMessage != null) {
                 lblProgressMessage.Text = message;
             }
+        }
+
+        private void TxtTitle_TextChanged(object sender, EventArgs e) {
+            Input_Changed(sender, e);
+            UpdateSuggestion();
+        }
+
+        private void TxtTitle_KeyDown(object sender, KeyEventArgs e) {
+            if (e.KeyCode == Keys.Tab && !string.IsNullOrEmpty(currentSuggestion)) {
+                e.SuppressKeyPress = true;
+                ApplySuggestion();
+            }
+        }
+
+        private void UpdateSuggestion() {
+            if (txtTitle == null || lblSuggestion == null) {
+                return;
+            }
+
+            string text = txtTitle.Text.Trim();
+            
+            if (text.Length < 3) {
+                lblSuggestion.Visible = false;
+                currentSuggestion = string.Empty;
+                return;
+            }
+
+            string lastWord = GetLastPartialWord(text);
+            
+            if (string.IsNullOrWhiteSpace(lastWord) || lastWord.Length < 3) {
+                lblSuggestion.Visible = false;
+                currentSuggestion = string.Empty;
+                return;
+            }
+
+            string suggestion = predictionTrie.GetTopSuggestion(lastWord);
+            
+            if (!string.IsNullOrEmpty(suggestion) && suggestion.ToLower().StartsWith(lastWord.ToLower())) {
+                currentSuggestion = suggestion;
+                string remainingSuggestion = suggestion.Substring(lastWord.Length);
+                lblSuggestion.Text = string.Format("{0} (suggested: {1})", lastWord, remainingSuggestion);
+                lblSuggestion.Visible = true;
+            }
+            else {
+                lblSuggestion.Visible = false;
+                currentSuggestion = string.Empty;
+            }
+        }
+
+        private string GetLastPartialWord(string text) {
+            if (string.IsNullOrWhiteSpace(text)) {
+                return string.Empty;
+            }
+
+            text = text.TrimEnd();
+            int lastSpaceIndex = text.LastIndexOf(' ');
+            
+            if (lastSpaceIndex == -1) {
+                return text;
+            }
+            
+            return text.Substring(lastSpaceIndex + 1);
+        }
+
+        private void ApplySuggestion() {
+            if (string.IsNullOrEmpty(currentSuggestion) || txtTitle == null) {
+                return;
+            }
+
+            string currentText = txtTitle.Text.Trim();
+            string lastWord = GetLastPartialWord(currentText);
+            
+            if (string.IsNullOrEmpty(lastWord)) {
+                return;
+            }
+
+            int lastSpaceIndex = currentText.LastIndexOf(' ');
+            string beforeLastWord = lastSpaceIndex >= 0 ? currentText.Substring(0, lastSpaceIndex + 1) : string.Empty;
+            
+            txtTitle.Text = beforeLastWord + currentSuggestion + " ";
+            txtTitle.SelectionStart = txtTitle.Text.Length;
+            
+            lblSuggestion.Visible = false;
+            currentSuggestion = string.Empty;
         }
 
         private void BtnAttachment_Click(object sender, EventArgs e) {
@@ -587,6 +742,7 @@ namespace Sidequest_municiple_app {
                 string combinedAttachments = string.Join(";", attachmentPaths);
                 
                 Issue issue = new Issue(
+                    txtTitle.Text.Trim(),
                     txtLocation.Text.Trim(),
                     cmbCategory.SelectedItem.ToString(),
                     txtDescription.Text.Trim(),
@@ -598,13 +754,17 @@ namespace Sidequest_municiple_app {
                     int issueId = dbHelper.SaveIssue(issue);
                     issues.Add(issue);
 
+                    predictionTrie.LearnFromInput(txtTitle.Text.Trim());
+
                     string successMessage = string.Format(
                         "Issue reported successfully!\n\n" +
                         "Reference ID: {0:D6}\n" +
-                        "Category: {1}\n" +
-                        "Location: {2}\n\n" +
+                        "Title: {1}\n" +
+                        "Category: {2}\n" +
+                        "Location: {3}\n\n" +
                         "Thank you for helping improve our community!",
                         issueId,
+                        issue.Title,
                         issue.Category,
                         issue.Location
                     );
@@ -622,6 +782,13 @@ namespace Sidequest_municiple_app {
         }
 
         private bool ValidateInput() {
+            if (string.IsNullOrWhiteSpace(txtTitle.Text)) {
+                MessageBox.Show("Please enter a title for the issue.", 
+                    "Title Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTitle.Focus();
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(txtLocation.Text)) {
                 MessageBox.Show("Please enter the location of the issue.", 
                     "Location Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -654,11 +821,16 @@ namespace Sidequest_municiple_app {
         }
 
         private void ClearForm() {
+            txtTitle.Clear();
             txtLocation.Clear();
             cmbCategory.SelectedIndex = -1;
             txtDescription.Clear();
             attachmentPaths.Clear();
             flowAttachments.Controls.Clear();
+            currentSuggestion = string.Empty;
+            if (lblSuggestion != null) {
+                lblSuggestion.Visible = false;
+            }
             UpdateProgress();
         }
 

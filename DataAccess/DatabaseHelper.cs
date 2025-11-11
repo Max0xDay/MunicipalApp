@@ -28,11 +28,12 @@ namespace Sidequest_municiple_app {
             try {
                 using (SQLiteConnection connection = CreateConnection()) {
                     connection.Open();
-                    string sql = @"INSERT INTO Issues (UniqueId, Location, Category, Description, AttachmentPath, ReportDate, Status, Priority)
-                                   VALUES (@uniqueId, @location, @category, @description, @attachmentPath, @reportDate, @status, @priority);
+                    string sql = @"INSERT INTO Issues (UniqueId, Title, Location, Category, Description, AttachmentPath, ReportDate, Status, Priority)
+                                   VALUES (@uniqueId, @title, @location, @category, @description, @attachmentPath, @reportDate, @status, @priority);
                                    SELECT last_insert_rowid();";
                     using (SQLiteCommand command = new SQLiteCommand(sql, connection)) {
                         command.Parameters.AddWithValue("@uniqueId", issue.UniqueId);
+                        command.Parameters.AddWithValue("@title", string.IsNullOrWhiteSpace(issue.Title) ? (object)DBNull.Value : issue.Title);
                         command.Parameters.AddWithValue("@location", issue.Location);
                         command.Parameters.AddWithValue("@category", issue.Category);
                         command.Parameters.AddWithValue("@description", issue.Description);
@@ -56,7 +57,7 @@ namespace Sidequest_municiple_app {
                 List<Issue> issues = new List<Issue>();
                 using (SQLiteConnection connection = CreateConnection()) {
                     connection.Open();
-                    string sql = @"SELECT Id, UniqueId, Location, Category, Description, AttachmentPath, ReportDate, Status, Priority
+                    string sql = @"SELECT Id, UniqueId, Title, Location, Category, Description, AttachmentPath, ReportDate, Status, Priority
                                    FROM Issues
                                    ORDER BY datetime(ReportDate) DESC";
                     using (SQLiteCommand command = new SQLiteCommand(sql, connection))
@@ -65,15 +66,16 @@ namespace Sidequest_municiple_app {
                             Issue issue = new Issue();
                             issue.Id = reader.GetInt32(0);
                             issue.UniqueId = reader.IsDBNull(1) ? Guid.NewGuid().ToString() : reader.GetString(1);
-                            issue.Location = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
-                            issue.Category = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
-                            issue.Description = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
-                            issue.AttachmentPath = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
-                            string dateValue = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
+                            issue.Title = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+                            issue.Location = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
+                            issue.Category = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
+                            issue.Description = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
+                            issue.AttachmentPath = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
+                            string dateValue = reader.IsDBNull(7) ? string.Empty : reader.GetString(7);
                             issue.ReportDate = ParseDate(dateValue);
-                            string statusValue = reader.IsDBNull(7) ? ServiceRequestStatus.Pending.ToString() : reader.GetString(7);
+                            string statusValue = reader.IsDBNull(8) ? ServiceRequestStatus.Pending.ToString() : reader.GetString(8);
                             issue.Status = ParseStatus(statusValue);
-                            int priorityValue = reader.IsDBNull(8) ? (int)ServiceRequestPriority.Medium : reader.GetInt32(8);
+                            int priorityValue = reader.IsDBNull(9) ? (int)ServiceRequestPriority.Medium : reader.GetInt32(9);
                             issue.Priority = ParsePriority(priorityValue);
                             issues.Add(issue);
                         }
@@ -155,9 +157,11 @@ namespace Sidequest_municiple_app {
         private void InitializeDatabase() {
             using (SQLiteConnection connection = CreateConnection()) {
                 connection.Open();
-                string sql = @"CREATE TABLE IF NOT EXISTS Issues (
+                
+                string createTableSql = @"CREATE TABLE IF NOT EXISTS Issues (
                                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                                 UniqueId TEXT NOT NULL,
+                                Title TEXT,
                                 Location TEXT NOT NULL,
                                 Category TEXT NOT NULL,
                                 Description TEXT,
@@ -166,8 +170,17 @@ namespace Sidequest_municiple_app {
                                 Status TEXT NOT NULL,
                                 Priority INTEGER NOT NULL
                               )";
-                using (SQLiteCommand command = new SQLiteCommand(sql, connection)) {
+                using (SQLiteCommand command = new SQLiteCommand(createTableSql, connection)) {
                     command.ExecuteNonQuery();
+                }
+
+                string alterTableSql = @"ALTER TABLE Issues ADD COLUMN Title TEXT";
+                try {
+                    using (SQLiteCommand command = new SQLiteCommand(alterTableSql, connection)) {
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (SQLiteException) {
                 }
             }
         }

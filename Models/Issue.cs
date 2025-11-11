@@ -4,6 +4,7 @@ namespace Sidequest_municiple_app {
     public class Issue {
         public int Id { get; set; }
         public string UniqueId { get; set; }
+        public string Title { get; set; }
         public string Location { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
@@ -19,8 +20,9 @@ namespace Sidequest_municiple_app {
             Priority = ServiceRequestPriority.Medium;
         }
 
-        public Issue(string location, string category, string description, string attachmentPath = "") {
+        public Issue(string title, string location, string category, string description, string attachmentPath = "") {
             UniqueId = Guid.NewGuid().ToString();
+            Title = title;
             Location = location;
             Category = category;
             Description = description;
