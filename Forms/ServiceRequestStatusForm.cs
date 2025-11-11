@@ -72,6 +72,42 @@ namespace Sidequest_municiple_app {
             lblTitle.Location = new Point(50, 30);
             Controls.Add(lblTitle);
 
+            Panel pnlTopButtons = new Panel();
+            pnlTopButtons.Location = new Point(1050, 30);
+            pnlTopButtons.Size = new Size(118, 80);
+            pnlTopButtons.BackColor = AppPalette.Surface;
+            pnlTopButtons.BorderStyle = BorderStyle.FixedSingle;
+            Controls.Add(pnlTopButtons);
+
+            btnRefresh = new Button();
+            btnRefresh.Text = "Refresh";
+            btnRefresh.Size = new Size(100, 32);
+            btnRefresh.Location = new Point(9, 8);
+            btnRefresh.BackColor = AppPalette.AccentPrimary;
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            btnRefresh.FlatAppearance.BorderSize = 0;
+            btnRefresh.ForeColor = AppPalette.TextOnAccent;
+            btnRefresh.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            btnRefresh.UseVisualStyleBackColor = false;
+            btnRefresh.Click += BtnRefresh_Click;
+            btnRefresh.MouseEnter += (s, e) => btnRefresh.BackColor = AppPalette.AccentHover;
+            btnRefresh.MouseLeave += (s, e) => btnRefresh.BackColor = AppPalette.AccentPrimary;
+            pnlTopButtons.Controls.Add(btnRefresh);
+
+            btnBack = new Button();
+            btnBack.Text = "Back";
+            btnBack.Size = new Size(100, 32);
+            btnBack.Location = new Point(9, 45);
+            btnBack.BackColor = AppPalette.Surface;
+            btnBack.FlatStyle = FlatStyle.Flat;
+            btnBack.FlatAppearance.BorderColor = AppPalette.Border;
+            btnBack.FlatAppearance.BorderSize = 2;
+            btnBack.ForeColor = AppPalette.TextPrimary;
+            btnBack.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            btnBack.UseVisualStyleBackColor = false;
+            btnBack.Click += BtnBack_Click;
+            pnlTopButtons.Controls.Add(btnBack);
+
             Panel pnlStats = new Panel();
             pnlStats.Location = new Point(50, 70);
             pnlStats.Size = new Size(1118, 40);
@@ -237,35 +273,6 @@ namespace Sidequest_municiple_app {
             cmbTreeView.SelectedIndex = 0;
             cmbTreeView.SelectedIndexChanged += TreeViewChanged;
             pnlControls.Controls.Add(cmbTreeView);
-
-            btnRefresh = new Button();
-            btnRefresh.Text = "Refresh";
-            btnRefresh.Size = new Size(100, 60);
-            btnRefresh.Location = new Point(890, 15);
-            btnRefresh.BackColor = AppPalette.AccentPrimary;
-            btnRefresh.FlatStyle = FlatStyle.Flat;
-            btnRefresh.FlatAppearance.BorderSize = 0;
-            btnRefresh.ForeColor = AppPalette.TextOnAccent;
-            btnRefresh.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-            btnRefresh.UseVisualStyleBackColor = false;
-            btnRefresh.Click += BtnRefresh_Click;
-            btnRefresh.MouseEnter += (s, e) => btnRefresh.BackColor = AppPalette.AccentHover;
-            btnRefresh.MouseLeave += (s, e) => btnRefresh.BackColor = AppPalette.AccentPrimary;
-            pnlControls.Controls.Add(btnRefresh);
-
-            btnBack = new Button();
-            btnBack.Text = "Back";
-            btnBack.Size = new Size(100, 60);
-            btnBack.Location = new Point(1000, 15);
-            btnBack.BackColor = AppPalette.Surface;
-            btnBack.FlatStyle = FlatStyle.Flat;
-            btnBack.FlatAppearance.BorderColor = AppPalette.Border;
-            btnBack.FlatAppearance.BorderSize = 2;
-            btnBack.ForeColor = AppPalette.TextPrimary;
-            btnBack.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-            btnBack.UseVisualStyleBackColor = false;
-            btnBack.Click += BtnBack_Click;
-            pnlControls.Controls.Add(btnBack);
 
             dgvRequests = new DataGridView();
             dgvRequests.Location = new Point(50, 230);
