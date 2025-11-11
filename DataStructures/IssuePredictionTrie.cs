@@ -1,3 +1,21 @@
+/*
+========  IssuePredictionTrie.cs  ========
+Purpose: IssuePredictionTrie provides prefix-based autocomplete suggestions for municipal issue descriptions.
+Why its used: In the Sidequest municipal app, tries accelerate user input with context-aware predictions.
+
+In detail:
+The IssuePredictionTrie class is our smart suggestion engine for the ReportIssues form. It builds
+a prefix tree seeded with common municipal complaints like "Burst Pipe" and "Broken Street Light,"
+then learns dynamically from resident submissions to bubble popular phrases to the top. Each
+insertion walks the trie letter by letter, incrementing frequency counters so the ranking logic
+can surface the most relevant completions first.
+
+When a user types even two letters, the system traverses down the matching branch, gathers all
+terminal suggestions from that subtree, and sorts them by frequency before limiting the results
+to the top five. This keeps the UI responsive while guiding reporters toward standardized phrasing
+that streamlines ticket categorization and dispatch routing for municipal staff.
+=============================
+*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
