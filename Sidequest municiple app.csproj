@@ -94,6 +94,7 @@
     <Compile Include="DataStructures\IssuePredictionTrie.cs" />
     <Compile Include="Utilities\AppPalette.cs" />
     <Compile Include="Utilities\DataSeeder.cs" />
+    <Compile Include="Utilities\SpellChecker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Form1.resx">

@@ -40,6 +40,9 @@ namespace Sidequest_municiple_app {
         private List<Issue> issues;
         private IssuePredictionTrie predictionTrie;
         private string currentSuggestion;
+        private SpellChecker spellChecker;
+        private System.Windows.Forms.Timer spellCheckTimer;
+        private ContextMenuStrip spellingContextMenu;
 
         public ReportIssuesForm() {
             InitializeComponent();
@@ -49,6 +52,8 @@ namespace Sidequest_municiple_app {
             attachmentPaths = new List<string>();
             predictionTrie = new IssuePredictionTrie();
             currentSuggestion = string.Empty;
+            spellChecker = new SpellChecker();
+            SetupSpellCheckTimer();
             UpdateProgress();
         }
 
@@ -245,6 +250,8 @@ namespace Sidequest_municiple_app {
                 BorderStyle = BorderStyle.FixedSingle
             };
             txtDescription.TextChanged += Input_Changed;
+            txtDescription.TextChanged += TxtDescription_TextChanged;
+            txtDescription.MouseUp += TxtDescription_MouseUp;
             pnlForm.Controls.Add(txtDescription);
 
             Label lblDescriptionHint = new Label {
@@ -829,6 +836,9 @@ namespace Sidequest_municiple_app {
             if (lblSuggestion != null) {
                 lblSuggestion.Visible = false;
             }
+            if (spellCheckTimer != null) {
+                spellCheckTimer.Stop();
+            }
             UpdateProgress();
         }
 
@@ -873,6 +883,172 @@ namespace Sidequest_municiple_app {
                 default:
                     return ServiceRequestPriority.Low;
             }
+        }
+
+        private void SetupSpellCheckTimer() {
+            spellCheckTimer = new System.Windows.Forms.Timer();
+            spellCheckTimer.Interval = 1000;
+            spellCheckTimer.Tick += SpellCheckTimer_Tick;
+        }
+
+        private void TxtDescription_TextChanged(object sender, EventArgs e) {
+            spellCheckTimer.Stop();
+            spellCheckTimer.Start();
+        }
+
+        private void SpellCheckTimer_Tick(object sender, EventArgs e) {
+            spellCheckTimer.Stop();
+            PerformSpellCheck();
+        }
+
+        private void PerformSpellCheck() {
+            if (txtDescription == null || string.IsNullOrWhiteSpace(txtDescription.Text)) {
+                return;
+            }
+
+            int originalSelectionStart = txtDescription.SelectionStart;
+            int originalSelectionLength = txtDescription.SelectionLength;
+
+            txtDescription.SelectAll();
+            txtDescription.SelectionColor = AppPalette.TextPrimary;
+            txtDescription.SelectionFont = new Font("Segoe UI", 10, FontStyle.Regular);
+
+            List<SpellingError> errors = spellChecker.CheckText(txtDescription.Text);
+
+            foreach (SpellingError error in errors) {
+                txtDescription.Select(error.Position, error.Length);
+                txtDescription.SelectionColor = Color.Red;
+                txtDescription.SelectionFont = new Font("Segoe UI", 10, FontStyle.Underline);
+            }
+
+            txtDescription.Select(originalSelectionStart, originalSelectionLength);
+        }
+
+        private void TxtDescription_MouseUp(object sender, MouseEventArgs e) {
+            if (e.Button == MouseButtons.Right) {
+                int charIndex = txtDescription.GetCharIndexFromPosition(e.Location);
+                string word = GetWordAtPosition(txtDescription.Text, charIndex);
+
+                if (!string.IsNullOrWhiteSpace(word) && !spellChecker.IsWordCorrect(word)) {
+                    ShowSpellingContextMenu(word, e.Location);
+                }
+            }
+        }
+
+        private string GetWordAtPosition(string text, int position) {
+            if (string.IsNullOrWhiteSpace(text) || position < 0 || position >= text.Length) {
+                return string.Empty;
+            }
+
+            int start = position;
+            while (start > 0 && !char.IsWhiteSpace(text[start - 1]) && !char.IsPunctuation(text[start - 1])) {
+                start--;
+            }
+
+            int end = position;
+            while (end < text.Length && !char.IsWhiteSpace(text[end]) && !char.IsPunctuation(text[end])) {
+                end++;
+            }
+
+            if (end > start) {
+                return text.Substring(start, end - start);
+            }
+
+            return string.Empty;
+        }
+
+        private void ShowSpellingContextMenu(string misspelledWord, Point location) {
+            spellingContextMenu = new ContextMenuStrip();
+            spellingContextMenu.BackColor = AppPalette.Surface;
+            spellingContextMenu.ForeColor = AppPalette.TextPrimary;
+
+            List<string> suggestions = spellChecker.GetSuggestions(misspelledWord, 5);
+
+            if (suggestions.Count > 0) {
+                foreach (string suggestion in suggestions) {
+                    ToolStripMenuItem suggestionItem = new ToolStripMenuItem(suggestion);
+                    suggestionItem.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+                    suggestionItem.Tag = new Tuple<string, string>(misspelledWord, suggestion);
+                    suggestionItem.Click += SuggestionItem_Click;
+                    spellingContextMenu.Items.Add(suggestionItem);
+                }
+
+                spellingContextMenu.Items.Add(new ToolStripSeparator());
+            } else {
+                ToolStripMenuItem noSuggestionsItem = new ToolStripMenuItem("No suggestions available");
+                noSuggestionsItem.Enabled = false;
+                noSuggestionsItem.Font = new Font("Segoe UI", 9, FontStyle.Italic);
+                spellingContextMenu.Items.Add(noSuggestionsItem);
+                spellingContextMenu.Items.Add(new ToolStripSeparator());
+            }
+
+            ToolStripMenuItem addToDictionaryItem = new ToolStripMenuItem("Add to Dictionary");
+            addToDictionaryItem.Font = new Font("Segoe UI", 9);
+            addToDictionaryItem.Tag = misspelledWord;
+            addToDictionaryItem.Click += AddToDictionary_Click;
+            spellingContextMenu.Items.Add(addToDictionaryItem);
+
+            ToolStripMenuItem ignoreItem = new ToolStripMenuItem("Ignore");
+            ignoreItem.Font = new Font("Segoe UI", 9);
+            ignoreItem.Tag = misspelledWord;
+            ignoreItem.Click += Ignore_Click;
+            spellingContextMenu.Items.Add(ignoreItem);
+
+            spellingContextMenu.Show(txtDescription, location);
+        }
+
+        private void SuggestionItem_Click(object sender, EventArgs e) {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            if (item?.Tag is Tuple<string, string> wordPair) {
+                string misspelledWord = wordPair.Item1;
+                string suggestion = wordPair.Item2;
+
+                string text = txtDescription.Text;
+                int wordStart = FindWordPosition(text, misspelledWord);
+
+                if (wordStart >= 0) {
+                    txtDescription.Select(wordStart, misspelledWord.Length);
+                    txtDescription.SelectedText = suggestion;
+                    PerformSpellCheck();
+                }
+            }
+        }
+
+        private void AddToDictionary_Click(object sender, EventArgs e) {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            if (item?.Tag is string word) {
+                spellChecker.AddToDictionary(word);
+                PerformSpellCheck();
+            }
+        }
+
+        private void Ignore_Click(object sender, EventArgs e) {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            if (item?.Tag is string word) {
+                spellChecker.AddToDictionary(word);
+                PerformSpellCheck();
+            }
+        }
+
+        private int FindWordPosition(string text, string word) {
+            int index = 0;
+            while (index < text.Length) {
+                index = text.IndexOf(word, index, StringComparison.OrdinalIgnoreCase);
+                if (index == -1) break;
+
+                bool isWordBoundaryStart = (index == 0 || char.IsWhiteSpace(text[index - 1]) || char.IsPunctuation(text[index - 1]));
+                bool isWordBoundaryEnd = (index + word.Length >= text.Length || 
+                                         char.IsWhiteSpace(text[index + word.Length]) || 
+                                         char.IsPunctuation(text[index + word.Length]));
+
+                if (isWordBoundaryStart && isWordBoundaryEnd) {
+                    return index;
+                }
+
+                index++;
+            }
+
+            return -1;
         }
 
         private void InitializeComponent() {
