@@ -72,42 +72,6 @@ namespace Sidequest_municiple_app {
             lblTitle.Location = new Point(50, 30);
             Controls.Add(lblTitle);
 
-            Panel pnlTopButtons = new Panel();
-            pnlTopButtons.Location = new Point(1050, 30);
-            pnlTopButtons.Size = new Size(118, 80);
-            pnlTopButtons.BackColor = AppPalette.Surface;
-            pnlTopButtons.BorderStyle = BorderStyle.FixedSingle;
-            Controls.Add(pnlTopButtons);
-
-            btnRefresh = new Button();
-            btnRefresh.Text = "Refresh";
-            btnRefresh.Size = new Size(100, 32);
-            btnRefresh.Location = new Point(9, 8);
-            btnRefresh.BackColor = AppPalette.AccentPrimary;
-            btnRefresh.FlatStyle = FlatStyle.Flat;
-            btnRefresh.FlatAppearance.BorderSize = 0;
-            btnRefresh.ForeColor = AppPalette.TextOnAccent;
-            btnRefresh.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-            btnRefresh.UseVisualStyleBackColor = false;
-            btnRefresh.Click += BtnRefresh_Click;
-            btnRefresh.MouseEnter += (s, e) => btnRefresh.BackColor = AppPalette.AccentHover;
-            btnRefresh.MouseLeave += (s, e) => btnRefresh.BackColor = AppPalette.AccentPrimary;
-            pnlTopButtons.Controls.Add(btnRefresh);
-
-            btnBack = new Button();
-            btnBack.Text = "Back";
-            btnBack.Size = new Size(100, 32);
-            btnBack.Location = new Point(9, 45);
-            btnBack.BackColor = AppPalette.Surface;
-            btnBack.FlatStyle = FlatStyle.Flat;
-            btnBack.FlatAppearance.BorderColor = AppPalette.Border;
-            btnBack.FlatAppearance.BorderSize = 2;
-            btnBack.ForeColor = AppPalette.TextPrimary;
-            btnBack.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-            btnBack.UseVisualStyleBackColor = false;
-            btnBack.Click += BtnBack_Click;
-            pnlTopButtons.Controls.Add(btnBack);
-
             Panel pnlStats = new Panel();
             pnlStats.Location = new Point(50, 70);
             pnlStats.Size = new Size(1118, 40);
@@ -130,11 +94,49 @@ namespace Sidequest_municiple_app {
             lblStatistics.AutoSize = true;
             lblStatistics.Location = new Point(120, 11);
             pnlStats.Controls.Add(lblStatistics);
+
+            Panel pnlTopButtons = new Panel();
+            pnlTopButtons.Location = new Point(950, 70);
+            pnlTopButtons.Size = new Size(218, 40);
+            pnlTopButtons.BackColor = AppPalette.Surface;
+            pnlTopButtons.BorderStyle = BorderStyle.FixedSingle;
+            Controls.Add(pnlTopButtons);
+
+            btnRefresh = new Button();
+            btnRefresh.Text = "Refresh Data";
+            btnRefresh.Size = new Size(100, 30);
+            btnRefresh.Location = new Point(5, 5);
+            btnRefresh.BackColor = AppPalette.AccentPrimary;
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            btnRefresh.FlatAppearance.BorderSize = 0;
+            btnRefresh.ForeColor = AppPalette.TextOnAccent;
+            btnRefresh.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            btnRefresh.UseVisualStyleBackColor = false;
+            btnRefresh.Cursor = Cursors.Hand;
+            btnRefresh.Click += BtnRefresh_Click;
+            btnRefresh.MouseEnter += (s, e) => btnRefresh.BackColor = AppPalette.AccentHover;
+            btnRefresh.MouseLeave += (s, e) => btnRefresh.BackColor = AppPalette.AccentPrimary;
+            pnlTopButtons.Controls.Add(btnRefresh);
+
+            btnBack = new Button();
+            btnBack.Text = "Back";
+            btnBack.Size = new Size(100, 30);
+            btnBack.Location = new Point(110, 5);
+            btnBack.BackColor = AppPalette.Surface;
+            btnBack.FlatStyle = FlatStyle.Flat;
+            btnBack.FlatAppearance.BorderColor = AppPalette.Border;
+            btnBack.FlatAppearance.BorderSize = 2;
+            btnBack.ForeColor = AppPalette.TextPrimary;
+            btnBack.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            btnBack.UseVisualStyleBackColor = false;
+            btnBack.Cursor = Cursors.Hand;
+            btnBack.Click += BtnBack_Click;
+            pnlTopButtons.Controls.Add(btnBack);
             
             Panel pnlAlgorithmInfo = new Panel();
-            pnlAlgorithmInfo.Location = new Point(810, 70);
+            pnlAlgorithmInfo.Location = new Point(580, 70);
             pnlAlgorithmInfo.Size = new Size(358, 40);
-            pnlAlgorithmInfo.BackColor = AppPalette.Surface;
+            pnlAlgorithmInfo.BackColor = AppPalette.CodeBlock;
             pnlAlgorithmInfo.BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(pnlAlgorithmInfo);
             
@@ -367,14 +369,12 @@ namespace Sidequest_municiple_app {
             lvPriorityQueue.ForeColor = AppPalette.TextPrimary;
             lvPriorityQueue.BorderStyle = BorderStyle.FixedSingle;
             lvPriorityQueue.AllowColumnReorder = false;
+            lvPriorityQueue.Scrollable = true;
             lvPriorityQueue.Columns.Add("Priority", 60);
             lvPriorityQueue.Columns.Add("Category", 98);
             lvPriorityQueue.Columns.Add("Location", 150);
             lvPriorityQueue.Columns.Add("Status", 90);
             lvPriorityQueue.Columns.Add("Submitted", 105);
-            foreach (ColumnHeader column in lvPriorityQueue.Columns) {
-                column.Width = column.Width;
-            }
             pnlBottom.Controls.Add(lvPriorityQueue);
 
             lblRelatedRequests = new Label();
@@ -397,14 +397,12 @@ namespace Sidequest_municiple_app {
             lvRelatedRequests.ForeColor = AppPalette.TextPrimary;
             lvRelatedRequests.BorderStyle = BorderStyle.FixedSingle;
             lvRelatedRequests.AllowColumnReorder = false;
+            lvRelatedRequests.Scrollable = true;
             lvRelatedRequests.Columns.Add("Request ID", 120);
             lvRelatedRequests.Columns.Add("Category", 98);
             lvRelatedRequests.Columns.Add("Status", 83);
             lvRelatedRequests.Columns.Add("Priority", 90);
-            lvRelatedRequests.Columns.Add("Location", 120);
-            foreach (ColumnHeader column in lvRelatedRequests.Columns) {
-                column.Width = column.Width;
-            }
+            lvRelatedRequests.Columns.Add("Location", 127);
             pnlBottom.Controls.Add(lvRelatedRequests);
 
             lblGraphTraversal = new Label();
@@ -439,12 +437,10 @@ namespace Sidequest_municiple_app {
             lvGraphTraversal.ForeColor = AppPalette.TextPrimary;
             lvGraphTraversal.BorderStyle = BorderStyle.FixedSingle;
             lvGraphTraversal.AllowColumnReorder = false;
-            lvGraphTraversal.Columns.Add("Step", 45);
-            lvGraphTraversal.Columns.Add("Details", 675);
-            lvGraphTraversal.Columns.Add("Connection Info", 330);
-            foreach (ColumnHeader column in lvGraphTraversal.Columns) {
-                column.Width = column.Width;
-            }
+            lvGraphTraversal.Scrollable = true;
+            lvGraphTraversal.Columns.Add("Step", 50);
+            lvGraphTraversal.Columns.Add("Details", 700);
+            lvGraphTraversal.Columns.Add("Connection Info", 308);
             pnlBottom.Controls.Add(lvGraphTraversal);
 
             cmbGraphTraversal.SelectedIndex = 0;
@@ -825,6 +821,8 @@ namespace Sidequest_municiple_app {
                 ListViewItem item = new ListViewItem(ShortenId(relatedRequest.UniqueID));
                 item.SubItems.Add(relatedRequest.Category ?? string.Empty);
                 item.SubItems.Add(relatedRequest.GetStatusString());
+                item.SubItems.Add(relatedRequest.Priority.ToString());
+                item.SubItems.Add(relatedRequest.Location ?? string.Empty);
                 lvRelatedRequests.Items.Add(item);
             }
 
@@ -850,10 +848,14 @@ namespace Sidequest_municiple_app {
                 IReadOnlyList<GraphEdge> edges = requestGraph.MinimumSpanningTree(uniqueId);
                 int step = 1;
                 foreach (GraphEdge edge in edges) {
-                    string details = ShortenId(edge.Source.Value.UniqueID) + " -> " + ShortenId(edge.Target.Value.UniqueID);
+                    string details = string.Format("{0} → {1} | Cat: {2}, {3}", 
+                        ShortenId(edge.Source.Value.UniqueID), 
+                        ShortenId(edge.Target.Value.UniqueID),
+                        edge.Source.Value.Category ?? "N/A",
+                        edge.Target.Value.Category ?? "N/A");
                     ListViewItem item = new ListViewItem(step.ToString());
                     item.SubItems.Add(details);
-                    item.SubItems.Add(edge.Weight.ToString("0.##"));
+                    item.SubItems.Add(string.Format("Weight: {0:0.##}", edge.Weight));
                     lvGraphTraversal.Items.Add(item);
                     step++;
                 }
@@ -869,9 +871,15 @@ namespace Sidequest_municiple_app {
 
                 for (int i = 0; i < traversal.Count; i++) {
                     ServiceRequest request = traversal[i];
+                    string details = string.Format("{0} | Location: {1}", 
+                        ShortenId(request.UniqueID), 
+                        request.Location ?? "N/A");
+                    string connectionInfo = string.Format("Cat: {0} | Status: {1}", 
+                        request.Category ?? "N/A",
+                        request.GetStatusString());
                     ListViewItem item = new ListViewItem((i + 1).ToString());
-                    item.SubItems.Add(ShortenId(request.UniqueID) + " | " + (request.Location ?? string.Empty));
-                    item.SubItems.Add(request.Category ?? string.Empty);
+                    item.SubItems.Add(details);
+                    item.SubItems.Add(connectionInfo);
                     lvGraphTraversal.Items.Add(item);
                 }
             }
