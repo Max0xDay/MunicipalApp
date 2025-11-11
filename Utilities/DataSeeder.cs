@@ -136,7 +136,9 @@ namespace Sidequest_municiple_app {
                 Category = category,
                 Description = description,
                 AttachmentPath = attachmentPath,
-                ReportDate = GenerateRandomDateTime()
+                ReportDate = GenerateRandomDateTime(),
+                Status = GenerateRandomStatus(),
+                Priority = GenerateRandomPriority()
             };
 
             return issue;
@@ -164,6 +166,40 @@ namespace Sidequest_municiple_app {
             DateTime end = DateTime.Now;
             int range = (end - start).Days;
             return start.AddDays(random.Next(range)).AddHours(random.Next(24)).AddMinutes(random.Next(60));
+        }
+
+        private ServiceRequestStatus GenerateRandomStatus() {
+            int randomValue = random.Next(100);
+            
+            if (randomValue < 40) {
+                return ServiceRequestStatus.Pending;
+            }
+            else if (randomValue < 70) {
+                return ServiceRequestStatus.InProgress;
+            }
+            else if (randomValue < 95) {
+                return ServiceRequestStatus.Completed;
+            }
+            else {
+                return ServiceRequestStatus.Rejected;
+            }
+        }
+
+        private ServiceRequestPriority GenerateRandomPriority() {
+            int randomValue = random.Next(100);
+            
+            if (randomValue < 20) {
+                return ServiceRequestPriority.Low;
+            }
+            else if (randomValue < 60) {
+                return ServiceRequestPriority.Medium;
+            }
+            else if (randomValue < 90) {
+                return ServiceRequestPriority.High;
+            }
+            else {
+                return ServiceRequestPriority.Urgent;
+            }
         }
 
         public void ClearAllData() {
