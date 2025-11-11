@@ -54,11 +54,11 @@ namespace Sidequest_municiple_app {
 
         private void SetupForm() {
             Text = "Report Municipal Issues";
-            Size = new Size(1250, 850);
+            Size = new Size(1250, 900);
             StartPosition = FormStartPosition.CenterScreen;
             BackColor = AppPalette.Background;
             FormBorderStyle = FormBorderStyle.Sizable;
-            MinimumSize = new Size(1250, 850);
+            MinimumSize = new Size(1250, 900);
 
             lblTitle = new Label {
                 Text = "Report Municipal Issues",
@@ -112,7 +112,7 @@ namespace Sidequest_municiple_app {
 
             pnlForm = new Panel {
                 Location = new Point(50, 125),
-                Size = new Size(1118, 480),
+                Size = new Size(1118, 555),
                 BackColor = AppPalette.Surface,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoScroll = false
@@ -258,7 +258,7 @@ namespace Sidequest_municiple_app {
 
             lblAttachment = new Label {
                 Text = "Attach Photos or Documents:",
-                Location = new Point(30, 300),
+                Location = new Point(30, 360),
                 Size = new Size(250, 23),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
                 ForeColor = AppPalette.TextPrimary
@@ -267,7 +267,7 @@ namespace Sidequest_municiple_app {
 
             btnAttachment = new Button {
                 Text = "+ Add Files",
-                Location = new Point(30, 325),
+                Location = new Point(30, 390),
                 Size = new Size(150, 35),
                 BackColor = AppPalette.AccentPrimary,
                 FlatStyle = FlatStyle.Flat,
@@ -282,8 +282,17 @@ namespace Sidequest_municiple_app {
             btnAttachment.MouseLeave += (s, e) => btnAttachment.BackColor = AppPalette.AccentPrimary;
             pnlForm.Controls.Add(btnAttachment);
 
+            Label lblAttachmentHint = new Label {
+                Text = "Images help us understand and resolve issues faster (Optional)",
+                Location = new Point(190, 397),
+                AutoSize = true,
+                Font = new Font("Segoe UI", 8, FontStyle.Italic),
+                ForeColor = AppPalette.TextMuted
+            };
+            pnlForm.Controls.Add(lblAttachmentHint);
+
             pnlAttachments = new Panel {
-                Location = new Point(30, 370),
+                Location = new Point(30, 435),
                 Size = new Size(800, 90),
                 BackColor = AppPalette.CodeBlock,
                 BorderStyle = BorderStyle.FixedSingle,
@@ -300,35 +309,9 @@ namespace Sidequest_municiple_app {
             };
             pnlAttachments.Controls.Add(flowAttachments);
 
-            Label lblAttachmentHint = new Label {
-                Text = "Images help us understand and resolve issues faster (Optional)",
-                Location = new Point(190, 335),
-                AutoSize = true,
-                Font = new Font("Segoe UI", 8, FontStyle.Italic),
-                ForeColor = AppPalette.TextMuted
-            };
-            pnlForm.Controls.Add(lblAttachmentHint);
-
-            btnSubmit = new Button {
-                Text = "Submit Report",
-                Location = new Point(870, 325),
-                Size = new Size(200, 45),
-                BackColor = AppPalette.AccentPrimary,
-                FlatStyle = FlatStyle.Flat,
-                ForeColor = AppPalette.TextOnAccent,
-                Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                Cursor = Cursors.Hand
-            };
-            btnSubmit.FlatAppearance.BorderSize = 0;
-            btnSubmit.UseVisualStyleBackColor = false;
-            btnSubmit.Click += BtnSubmit_Click;
-            btnSubmit.MouseEnter += (s, e) => btnSubmit.BackColor = AppPalette.AccentHover;
-            btnSubmit.MouseLeave += (s, e) => btnSubmit.BackColor = AppPalette.AccentPrimary;
-            pnlForm.Controls.Add(btnSubmit);
-
             btnAdmin = new Button {
                 Text = "View All Reports",
-                Location = new Point(870, 380),
+                Location = new Point(870, 25),
                 Size = new Size(200, 35),
                 BackColor = AppPalette.Surface,
                 FlatStyle = FlatStyle.Flat,
@@ -343,7 +326,50 @@ namespace Sidequest_municiple_app {
             pnlForm.Controls.Add(btnAdmin);
 
             SetupProgressBar();
-            SetupSocialMediaPanel();
+            SetupActionButtons();
+        }
+
+        private void SetupActionButtons() {
+            Panel pnlActions = new Panel {
+                Location = new Point(50, 695),
+                Size = new Size(1118, 70),
+                BackColor = AppPalette.Surface,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            Controls.Add(pnlActions);
+
+            btnSubmit = new Button {
+                Text = "Submit Report",
+                Location = new Point(720, 13),
+                Size = new Size(180, 45),
+                BackColor = AppPalette.AccentPrimary,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = AppPalette.TextOnAccent,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnSubmit.FlatAppearance.BorderSize = 0;
+            btnSubmit.UseVisualStyleBackColor = false;
+            btnSubmit.Click += BtnSubmit_Click;
+            btnSubmit.MouseEnter += (s, e) => btnSubmit.BackColor = AppPalette.AccentHover;
+            btnSubmit.MouseLeave += (s, e) => btnSubmit.BackColor = AppPalette.AccentPrimary;
+            pnlActions.Controls.Add(btnSubmit);
+
+            Button btnShare = new Button {
+                Text = "Share",
+                Location = new Point(920, 13),
+                Size = new Size(180, 45),
+                BackColor = AppPalette.Surface,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = AppPalette.TextPrimary,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnShare.FlatAppearance.BorderColor = AppPalette.Border;
+            btnShare.FlatAppearance.BorderSize = 2;
+            btnShare.UseVisualStyleBackColor = false;
+            btnShare.Click += BtnShareMenu_Click;
+            pnlActions.Controls.Add(btnShare);
         }
 
         private void SetupSocialMediaPanel() {
@@ -351,7 +377,8 @@ namespace Sidequest_municiple_app {
                 Location = new Point(50, 620),
                 Size = new Size(1118, 90),
                 BackColor = AppPalette.Surface,
-                BorderStyle = BorderStyle.FixedSingle
+                BorderStyle = BorderStyle.FixedSingle,
+                Visible = false
             };
             Controls.Add(pnlSocialMedia);
 
@@ -440,7 +467,7 @@ namespace Sidequest_municiple_app {
 
         private void SetupProgressBar() {
             pnlProgress = new Panel {
-                Location = new Point(50, 725),
+                Location = new Point(50, 780),
                 Size = new Size(1118, 70),
                 BackColor = AppPalette.CodeBlock,
                 BorderStyle = BorderStyle.FixedSingle
@@ -808,6 +835,14 @@ namespace Sidequest_municiple_app {
         private void BtnAdmin_Click(object sender, EventArgs e) {
             AdminForm adminForm = new AdminForm();
             adminForm.ShowDialog();
+        }
+
+        private void BtnShareMenu_Click(object sender, EventArgs e) {
+            pnlSocialMedia.Visible = !pnlSocialMedia.Visible;
+            
+            if (pnlSocialMedia.Visible) {
+                pnlSocialMedia.BringToFront();
+            }
         }
 
         private void BtnShare_Click(object sender, EventArgs e) {
