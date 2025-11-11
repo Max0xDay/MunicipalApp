@@ -57,9 +57,8 @@ namespace Sidequest_municiple_app {
             Status = issue.Status;
             Priority = issue.Priority;
             RelatedRequestIDs = new List<string>();
-            if (string.IsNullOrWhiteSpace(issue.UniqueId)) {
+            if (string.IsNullOrWhiteSpace(issue.UniqueId))
                 issue.UniqueId = UniqueID;
-            }
         }
 
         public string GetStatusString() {

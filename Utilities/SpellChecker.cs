@@ -79,11 +79,10 @@ namespace Sidequest_municiple_app {
             string cleanWord = word.ToLower().Trim();
             if (cleanWord.Length > 1) {
                 dictionary.Add(cleanWord);
-                if (wordFrequency.ContainsKey(cleanWord)) {
+                if (wordFrequency.ContainsKey(cleanWord))
                     wordFrequency[cleanWord]++;
-                } else {
+                else
                     wordFrequency[cleanWord] = 1;
-                }
             }
         }
 
@@ -106,22 +105,19 @@ namespace Sidequest_municiple_app {
             Dictionary<string, int> candidates = new Dictionary<string, int>();
             
             foreach (string dictWord in dictionary) {
-                if (Math.Abs(dictWord.Length - cleanWord.Length) > MAX_EDIT_DISTANCE) {
+                if (Math.Abs(dictWord.Length - cleanWord.Length) > MAX_EDIT_DISTANCE)
                     continue;
-                }
                 
                 int distance = CalculateLevenshteinDistance(cleanWord, dictWord);
                 
                 if (distance <= MAX_EDIT_DISTANCE) {
                     int score = (MAX_EDIT_DISTANCE - distance) * 1000;
                     
-                    if (wordFrequency.ContainsKey(dictWord)) {
+                    if (wordFrequency.ContainsKey(dictWord))
                         score += wordFrequency[dictWord];
-                    }
                     
-                    if (dictWord.StartsWith(cleanWord.Substring(0, Math.Min(2, cleanWord.Length)))) {
+                    if (dictWord.StartsWith(cleanWord.Substring(0, Math.Min(2, cleanWord.Length))))
                         score += 500;
-                    }
                     
                     candidates[dictWord] = score;
                 }
@@ -135,26 +131,22 @@ namespace Sidequest_municiple_app {
         }
 
         private int CalculateLevenshteinDistance(string source, string target) {
-            if (string.IsNullOrEmpty(source)) {
+            if (string.IsNullOrEmpty(source))
                 return string.IsNullOrEmpty(target) ? 0 : target.Length;
-            }
             
-            if (string.IsNullOrEmpty(target)) {
+            if (string.IsNullOrEmpty(target))
                 return source.Length;
-            }
             
             int sourceLength = source.Length;
             int targetLength = target.Length;
             
             int[,] distance = new int[sourceLength + 1, targetLength + 1];
             
-            for (int i = 0; i <= sourceLength; i++) {
+            for (int i = 0; i <= sourceLength; i++)
                 distance[i, 0] = i;
-            }
             
-            for (int j = 0; j <= targetLength; j++) {
+            for (int j = 0; j <= targetLength; j++)
                 distance[0, j] = j;
-            }
             
             for (int i = 1; i <= sourceLength; i++) {
                 for (int j = 1; j <= targetLength; j++) {
