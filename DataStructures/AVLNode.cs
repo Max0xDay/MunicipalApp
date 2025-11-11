@@ -1,4 +1,9 @@
 /*
+========  AVLNode.cs  ========
+Purpose: AVLNodes in code are used for maintaining balanced binary search trees.
+Why its used: In the Sidequest municipal app, AVL trees help manage and sort service requests
+
+In detail:
 This AVL node capsule gives us a self-balancing wrapper around service requests so the tree
 stays height-aware no matter how chaotic the municipal ticket stream becomes. By pairing each
 request with cached height data for its subtrees, we can reason about balance factors in
@@ -8,6 +13,7 @@ Inside the app this node is instantiated every time a request flows into the AVL
 powers sorted views and integrity validation. The key mirrors the unique request identifier,
 while height snapshots feed the rotations that happen in `ServiceRequestAVL`, ensuring fast
 status lookups for the dashboard grids.
+=============================
 */
 using System;
 

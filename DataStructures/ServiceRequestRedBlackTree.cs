@@ -1,3 +1,23 @@
+/*
+========  ServiceRequestRedBlackTree.cs  ========
+Purpose: ServiceRequestRedBlackTree maintains a self-balancing tree indexed by category with strict color invariants.
+Why its used: In the Sidequest municipal app, this tree guarantees logarithmic lookup times for category-based queries.
+
+In detail:
+This class orchestrates red-black insertion mechanics—uncle checks, rotations, recoloring—to
+preserve the five red-black properties across every insert. By keying on request categories it
+clusters similar issues together, and the balancing discipline ensures no single branch
+degenerates into a linked list even when categories arrive in alphabetical order. The exposed
+node-with-color snapshots let UI components render the tree's internal state for debugging or
+educational displays.
+
+The ServiceRequestStatus form uses this structure when category-driven navigation matters more
+than chronological ordering. During refreshes it loads requests from SQLite, inserts them by
+category, and later walks the tree in-order to display grouped results. The color annotations
+feed visualization widgets that help operators understand why certain rotations occurred and how
+the tree stays balanced under asymmetric workloads.
+=============================
+*/
 using System;
 using System.Collections.Generic;
 

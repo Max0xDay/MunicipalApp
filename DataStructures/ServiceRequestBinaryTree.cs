@@ -1,3 +1,21 @@
+/*
+========  ServiceRequestBinaryTree.cs  ========
+Purpose: ServiceRequestBinaryTree manages a complete binary tree where municipal tickets fill positions level by level.
+Why its used: In the Sidequest municipal app, this structure showcases insertion order and various traversal patterns.
+
+In detail:
+This class builds a binary tree by slotting each new request into the first available leaf
+position discovered through breadth-first search. Unlike the BST or AVL cousins, it ignores key
+comparisons entirely, preferring raw insertion speed and predictable structure. The result is a
+tree that mirrors submission chronology at the leaf level while exposing preorder, inorder,
+postorder, and level-order traversals for educational or debugging views.
+
+The ServiceRequestStatus form seeds this tree during refresh cycles, then queries its traversal
+methods to populate algorithm comparison panels. Because the tree never rebalances, operators
+can watch how different traversal strategies reveal patterns in the unordered dataset, making it
+a useful pedagogical artifact alongside the more sophisticated structures.
+=============================
+*/
 using System;
 using System.Collections.Generic;
 

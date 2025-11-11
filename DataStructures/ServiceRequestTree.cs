@@ -1,3 +1,22 @@
+/*
+========  ServiceRequestTree.cs  ========
+Purpose: ServiceRequestTree organizes municipal tickets into a three-tier taxonomy rooted by category and priority.
+Why its used: In the Sidequest municipal app, this n-ary tree mirrors the natural classification hierarchy of city services.
+
+In detail:
+This class constructs a multi-level tree where the root represents the entire municipal service
+domain, first-level children are categories, second-level children are priority tiers, and leaf
+nodes hold individual service requests. By allowing each parent to spawn arbitrary numbers of
+children, the structure adapts to however many categories or priority levels exist in the live
+dataset without hardcoding assumptions about branching factors.
+
+The ServiceRequestStatus form leverages this tree for hierarchical views that let operators
+expand categories to see priorities, then expand priorities to see individual tickets. The
+insertion logic handles missing intermediate nodes on the fly, so even if a new category appears
+mid-session, the tree accommodates it seamlessly. The resulting hierarchy feeds collapsible
+grid controls and tree-view widgets that simplify navigation across large municipal workloads.
+=============================
+*/
 using System;
 using System.Collections.Generic;
 
