@@ -64,51 +64,12 @@ namespace Sidequest_municiple_app {
             FormBorderStyle = FormBorderStyle.Sizable;
             MinimumSize = new Size(1600, 950);
 
-            Panel pnlSidebar = new Panel();
-            pnlSidebar.Size = new Size(280, 950);
-            pnlSidebar.Location = new Point(0, 0);
-            pnlSidebar.BackColor = AppPalette.Sidebar;
-            pnlSidebar.Dock = DockStyle.Left;
-            Controls.Add(pnlSidebar);
-
-            Label lblSidebarTitle = new Label();
-            lblSidebarTitle.Text = "Service Requests";
-            lblSidebarTitle.Font = new Font("Segoe UI", 18, FontStyle.Bold);
-            lblSidebarTitle.ForeColor = AppPalette.TextHeading;
-            lblSidebarTitle.AutoSize = false;
-            lblSidebarTitle.Size = new Size(240, 50);
-            lblSidebarTitle.Location = new Point(20, 40);
-            pnlSidebar.Controls.Add(lblSidebarTitle);
-
-            Label lblSidebarDesc = new Label();
-            lblSidebarDesc.Text = "Track and manage all service requests";
-            lblSidebarDesc.Font = new Font("Segoe UI", 9);
-            lblSidebarDesc.ForeColor = AppPalette.TextMuted;
-            lblSidebarDesc.AutoSize = false;
-            lblSidebarDesc.Size = new Size(240, 40);
-            lblSidebarDesc.Location = new Point(20, 90);
-            pnlSidebar.Controls.Add(lblSidebarDesc);
-
-            btnBack = new Button();
-            btnBack.Text = "Back to Menu";
-            btnBack.Size = new Size(240, 50);
-            btnBack.Location = new Point(20, 850);
-            btnBack.BackColor = AppPalette.Surface;
-            btnBack.FlatStyle = FlatStyle.Flat;
-            btnBack.FlatAppearance.BorderColor = AppPalette.Border;
-            btnBack.FlatAppearance.BorderSize = 2;
-            btnBack.ForeColor = AppPalette.TextPrimary;
-            btnBack.Font = new Font("Segoe UI", 11, FontStyle.Bold);
-            btnBack.UseVisualStyleBackColor = false;
-            btnBack.Click += BtnBack_Click;
-            pnlSidebar.Controls.Add(btnBack);
-
             lblTitle = new Label();
             lblTitle.Text = "Service Request Status Tracking";
             lblTitle.Font = new Font("Segoe UI", 22, FontStyle.Bold);
             lblTitle.ForeColor = AppPalette.TextHeading;
             lblTitle.AutoSize = true;
-            lblTitle.Location = new Point(330, 40);
+            lblTitle.Location = new Point(50, 40);
             Controls.Add(lblTitle);
             
             Panel pnlAlgorithmInfo = new Panel();
@@ -136,8 +97,8 @@ namespace Sidequest_municiple_app {
             pnlAlgorithmInfo.Controls.Add(lblAlgoList);
 
             pnlControls = new Panel();
-            pnlControls.Location = new Point(330, 120);
-            pnlControls.Size = new Size(1210, 140);
+            pnlControls.Location = new Point(50, 120);
+            pnlControls.Size = new Size(1490, 140);
             pnlControls.BackColor = AppPalette.Surface;
             pnlControls.BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(pnlControls);
@@ -277,12 +238,26 @@ namespace Sidequest_municiple_app {
             btnRefresh.MouseLeave += (s, e) => btnRefresh.BackColor = AppPalette.AccentPrimary;
             pnlControls.Controls.Add(btnRefresh);
 
+            btnBack = new Button();
+            btnBack.Text = "Back to Menu";
+            btnBack.Size = new Size(150, 90);
+            btnBack.Location = new Point(1170, 20);
+            btnBack.BackColor = AppPalette.Surface;
+            btnBack.FlatStyle = FlatStyle.Flat;
+            btnBack.FlatAppearance.BorderColor = AppPalette.Border;
+            btnBack.FlatAppearance.BorderSize = 2;
+            btnBack.ForeColor = AppPalette.TextPrimary;
+            btnBack.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            btnBack.UseVisualStyleBackColor = false;
+            btnBack.Click += BtnBack_Click;
+            pnlControls.Controls.Add(btnBack);
+
             lblTotalRequests = new Label();
             lblTotalRequests.Text = "Total Requests: 0";
             lblTotalRequests.Font = new Font("Segoe UI", 12, FontStyle.Bold);
             lblTotalRequests.ForeColor = AppPalette.TextHeading;
             lblTotalRequests.AutoSize = true;
-            lblTotalRequests.Location = new Point(330, 280);
+            lblTotalRequests.Location = new Point(50, 280);
             Controls.Add(lblTotalRequests);
 
             lblStatistics = new Label();
@@ -290,12 +265,12 @@ namespace Sidequest_municiple_app {
             lblStatistics.Font = new Font("Segoe UI", 10);
             lblStatistics.ForeColor = AppPalette.TextSecondary;
             lblStatistics.AutoSize = true;
-            lblStatistics.Location = new Point(500, 282);
+            lblStatistics.Location = new Point(220, 282);
             Controls.Add(lblStatistics);
 
             dgvRequests = new DataGridView();
-            dgvRequests.Location = new Point(330, 320);
-            dgvRequests.Size = new Size(1210, 360);
+            dgvRequests.Location = new Point(50, 320);
+            dgvRequests.Size = new Size(1490, 360);
             dgvRequests.BackgroundColor = AppPalette.CodeBlock;
             dgvRequests.GridColor = AppPalette.Border;
             dgvRequests.BorderStyle = BorderStyle.FixedSingle;
@@ -310,18 +285,19 @@ namespace Sidequest_municiple_app {
             dgvRequests.DefaultCellStyle.BackColor = AppPalette.CodeBlock;
             dgvRequests.DefaultCellStyle.ForeColor = AppPalette.TextPrimary;
             dgvRequests.AlternatingRowsDefaultCellStyle.BackColor = AppPalette.Surface;
+            dgvRequests.AlternatingRowsDefaultCellStyle.ForeColor = AppPalette.TextPrimary;
             dgvRequests.ColumnHeadersDefaultCellStyle.BackColor = AppPalette.AccentPrimary;
             dgvRequests.ColumnHeadersDefaultCellStyle.ForeColor = AppPalette.TextOnAccent;
             dgvRequests.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dgvRequests.EnableHeadersVisualStyles = false;
-            dgvRequests.DefaultCellStyle.SelectionBackColor = AppPalette.AccentHover;
-            dgvRequests.DefaultCellStyle.SelectionForeColor = AppPalette.TextOnAccent;
+            dgvRequests.DefaultCellStyle.SelectionBackColor = Color.FromArgb(80, 0, 102, 204);
+            dgvRequests.DefaultCellStyle.SelectionForeColor = AppPalette.TextPrimary;
             dgvRequests.SelectionChanged += DgvRequests_SelectionChanged;
             Controls.Add(dgvRequests);
 
             pnlBottom = new Panel();
-            pnlBottom.Location = new Point(330, 695);
-            pnlBottom.Size = new Size(1210, 220);
+            pnlBottom.Location = new Point(50, 695);
+            pnlBottom.Size = new Size(1490, 220);
             pnlBottom.BackColor = AppPalette.Surface;
             pnlBottom.BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(pnlBottom);
@@ -393,12 +369,12 @@ namespace Sidequest_municiple_app {
             lblRelatedRequests.Font = new Font("Segoe UI", 12, FontStyle.Bold);
             lblRelatedRequests.ForeColor = AppPalette.TextHeading;
             lblRelatedRequests.AutoSize = true;
-            lblRelatedRequests.Location = new Point(620, 25);
+            lblRelatedRequests.Location = new Point(760, 25);
             pnlBottom.Controls.Add(lblRelatedRequests);
 
             lvRelatedRequests = new ListView();
-            lvRelatedRequests.Location = new Point(620, 55);
-            lvRelatedRequests.Size = new Size(560, 60);
+            lvRelatedRequests.Location = new Point(760, 55);
+            lvRelatedRequests.Size = new Size(700, 60);
             lvRelatedRequests.View = View.Details;
             lvRelatedRequests.FullRowSelect = true;
             lvRelatedRequests.GridLines = true;
@@ -407,10 +383,10 @@ namespace Sidequest_municiple_app {
             lvRelatedRequests.BackColor = AppPalette.CodeBlock;
             lvRelatedRequests.ForeColor = AppPalette.TextPrimary;
             lvRelatedRequests.BorderStyle = BorderStyle.FixedSingle;
-            lvRelatedRequests.Columns.Add("Request ID", 150);
-            lvRelatedRequests.Columns.Add("Category", 140);
-            lvRelatedRequests.Columns.Add("Status", 100);
-            lvRelatedRequests.Columns.Add("Priority", 130);
+            lvRelatedRequests.Columns.Add("Request ID", 180);
+            lvRelatedRequests.Columns.Add("Category", 170);
+            lvRelatedRequests.Columns.Add("Status", 120);
+            lvRelatedRequests.Columns.Add("Priority", 140);
             pnlBottom.Controls.Add(lvRelatedRequests);
 
             lblGraphTraversal = new Label();
@@ -418,11 +394,11 @@ namespace Sidequest_municiple_app {
             lblGraphTraversal.Font = new Font("Segoe UI", 11, FontStyle.Bold);
             lblGraphTraversal.ForeColor = AppPalette.TextHeading;
             lblGraphTraversal.AutoSize = true;
-            lblGraphTraversal.Location = new Point(620, 125);
+            lblGraphTraversal.Location = new Point(760, 125);
             pnlBottom.Controls.Add(lblGraphTraversal);
 
             cmbGraphTraversal = new ComboBox();
-            cmbGraphTraversal.Location = new Point(760, 122);
+            cmbGraphTraversal.Location = new Point(900, 122);
             cmbGraphTraversal.Size = new Size(200, 25);
             cmbGraphTraversal.Font = new Font("Segoe UI", 10);
             cmbGraphTraversal.BackColor = AppPalette.CodeBlock;
@@ -434,8 +410,8 @@ namespace Sidequest_municiple_app {
             pnlBottom.Controls.Add(cmbGraphTraversal);
 
             lvGraphTraversal = new ListView();
-            lvGraphTraversal.Location = new Point(620, 155);
-            lvGraphTraversal.Size = new Size(560, 50);
+            lvGraphTraversal.Location = new Point(760, 155);
+            lvGraphTraversal.Size = new Size(700, 50);
             lvGraphTraversal.View = View.Details;
             lvGraphTraversal.FullRowSelect = true;
             lvGraphTraversal.GridLines = true;
@@ -444,9 +420,9 @@ namespace Sidequest_municiple_app {
             lvGraphTraversal.BackColor = AppPalette.CodeBlock;
             lvGraphTraversal.ForeColor = AppPalette.TextPrimary;
             lvGraphTraversal.BorderStyle = BorderStyle.FixedSingle;
-            lvGraphTraversal.Columns.Add("Step", 70);
-            lvGraphTraversal.Columns.Add("Details", 310);
-            lvGraphTraversal.Columns.Add("Connection Info", 150);
+            lvGraphTraversal.Columns.Add("Step", 80);
+            lvGraphTraversal.Columns.Add("Details", 400);
+            lvGraphTraversal.Columns.Add("Connection Info", 180);
             pnlBottom.Controls.Add(lvGraphTraversal);
 
             cmbGraphTraversal.SelectedIndex = 0;
@@ -465,8 +441,8 @@ namespace Sidequest_municiple_app {
         
         private void SetupDataStructureHints() {
             lblDataStructureHints = new Label();
-            lblDataStructureHints.Location = new Point(330, 925);
-            lblDataStructureHints.Size = new Size(1210, 20);
+            lblDataStructureHints.Location = new Point(50, 925);
+            lblDataStructureHints.Size = new Size(1490, 20);
             lblDataStructureHints.Font = new Font("Segoe UI", 8, FontStyle.Italic);
             lblDataStructureHints.ForeColor = AppPalette.TextMuted;
             lblDataStructureHints.Text = "Active Algorithms: BST (ID search) | AVL Tree (balanced sort) | Red-Black Tree (category sort) | " +
@@ -602,15 +578,23 @@ namespace Sidequest_municiple_app {
                 switch (status) {
                     case "Pending":
                         row.DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 224);
+                        row.DefaultCellStyle.SelectionBackColor = Color.FromArgb(80, 0, 102, 204);
+                        row.DefaultCellStyle.SelectionForeColor = AppPalette.TextPrimary;
                         break;
                     case "InProgress":
                         row.DefaultCellStyle.BackColor = Color.FromArgb(173, 216, 230);
+                        row.DefaultCellStyle.SelectionBackColor = Color.FromArgb(80, 0, 102, 204);
+                        row.DefaultCellStyle.SelectionForeColor = AppPalette.TextPrimary;
                         break;
                     case "Completed":
                         row.DefaultCellStyle.BackColor = Color.FromArgb(144, 238, 144);
+                        row.DefaultCellStyle.SelectionBackColor = Color.FromArgb(80, 0, 102, 204);
+                        row.DefaultCellStyle.SelectionForeColor = AppPalette.TextPrimary;
                         break;
                     case "Rejected":
                         row.DefaultCellStyle.BackColor = Color.FromArgb(255, 182, 193);
+                        row.DefaultCellStyle.SelectionBackColor = Color.FromArgb(80, 0, 102, 204);
+                        row.DefaultCellStyle.SelectionForeColor = AppPalette.TextPrimary;
                         break;
                 }
             }

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -11,6 +12,10 @@ namespace Sidequest_municiple_app
         private Button btnServiceStatus;
         private Button btnGenerateTestData;
         private Label lblTitle;
+        private LinkLabel lnkAuthor;
+        private LinkLabel lnkOfficialGitHub;
+        private LinkLabel lnkSubmissionGitHub;
+        private LinkLabel lnkReadme;
 
         public MainMenuForm()
         {
@@ -20,69 +25,44 @@ namespace Sidequest_municiple_app
 
         private void SetupForm() {
             this.Text = "Municipal Services Application";
-            this.Size = new Size(900, 600);
+            this.Size = new Size(900, 650);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = AppPalette.Background;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
 
-            Panel pnlSidebar = new Panel();
-            pnlSidebar.Size = new Size(280, 600);
-            pnlSidebar.Location = new Point(0, 0);
-            pnlSidebar.BackColor = AppPalette.Sidebar;
-            pnlSidebar.Dock = DockStyle.Left;
-            this.Controls.Add(pnlSidebar);
-
-            Label lblSidebarTitle = new Label();
-            lblSidebarTitle.Text = "Municipal Services";
-            lblSidebarTitle.Font = new Font("Segoe UI", 18, FontStyle.Bold);
-            lblSidebarTitle.ForeColor = AppPalette.TextHeading;
-            lblSidebarTitle.AutoSize = false;
-            lblSidebarTitle.Size = new Size(240, 60);
-            lblSidebarTitle.Location = new Point(20, 40);
-            lblSidebarTitle.TextAlign = ContentAlignment.MiddleLeft;
-            pnlSidebar.Controls.Add(lblSidebarTitle);
-
-            Label lblSidebarSubtitle = new Label();
-            lblSidebarSubtitle.Text = "South Africa";
-            lblSidebarSubtitle.Font = new Font("Segoe UI", 12);
-            lblSidebarSubtitle.ForeColor = AppPalette.TextSecondary;
-            lblSidebarSubtitle.AutoSize = true;
-            lblSidebarSubtitle.Location = new Point(20, 95);
-            pnlSidebar.Controls.Add(lblSidebarSubtitle);
-
             lblTitle = new Label();
-            lblTitle.Text = "Welcome to Municipal Services";
-            lblTitle.Font = new Font("Segoe UI", 20, FontStyle.Bold);
+            lblTitle.Text = "South African Municipal Services";
+            lblTitle.Font = new Font("Segoe UI", 24, FontStyle.Bold);
             lblTitle.ForeColor = AppPalette.TextHeading;
             lblTitle.AutoSize = true;
-            lblTitle.Location = new Point(330, 50);
+            lblTitle.Location = new Point(50, 50);
             this.Controls.Add(lblTitle);
 
             Label lblSubtitle = new Label();
             lblSubtitle.Text = "Select a service to continue";
-            lblSubtitle.Font = new Font("Segoe UI", 11);
+            lblSubtitle.Font = new Font("Segoe UI", 12);
             lblSubtitle.ForeColor = AppPalette.TextSecondary;
             lblSubtitle.AutoSize = true;
-            lblSubtitle.Location = new Point(330, 90);
+            lblSubtitle.Location = new Point(50, 100);
             this.Controls.Add(lblSubtitle);
 
             Panel pnlCard1 = new Panel();
-            pnlCard1.Size = new Size(520, 80);
-            pnlCard1.Location = new Point(330, 150);
+            pnlCard1.Size = new Size(800, 90);
+            pnlCard1.Location = new Point(50, 170);
             pnlCard1.BackColor = AppPalette.Surface;
             pnlCard1.BorderStyle = BorderStyle.FixedSingle;
             this.Controls.Add(pnlCard1);
 
             btnReportIssues = new Button();
             btnReportIssues.Text = "Report Issues";
-            btnReportIssues.Size = new Size(480, 60);
+            btnReportIssues.Size = new Size(760, 70);
             btnReportIssues.Location = new Point(10, 10);
             btnReportIssues.BackColor = AppPalette.AccentPrimary;
             btnReportIssues.FlatStyle = FlatStyle.Flat;
             btnReportIssues.FlatAppearance.BorderSize = 0;
             btnReportIssues.ForeColor = AppPalette.TextOnAccent;
-            btnReportIssues.Font = new Font("Segoe UI", 13, FontStyle.Bold);
+            btnReportIssues.Font = new Font("Segoe UI", 14, FontStyle.Bold);
             btnReportIssues.UseVisualStyleBackColor = false;
             btnReportIssues.Click += BtnReportIssues_Click;
             btnReportIssues.MouseEnter += (s, e) => btnReportIssues.BackColor = AppPalette.AccentHover;
@@ -90,21 +70,21 @@ namespace Sidequest_municiple_app
             pnlCard1.Controls.Add(btnReportIssues);
 
             Panel pnlCard2 = new Panel();
-            pnlCard2.Size = new Size(520, 80);
-            pnlCard2.Location = new Point(330, 250);
+            pnlCard2.Size = new Size(800, 90);
+            pnlCard2.Location = new Point(50, 280);
             pnlCard2.BackColor = AppPalette.Surface;
             pnlCard2.BorderStyle = BorderStyle.FixedSingle;
             this.Controls.Add(pnlCard2);
 
             btnLocalEvents = new Button();
             btnLocalEvents.Text = "Local Events and Announcements";
-            btnLocalEvents.Size = new Size(480, 60);
+            btnLocalEvents.Size = new Size(760, 70);
             btnLocalEvents.Location = new Point(10, 10);
             btnLocalEvents.BackColor = AppPalette.AccentPrimary;
             btnLocalEvents.FlatStyle = FlatStyle.Flat;
             btnLocalEvents.FlatAppearance.BorderSize = 0;
             btnLocalEvents.ForeColor = AppPalette.TextOnAccent;
-            btnLocalEvents.Font = new Font("Segoe UI", 13, FontStyle.Bold);
+            btnLocalEvents.Font = new Font("Segoe UI", 14, FontStyle.Bold);
             btnLocalEvents.Enabled = true;
             btnLocalEvents.Click += BtnLocalEvents_Click;
             btnLocalEvents.UseVisualStyleBackColor = false;
@@ -113,21 +93,21 @@ namespace Sidequest_municiple_app
             pnlCard2.Controls.Add(btnLocalEvents);
 
             Panel pnlCard3 = new Panel();
-            pnlCard3.Size = new Size(520, 80);
-            pnlCard3.Location = new Point(330, 350);
+            pnlCard3.Size = new Size(800, 90);
+            pnlCard3.Location = new Point(50, 390);
             pnlCard3.BackColor = AppPalette.Surface;
             pnlCard3.BorderStyle = BorderStyle.FixedSingle;
             this.Controls.Add(pnlCard3);
 
             btnServiceStatus = new Button();
             btnServiceStatus.Text = "Service Request Status";
-            btnServiceStatus.Size = new Size(480, 60);
+            btnServiceStatus.Size = new Size(760, 70);
             btnServiceStatus.Location = new Point(10, 10);
             btnServiceStatus.BackColor = AppPalette.AccentPrimary;
             btnServiceStatus.FlatStyle = FlatStyle.Flat;
             btnServiceStatus.FlatAppearance.BorderSize = 0;
             btnServiceStatus.ForeColor = AppPalette.TextOnAccent;
-            btnServiceStatus.Font = new Font("Segoe UI", 13, FontStyle.Bold);
+            btnServiceStatus.Font = new Font("Segoe UI", 14, FontStyle.Bold);
             btnServiceStatus.Enabled = true;
             btnServiceStatus.Click += BtnServiceStatus_Click;
             btnServiceStatus.UseVisualStyleBackColor = false;
@@ -137,8 +117,8 @@ namespace Sidequest_municiple_app
             
             btnGenerateTestData = new Button();
             btnGenerateTestData.Text = "Generate Test Data";
-            btnGenerateTestData.Size = new Size(240, 45);
-            btnGenerateTestData.Location = new Point(20, 500);
+            btnGenerateTestData.Size = new Size(200, 45);
+            btnGenerateTestData.Location = new Point(50, 530);
             btnGenerateTestData.BackColor = AppPalette.Surface;
             btnGenerateTestData.FlatStyle = FlatStyle.Flat;
             btnGenerateTestData.FlatAppearance.BorderColor = AppPalette.Border;
@@ -147,7 +127,7 @@ namespace Sidequest_municiple_app
             btnGenerateTestData.Font = new Font("Segoe UI", 10);
             btnGenerateTestData.UseVisualStyleBackColor = false;
             btnGenerateTestData.Click += BtnGenerateTestData_Click;
-            pnlSidebar.Controls.Add(btnGenerateTestData);
+            this.Controls.Add(btnGenerateTestData);
         }
 
         private void BtnReportIssues_Click(object sender, EventArgs e)
