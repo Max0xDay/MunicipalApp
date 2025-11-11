@@ -18,82 +18,136 @@ namespace Sidequest_municiple_app
             SetupForm();
         }
 
-        private void SetupForm()
-        {
+        private void SetupForm() {
             this.Text = "Municipal Services Application";
-            this.Size = new Size(600, 400);
+            this.Size = new Size(900, 600);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = AppPalette.Background;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
 
+            Panel pnlSidebar = new Panel();
+            pnlSidebar.Size = new Size(280, 600);
+            pnlSidebar.Location = new Point(0, 0);
+            pnlSidebar.BackColor = AppPalette.Sidebar;
+            pnlSidebar.Dock = DockStyle.Left;
+            this.Controls.Add(pnlSidebar);
+
+            Label lblSidebarTitle = new Label();
+            lblSidebarTitle.Text = "Municipal Services";
+            lblSidebarTitle.Font = new Font("Segoe UI", 18, FontStyle.Bold);
+            lblSidebarTitle.ForeColor = AppPalette.TextHeading;
+            lblSidebarTitle.AutoSize = false;
+            lblSidebarTitle.Size = new Size(240, 60);
+            lblSidebarTitle.Location = new Point(20, 40);
+            lblSidebarTitle.TextAlign = ContentAlignment.MiddleLeft;
+            pnlSidebar.Controls.Add(lblSidebarTitle);
+
+            Label lblSidebarSubtitle = new Label();
+            lblSidebarSubtitle.Text = "South Africa";
+            lblSidebarSubtitle.Font = new Font("Segoe UI", 12);
+            lblSidebarSubtitle.ForeColor = AppPalette.TextSecondary;
+            lblSidebarSubtitle.AutoSize = true;
+            lblSidebarSubtitle.Location = new Point(20, 95);
+            pnlSidebar.Controls.Add(lblSidebarSubtitle);
+
             lblTitle = new Label();
-            lblTitle.Text = "South African Municipal Services";
-            lblTitle.Font = new Font("Segoe UI", 16, FontStyle.Bold);
-            lblTitle.ForeColor = AppPalette.TextPrimary;
+            lblTitle.Text = "Welcome to Municipal Services";
+            lblTitle.Font = new Font("Segoe UI", 20, FontStyle.Bold);
+            lblTitle.ForeColor = AppPalette.TextHeading;
             lblTitle.AutoSize = true;
-            lblTitle.Location = new Point(150, 50);
+            lblTitle.Location = new Point(330, 50);
             this.Controls.Add(lblTitle);
+
+            Label lblSubtitle = new Label();
+            lblSubtitle.Text = "Select a service to continue";
+            lblSubtitle.Font = new Font("Segoe UI", 11);
+            lblSubtitle.ForeColor = AppPalette.TextSecondary;
+            lblSubtitle.AutoSize = true;
+            lblSubtitle.Location = new Point(330, 90);
+            this.Controls.Add(lblSubtitle);
+
+            Panel pnlCard1 = new Panel();
+            pnlCard1.Size = new Size(520, 80);
+            pnlCard1.Location = new Point(330, 150);
+            pnlCard1.BackColor = AppPalette.Surface;
+            pnlCard1.BorderStyle = BorderStyle.FixedSingle;
+            this.Controls.Add(pnlCard1);
 
             btnReportIssues = new Button();
             btnReportIssues.Text = "Report Issues";
-            btnReportIssues.Size = new Size(200, 50);
-            btnReportIssues.Location = new Point(200, 120);
-            btnReportIssues.BackColor = AppPalette.AccentSecondary;
+            btnReportIssues.Size = new Size(480, 60);
+            btnReportIssues.Location = new Point(10, 10);
+            btnReportIssues.BackColor = AppPalette.AccentPrimary;
             btnReportIssues.FlatStyle = FlatStyle.Flat;
-            btnReportIssues.FlatAppearance.BorderColor = AppPalette.Border;
-            btnReportIssues.FlatAppearance.BorderSize = 1;
+            btnReportIssues.FlatAppearance.BorderSize = 0;
             btnReportIssues.ForeColor = AppPalette.TextOnAccent;
-            btnReportIssues.Font = new Font("Segoe UI", 12);
+            btnReportIssues.Font = new Font("Segoe UI", 13, FontStyle.Bold);
             btnReportIssues.UseVisualStyleBackColor = false;
             btnReportIssues.Click += BtnReportIssues_Click;
-            this.Controls.Add(btnReportIssues);
+            btnReportIssues.MouseEnter += (s, e) => btnReportIssues.BackColor = AppPalette.AccentHover;
+            btnReportIssues.MouseLeave += (s, e) => btnReportIssues.BackColor = AppPalette.AccentPrimary;
+            pnlCard1.Controls.Add(btnReportIssues);
+
+            Panel pnlCard2 = new Panel();
+            pnlCard2.Size = new Size(520, 80);
+            pnlCard2.Location = new Point(330, 250);
+            pnlCard2.BackColor = AppPalette.Surface;
+            pnlCard2.BorderStyle = BorderStyle.FixedSingle;
+            this.Controls.Add(pnlCard2);
 
             btnLocalEvents = new Button();
             btnLocalEvents.Text = "Local Events and Announcements";
-            btnLocalEvents.Size = new Size(200, 50);
-            btnLocalEvents.Location = new Point(200, 180);
-            btnLocalEvents.BackColor = AppPalette.AccentSecondary;
+            btnLocalEvents.Size = new Size(480, 60);
+            btnLocalEvents.Location = new Point(10, 10);
+            btnLocalEvents.BackColor = AppPalette.AccentPrimary;
             btnLocalEvents.FlatStyle = FlatStyle.Flat;
-            btnLocalEvents.FlatAppearance.BorderColor = AppPalette.Border;
-            btnLocalEvents.FlatAppearance.BorderSize = 1;
+            btnLocalEvents.FlatAppearance.BorderSize = 0;
             btnLocalEvents.ForeColor = AppPalette.TextOnAccent;
-            btnLocalEvents.Font = new Font("Segoe UI", 10);
+            btnLocalEvents.Font = new Font("Segoe UI", 13, FontStyle.Bold);
             btnLocalEvents.Enabled = true;
             btnLocalEvents.Click += BtnLocalEvents_Click;
             btnLocalEvents.UseVisualStyleBackColor = false;
-            btnLocalEvents.AutoSize = false;
-            btnLocalEvents.TextAlign = ContentAlignment.MiddleCenter;
-            this.Controls.Add(btnLocalEvents);
+            btnLocalEvents.MouseEnter += (s, e) => btnLocalEvents.BackColor = AppPalette.AccentHover;
+            btnLocalEvents.MouseLeave += (s, e) => btnLocalEvents.BackColor = AppPalette.AccentPrimary;
+            pnlCard2.Controls.Add(btnLocalEvents);
+
+            Panel pnlCard3 = new Panel();
+            pnlCard3.Size = new Size(520, 80);
+            pnlCard3.Location = new Point(330, 350);
+            pnlCard3.BackColor = AppPalette.Surface;
+            pnlCard3.BorderStyle = BorderStyle.FixedSingle;
+            this.Controls.Add(pnlCard3);
 
             btnServiceStatus = new Button();
             btnServiceStatus.Text = "Service Request Status";
-            btnServiceStatus.Size = new Size(200, 50);
-            btnServiceStatus.Location = new Point(200, 240);
-            btnServiceStatus.BackColor = AppPalette.AccentSecondary;
+            btnServiceStatus.Size = new Size(480, 60);
+            btnServiceStatus.Location = new Point(10, 10);
+            btnServiceStatus.BackColor = AppPalette.AccentPrimary;
             btnServiceStatus.FlatStyle = FlatStyle.Flat;
-            btnServiceStatus.FlatAppearance.BorderColor = AppPalette.Border;
-            btnServiceStatus.FlatAppearance.BorderSize = 1;
+            btnServiceStatus.FlatAppearance.BorderSize = 0;
             btnServiceStatus.ForeColor = AppPalette.TextOnAccent;
-            btnServiceStatus.Font = new Font("Segoe UI", 12);
+            btnServiceStatus.Font = new Font("Segoe UI", 13, FontStyle.Bold);
             btnServiceStatus.Enabled = true;
             btnServiceStatus.Click += BtnServiceStatus_Click;
             btnServiceStatus.UseVisualStyleBackColor = false;
-            this.Controls.Add(btnServiceStatus);
+            btnServiceStatus.MouseEnter += (s, e) => btnServiceStatus.BackColor = AppPalette.AccentHover;
+            btnServiceStatus.MouseLeave += (s, e) => btnServiceStatus.BackColor = AppPalette.AccentPrimary;
+            pnlCard3.Controls.Add(btnServiceStatus);
             
             btnGenerateTestData = new Button();
             btnGenerateTestData.Text = "Generate Test Data";
-            btnGenerateTestData.Size = new Size(200, 40);
-            btnGenerateTestData.Location = new Point(200, 305);
-            btnGenerateTestData.BackColor = Color.FromArgb(100, 149, 237);
+            btnGenerateTestData.Size = new Size(240, 45);
+            btnGenerateTestData.Location = new Point(20, 500);
+            btnGenerateTestData.BackColor = AppPalette.Surface;
             btnGenerateTestData.FlatStyle = FlatStyle.Flat;
             btnGenerateTestData.FlatAppearance.BorderColor = AppPalette.Border;
-            btnGenerateTestData.FlatAppearance.BorderSize = 1;
-            btnGenerateTestData.ForeColor = Color.White;
-            btnGenerateTestData.Font = new Font("Segoe UI", 9);
+            btnGenerateTestData.FlatAppearance.BorderSize = 2;
+            btnGenerateTestData.ForeColor = AppPalette.TextPrimary;
+            btnGenerateTestData.Font = new Font("Segoe UI", 10);
             btnGenerateTestData.UseVisualStyleBackColor = false;
             btnGenerateTestData.Click += BtnGenerateTestData_Click;
-            this.Controls.Add(btnGenerateTestData);
+            pnlSidebar.Controls.Add(btnGenerateTestData);
         }
 
         private void BtnReportIssues_Click(object sender, EventArgs e)

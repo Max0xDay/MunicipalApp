@@ -67,7 +67,7 @@ namespace Sidequest_municiple_app {
             dgvIssues.DefaultCellStyle.ForeColor = AppPalette.TextPrimary;
             dgvIssues.DefaultCellStyle.SelectionBackColor = AppPalette.AccentPrimary;
             dgvIssues.DefaultCellStyle.SelectionForeColor = AppPalette.TextOnAccent;
-            dgvIssues.AlternatingRowsDefaultCellStyle.BackColor = AppPalette.SurfaceAlt;
+            dgvIssues.AlternatingRowsDefaultCellStyle.BackColor = AppPalette.Surface;
 
             Controls.Add(dgvIssues);
 

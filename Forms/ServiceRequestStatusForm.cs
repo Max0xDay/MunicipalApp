@@ -58,47 +58,86 @@ namespace Sidequest_municiple_app {
 
         private void SetupForm() {
             Text = "Service Request Status";
-            Size = new Size(1400, 900);
+            Size = new Size(1600, 950);
             StartPosition = FormStartPosition.CenterScreen;
             BackColor = AppPalette.Background;
             FormBorderStyle = FormBorderStyle.Sizable;
-            MinimumSize = new Size(1400, 900);
+            MinimumSize = new Size(1600, 950);
+
+            Panel pnlSidebar = new Panel();
+            pnlSidebar.Size = new Size(280, 950);
+            pnlSidebar.Location = new Point(0, 0);
+            pnlSidebar.BackColor = AppPalette.Sidebar;
+            pnlSidebar.Dock = DockStyle.Left;
+            Controls.Add(pnlSidebar);
+
+            Label lblSidebarTitle = new Label();
+            lblSidebarTitle.Text = "Service Requests";
+            lblSidebarTitle.Font = new Font("Segoe UI", 18, FontStyle.Bold);
+            lblSidebarTitle.ForeColor = AppPalette.TextHeading;
+            lblSidebarTitle.AutoSize = false;
+            lblSidebarTitle.Size = new Size(240, 50);
+            lblSidebarTitle.Location = new Point(20, 40);
+            pnlSidebar.Controls.Add(lblSidebarTitle);
+
+            Label lblSidebarDesc = new Label();
+            lblSidebarDesc.Text = "Track and manage all service requests";
+            lblSidebarDesc.Font = new Font("Segoe UI", 9);
+            lblSidebarDesc.ForeColor = AppPalette.TextMuted;
+            lblSidebarDesc.AutoSize = false;
+            lblSidebarDesc.Size = new Size(240, 40);
+            lblSidebarDesc.Location = new Point(20, 90);
+            pnlSidebar.Controls.Add(lblSidebarDesc);
+
+            btnBack = new Button();
+            btnBack.Text = "Back to Menu";
+            btnBack.Size = new Size(240, 50);
+            btnBack.Location = new Point(20, 850);
+            btnBack.BackColor = AppPalette.Surface;
+            btnBack.FlatStyle = FlatStyle.Flat;
+            btnBack.FlatAppearance.BorderColor = AppPalette.Border;
+            btnBack.FlatAppearance.BorderSize = 2;
+            btnBack.ForeColor = AppPalette.TextPrimary;
+            btnBack.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            btnBack.UseVisualStyleBackColor = false;
+            btnBack.Click += BtnBack_Click;
+            pnlSidebar.Controls.Add(btnBack);
 
             lblTitle = new Label();
             lblTitle.Text = "Service Request Status Tracking";
-            lblTitle.Font = new Font("Segoe UI", 18, FontStyle.Bold);
-            lblTitle.ForeColor = AppPalette.TextPrimary;
+            lblTitle.Font = new Font("Segoe UI", 22, FontStyle.Bold);
+            lblTitle.ForeColor = AppPalette.TextHeading;
             lblTitle.AutoSize = true;
-            lblTitle.Location = new Point(30, 20);
+            lblTitle.Location = new Point(330, 40);
             Controls.Add(lblTitle);
             
             Panel pnlAlgorithmInfo = new Panel();
-            pnlAlgorithmInfo.Location = new Point(950, 15);
-            pnlAlgorithmInfo.Size = new Size(400, 50);
-            pnlAlgorithmInfo.BackColor = Color.FromArgb(240, 248, 255);
+            pnlAlgorithmInfo.Location = new Point(1120, 30);
+            pnlAlgorithmInfo.Size = new Size(420, 70);
+            pnlAlgorithmInfo.BackColor = AppPalette.CodeBlock;
             pnlAlgorithmInfo.BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(pnlAlgorithmInfo);
             
             Label lblAlgoTitle = new Label();
             lblAlgoTitle.Text = "Active Data Structures:";
-            lblAlgoTitle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-            lblAlgoTitle.ForeColor = Color.FromArgb(70, 70, 70);
+            lblAlgoTitle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lblAlgoTitle.ForeColor = AppPalette.TextSecondary;
             lblAlgoTitle.AutoSize = true;
-            lblAlgoTitle.Location = new Point(8, 5);
+            lblAlgoTitle.Location = new Point(15, 10);
             pnlAlgorithmInfo.Controls.Add(lblAlgoTitle);
             
             Label lblAlgoList = new Label();
             lblAlgoList.Text = "BST, AVL Tree, Red-Black Tree, Basic Tree, Binary Tree,\nHeap, Graph, BFS, DFS, MST";
-            lblAlgoList.Font = new Font("Segoe UI", 8);
-            lblAlgoList.ForeColor = Color.FromArgb(100, 100, 100);
+            lblAlgoList.Font = new Font("Segoe UI", 9);
+            lblAlgoList.ForeColor = AppPalette.TextMuted;
             lblAlgoList.AutoSize = false;
-            lblAlgoList.Size = new Size(380, 35);
-            lblAlgoList.Location = new Point(8, 20);
+            lblAlgoList.Size = new Size(390, 45);
+            lblAlgoList.Location = new Point(15, 30);
             pnlAlgorithmInfo.Controls.Add(lblAlgoList);
 
             pnlControls = new Panel();
-            pnlControls.Location = new Point(30, 75);
-            pnlControls.Size = new Size(1340, 120);
+            pnlControls.Location = new Point(330, 120);
+            pnlControls.Size = new Size(1210, 140);
             pnlControls.BackColor = AppPalette.Surface;
             pnlControls.BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(pnlControls);
@@ -108,26 +147,31 @@ namespace Sidequest_municiple_app {
             lblSearchLabel.Font = new Font("Segoe UI", 10);
             lblSearchLabel.ForeColor = AppPalette.TextPrimary;
             lblSearchLabel.AutoSize = true;
-            lblSearchLabel.Location = new Point(15, 15);
+            lblSearchLabel.Location = new Point(30, 25);
             pnlControls.Controls.Add(lblSearchLabel);
 
             txtSearchID = new TextBox();
-            txtSearchID.Location = new Point(180, 12);
-            txtSearchID.Size = new Size(220, 25);
+            txtSearchID.Location = new Point(220, 22);
+            txtSearchID.Size = new Size(240, 25);
             txtSearchID.Font = new Font("Segoe UI", 10);
+            txtSearchID.BackColor = AppPalette.CodeBlock;
+            txtSearchID.ForeColor = AppPalette.TextPrimary;
+            txtSearchID.BorderStyle = BorderStyle.FixedSingle;
             pnlControls.Controls.Add(txtSearchID);
 
             btnSearch = new Button();
             btnSearch.Text = "Search";
-            btnSearch.Size = new Size(90, 30);
-            btnSearch.Location = new Point(410, 10);
-            btnSearch.BackColor = AppPalette.AccentSecondary;
+            btnSearch.Size = new Size(100, 32);
+            btnSearch.Location = new Point(470, 20);
+            btnSearch.BackColor = AppPalette.AccentPrimary;
             btnSearch.FlatStyle = FlatStyle.Flat;
-            btnSearch.FlatAppearance.BorderColor = AppPalette.Border;
+            btnSearch.FlatAppearance.BorderSize = 0;
             btnSearch.ForeColor = AppPalette.TextOnAccent;
-            btnSearch.Font = new Font("Segoe UI", 9);
+            btnSearch.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             btnSearch.UseVisualStyleBackColor = false;
             btnSearch.Click += BtnSearch_Click;
+            btnSearch.MouseEnter += (s, e) => btnSearch.BackColor = AppPalette.AccentHover;
+            btnSearch.MouseLeave += (s, e) => btnSearch.BackColor = AppPalette.AccentPrimary;
             pnlControls.Controls.Add(btnSearch);
 
             lblStatusFilter = new Label();
@@ -135,13 +179,16 @@ namespace Sidequest_municiple_app {
             lblStatusFilter.Font = new Font("Segoe UI", 10);
             lblStatusFilter.ForeColor = AppPalette.TextPrimary;
             lblStatusFilter.AutoSize = true;
-            lblStatusFilter.Location = new Point(15, 55);
+            lblStatusFilter.Location = new Point(30, 75);
             pnlControls.Controls.Add(lblStatusFilter);
 
             cmbStatusFilter = new ComboBox();
-            cmbStatusFilter.Location = new Point(110, 52);
-            cmbStatusFilter.Size = new Size(160, 25);
+            cmbStatusFilter.Location = new Point(140, 72);
+            cmbStatusFilter.Size = new Size(170, 25);
             cmbStatusFilter.Font = new Font("Segoe UI", 10);
+            cmbStatusFilter.BackColor = AppPalette.CodeBlock;
+            cmbStatusFilter.ForeColor = AppPalette.TextPrimary;
+            cmbStatusFilter.FlatStyle = FlatStyle.Flat;
             cmbStatusFilter.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbStatusFilter.Items.AddRange(new object[] { "All", "Pending", "InProgress", "Completed", "Rejected" });
             cmbStatusFilter.SelectedIndex = 0;
@@ -153,13 +200,16 @@ namespace Sidequest_municiple_app {
             lblCategoryFilter.Font = new Font("Segoe UI", 10);
             lblCategoryFilter.ForeColor = AppPalette.TextPrimary;
             lblCategoryFilter.AutoSize = true;
-            lblCategoryFilter.Location = new Point(290, 55);
+            lblCategoryFilter.Location = new Point(340, 75);
             pnlControls.Controls.Add(lblCategoryFilter);
 
             cmbCategoryFilter = new ComboBox();
-            cmbCategoryFilter.Location = new Point(410, 52);
-            cmbCategoryFilter.Size = new Size(160, 25);
+            cmbCategoryFilter.Location = new Point(470, 72);
+            cmbCategoryFilter.Size = new Size(170, 25);
             cmbCategoryFilter.Font = new Font("Segoe UI", 10);
+            cmbCategoryFilter.BackColor = AppPalette.CodeBlock;
+            cmbCategoryFilter.ForeColor = AppPalette.TextPrimary;
+            cmbCategoryFilter.FlatStyle = FlatStyle.Flat;
             cmbCategoryFilter.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCategoryFilter.Items.AddRange(new object[] { "All", "Sanitation", "Roads", "Utilities", "Water", "Electricity" });
             cmbCategoryFilter.SelectedIndex = 0;
@@ -171,13 +221,16 @@ namespace Sidequest_municiple_app {
             lblSortBy.Font = new Font("Segoe UI", 10);
             lblSortBy.ForeColor = AppPalette.TextPrimary;
             lblSortBy.AutoSize = true;
-            lblSortBy.Location = new Point(600, 15);
+            lblSortBy.Location = new Point(670, 25);
             pnlControls.Controls.Add(lblSortBy);
 
             cmbSortBy = new ComboBox();
-            cmbSortBy.Location = new Point(680, 12);
-            cmbSortBy.Size = new Size(180, 25);
+            cmbSortBy.Location = new Point(760, 22);
+            cmbSortBy.Size = new Size(190, 25);
             cmbSortBy.Font = new Font("Segoe UI", 10);
+            cmbSortBy.BackColor = AppPalette.CodeBlock;
+            cmbSortBy.ForeColor = AppPalette.TextPrimary;
+            cmbSortBy.FlatStyle = FlatStyle.Flat;
             cmbSortBy.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSortBy.Items.AddRange(new object[] { "Newest first", "Oldest first", "Priority high-low", "Priority low-high", "Category A-Z" });
             cmbSortBy.SelectedIndex = 0;
@@ -189,13 +242,16 @@ namespace Sidequest_municiple_app {
             lblTreeView.Font = new Font("Segoe UI", 10);
             lblTreeView.ForeColor = AppPalette.TextPrimary;
             lblTreeView.AutoSize = true;
-            lblTreeView.Location = new Point(600, 55);
+            lblTreeView.Location = new Point(670, 75);
             pnlControls.Controls.Add(lblTreeView);
             
             cmbTreeView = new ComboBox();
-            cmbTreeView.Location = new Point(680, 52);
-            cmbTreeView.Size = new Size(180, 25);
+            cmbTreeView.Location = new Point(760, 72);
+            cmbTreeView.Size = new Size(190, 25);
             cmbTreeView.Font = new Font("Segoe UI", 10);
+            cmbTreeView.BackColor = AppPalette.CodeBlock;
+            cmbTreeView.ForeColor = AppPalette.TextPrimary;
+            cmbTreeView.FlatStyle = FlatStyle.Flat;
             cmbTreeView.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTreeView.Items.AddRange(new object[] { 
                 "Red-Black by Category", 
@@ -208,50 +264,40 @@ namespace Sidequest_municiple_app {
 
             btnRefresh = new Button();
             btnRefresh.Text = "Refresh All";
-            btnRefresh.Size = new Size(120, 40);
-            btnRefresh.Location = new Point(900, 10);
-            btnRefresh.BackColor = AppPalette.AccentSecondary;
+            btnRefresh.Size = new Size(130, 90);
+            btnRefresh.Location = new Point(1020, 20);
+            btnRefresh.BackColor = AppPalette.AccentPrimary;
             btnRefresh.FlatStyle = FlatStyle.Flat;
-            btnRefresh.FlatAppearance.BorderColor = AppPalette.Border;
+            btnRefresh.FlatAppearance.BorderSize = 0;
             btnRefresh.ForeColor = AppPalette.TextOnAccent;
-            btnRefresh.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            btnRefresh.Font = new Font("Segoe UI", 11, FontStyle.Bold);
             btnRefresh.UseVisualStyleBackColor = false;
             btnRefresh.Click += BtnRefresh_Click;
+            btnRefresh.MouseEnter += (s, e) => btnRefresh.BackColor = AppPalette.AccentHover;
+            btnRefresh.MouseLeave += (s, e) => btnRefresh.BackColor = AppPalette.AccentPrimary;
             pnlControls.Controls.Add(btnRefresh);
-
-            btnBack = new Button();
-            btnBack.Text = "Back to Menu";
-            btnBack.Size = new Size(130, 40);
-            btnBack.Location = new Point(1040, 10);
-            btnBack.BackColor = AppPalette.SurfaceAlt;
-            btnBack.FlatStyle = FlatStyle.Flat;
-            btnBack.FlatAppearance.BorderColor = AppPalette.Border;
-            btnBack.ForeColor = AppPalette.TextPrimary;
-            btnBack.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-            btnBack.UseVisualStyleBackColor = false;
-            btnBack.Click += BtnBack_Click;
-            pnlControls.Controls.Add(btnBack);
 
             lblTotalRequests = new Label();
             lblTotalRequests.Text = "Total Requests: 0";
-            lblTotalRequests.Font = new Font("Segoe UI", 11, FontStyle.Bold);
-            lblTotalRequests.ForeColor = AppPalette.TextPrimary;
+            lblTotalRequests.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            lblTotalRequests.ForeColor = AppPalette.TextHeading;
             lblTotalRequests.AutoSize = true;
-            lblTotalRequests.Location = new Point(30, 210);
+            lblTotalRequests.Location = new Point(330, 280);
             Controls.Add(lblTotalRequests);
 
             lblStatistics = new Label();
             lblStatistics.Text = string.Empty;
-            lblStatistics.Font = new Font("Segoe UI", 9);
-            lblStatistics.ForeColor = AppPalette.TextPrimary;
+            lblStatistics.Font = new Font("Segoe UI", 10);
+            lblStatistics.ForeColor = AppPalette.TextSecondary;
             lblStatistics.AutoSize = true;
-            lblStatistics.Location = new Point(200, 212);
+            lblStatistics.Location = new Point(500, 282);
             Controls.Add(lblStatistics);
 
             dgvRequests = new DataGridView();
-            dgvRequests.Location = new Point(30, 240);
-            dgvRequests.Size = new Size(1340, 350);
-            dgvRequests.BackgroundColor = AppPalette.Surface;
+            dgvRequests.Location = new Point(330, 320);
+            dgvRequests.Size = new Size(1210, 360);
+            dgvRequests.BackgroundColor = AppPalette.CodeBlock;
+            dgvRequests.GridColor = AppPalette.Border;
             dgvRequests.BorderStyle = BorderStyle.FixedSingle;
             dgvRequests.AllowUserToAddRows = false;
             dgvRequests.AllowUserToDeleteRows = false;
@@ -261,34 +307,40 @@ namespace Sidequest_municiple_app {
             dgvRequests.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvRequests.RowHeadersVisible = false;
             dgvRequests.Font = new Font("Segoe UI", 9);
-            dgvRequests.ColumnHeadersDefaultCellStyle.BackColor = AppPalette.AccentSecondary;
+            dgvRequests.DefaultCellStyle.BackColor = AppPalette.CodeBlock;
+            dgvRequests.DefaultCellStyle.ForeColor = AppPalette.TextPrimary;
+            dgvRequests.AlternatingRowsDefaultCellStyle.BackColor = AppPalette.Surface;
+            dgvRequests.ColumnHeadersDefaultCellStyle.BackColor = AppPalette.AccentPrimary;
             dgvRequests.ColumnHeadersDefaultCellStyle.ForeColor = AppPalette.TextOnAccent;
             dgvRequests.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dgvRequests.EnableHeadersVisualStyles = false;
-            dgvRequests.DefaultCellStyle.SelectionBackColor = AppPalette.AccentPrimary;
+            dgvRequests.DefaultCellStyle.SelectionBackColor = AppPalette.AccentHover;
             dgvRequests.DefaultCellStyle.SelectionForeColor = AppPalette.TextOnAccent;
             dgvRequests.SelectionChanged += DgvRequests_SelectionChanged;
             Controls.Add(dgvRequests);
 
             pnlBottom = new Panel();
-            pnlBottom.Location = new Point(30, 605);
-            pnlBottom.Size = new Size(1340, 210);
+            pnlBottom.Location = new Point(330, 695);
+            pnlBottom.Size = new Size(1210, 220);
             pnlBottom.BackColor = AppPalette.Surface;
             pnlBottom.BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(pnlBottom);
 
             lblUpdateStatus = new Label();
             lblUpdateStatus.Text = "Update Status:";
-            lblUpdateStatus.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-            lblUpdateStatus.ForeColor = AppPalette.TextPrimary;
+            lblUpdateStatus.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            lblUpdateStatus.ForeColor = AppPalette.TextHeading;
             lblUpdateStatus.AutoSize = true;
-            lblUpdateStatus.Location = new Point(20, 20);
+            lblUpdateStatus.Location = new Point(30, 25);
             pnlBottom.Controls.Add(lblUpdateStatus);
 
             cmbUpdateStatus = new ComboBox();
-            cmbUpdateStatus.Location = new Point(130, 17);
-            cmbUpdateStatus.Size = new Size(150, 25);
+            cmbUpdateStatus.Location = new Point(160, 22);
+            cmbUpdateStatus.Size = new Size(160, 25);
             cmbUpdateStatus.Font = new Font("Segoe UI", 10);
+            cmbUpdateStatus.BackColor = AppPalette.CodeBlock;
+            cmbUpdateStatus.ForeColor = AppPalette.TextPrimary;
+            cmbUpdateStatus.FlatStyle = FlatStyle.Flat;
             cmbUpdateStatus.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbUpdateStatus.Items.AddRange(new object[] { "Pending", "InProgress", "Completed", "Rejected" });
             cmbUpdateStatus.SelectedIndex = 0;
@@ -296,91 +348,105 @@ namespace Sidequest_municiple_app {
 
             btnUpdateStatus = new Button();
             btnUpdateStatus.Text = "Apply Status";
-            btnUpdateStatus.Size = new Size(110, 30);
-            btnUpdateStatus.Location = new Point(290, 15);
+            btnUpdateStatus.Size = new Size(120, 32);
+            btnUpdateStatus.Location = new Point(330, 20);
             btnUpdateStatus.BackColor = AppPalette.AccentPrimary;
             btnUpdateStatus.FlatStyle = FlatStyle.Flat;
-            btnUpdateStatus.FlatAppearance.BorderColor = AppPalette.Border;
+            btnUpdateStatus.FlatAppearance.BorderSize = 0;
             btnUpdateStatus.ForeColor = AppPalette.TextOnAccent;
-            btnUpdateStatus.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            btnUpdateStatus.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             btnUpdateStatus.UseVisualStyleBackColor = false;
             btnUpdateStatus.Click += BtnUpdateStatus_Click;
             btnUpdateStatus.Enabled = false;
+            btnUpdateStatus.MouseEnter += (s, e) => { if (btnUpdateStatus.Enabled) btnUpdateStatus.BackColor = AppPalette.AccentHover; };
+            btnUpdateStatus.MouseLeave += (s, e) => { if (btnUpdateStatus.Enabled) btnUpdateStatus.BackColor = AppPalette.AccentPrimary; };
             pnlBottom.Controls.Add(btnUpdateStatus);
 
             lblPriorityQueue = new Label();
             lblPriorityQueue.Text = "Priority Queue (Heap Algorithm)";
-            lblPriorityQueue.Font = new Font("Segoe UI", 11, FontStyle.Bold);
-            lblPriorityQueue.ForeColor = AppPalette.TextPrimary;
+            lblPriorityQueue.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            lblPriorityQueue.ForeColor = AppPalette.TextHeading;
             lblPriorityQueue.AutoSize = true;
-            lblPriorityQueue.Location = new Point(20, 60);
+            lblPriorityQueue.Location = new Point(30, 70);
             pnlBottom.Controls.Add(lblPriorityQueue);
 
             lvPriorityQueue = new ListView();
-            lvPriorityQueue.Location = new Point(20, 90);
-            lvPriorityQueue.Size = new Size(640, 100);
+            lvPriorityQueue.Location = new Point(30, 100);
+            lvPriorityQueue.Size = new Size(560, 100);
             lvPriorityQueue.View = View.Details;
             lvPriorityQueue.FullRowSelect = true;
             lvPriorityQueue.GridLines = true;
             lvPriorityQueue.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             lvPriorityQueue.Font = new Font("Segoe UI", 9);
-            lvPriorityQueue.Columns.Add("Priority", 80);
-            lvPriorityQueue.Columns.Add("Category", 140);
+            lvPriorityQueue.BackColor = AppPalette.CodeBlock;
+            lvPriorityQueue.ForeColor = AppPalette.TextPrimary;
+            lvPriorityQueue.BorderStyle = BorderStyle.FixedSingle;
+            lvPriorityQueue.Columns.Add("Priority", 70);
+            lvPriorityQueue.Columns.Add("Category", 120);
             lvPriorityQueue.Columns.Add("Location", 140);
-            lvPriorityQueue.Columns.Add("Status", 100);
-            lvPriorityQueue.Columns.Add("Submitted", 120);
+            lvPriorityQueue.Columns.Add("Status", 90);
+            lvPriorityQueue.Columns.Add("Submitted", 110);
             pnlBottom.Controls.Add(lvPriorityQueue);
 
             lblRelatedRequests = new Label();
             lblRelatedRequests.Text = "Related Requests (Graph Network)";
-            lblRelatedRequests.Font = new Font("Segoe UI", 11, FontStyle.Bold);
-            lblRelatedRequests.ForeColor = AppPalette.TextPrimary;
+            lblRelatedRequests.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            lblRelatedRequests.ForeColor = AppPalette.TextHeading;
             lblRelatedRequests.AutoSize = true;
-            lblRelatedRequests.Location = new Point(680, 20);
+            lblRelatedRequests.Location = new Point(620, 25);
             pnlBottom.Controls.Add(lblRelatedRequests);
 
             lvRelatedRequests = new ListView();
-            lvRelatedRequests.Location = new Point(680, 50);
-            lvRelatedRequests.Size = new Size(630, 60);
+            lvRelatedRequests.Location = new Point(620, 55);
+            lvRelatedRequests.Size = new Size(560, 60);
             lvRelatedRequests.View = View.Details;
             lvRelatedRequests.FullRowSelect = true;
             lvRelatedRequests.GridLines = true;
             lvRelatedRequests.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             lvRelatedRequests.Font = new Font("Segoe UI", 9);
-            lvRelatedRequests.Columns.Add("Request ID", 180);
-            lvRelatedRequests.Columns.Add("Category", 160);
-            lvRelatedRequests.Columns.Add("Status", 120);
-            lvRelatedRequests.Columns.Add("Priority", 120);
+            lvRelatedRequests.BackColor = AppPalette.CodeBlock;
+            lvRelatedRequests.ForeColor = AppPalette.TextPrimary;
+            lvRelatedRequests.BorderStyle = BorderStyle.FixedSingle;
+            lvRelatedRequests.Columns.Add("Request ID", 150);
+            lvRelatedRequests.Columns.Add("Category", 140);
+            lvRelatedRequests.Columns.Add("Status", 100);
+            lvRelatedRequests.Columns.Add("Priority", 130);
             pnlBottom.Controls.Add(lvRelatedRequests);
 
             lblGraphTraversal = new Label();
             lblGraphTraversal.Text = "Graph Traversal:";
-            lblGraphTraversal.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-            lblGraphTraversal.ForeColor = AppPalette.TextPrimary;
+            lblGraphTraversal.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            lblGraphTraversal.ForeColor = AppPalette.TextHeading;
             lblGraphTraversal.AutoSize = true;
-            lblGraphTraversal.Location = new Point(680, 120);
+            lblGraphTraversal.Location = new Point(620, 125);
             pnlBottom.Controls.Add(lblGraphTraversal);
 
             cmbGraphTraversal = new ComboBox();
-            cmbGraphTraversal.Location = new Point(810, 117);
+            cmbGraphTraversal.Location = new Point(760, 122);
             cmbGraphTraversal.Size = new Size(200, 25);
             cmbGraphTraversal.Font = new Font("Segoe UI", 10);
+            cmbGraphTraversal.BackColor = AppPalette.CodeBlock;
+            cmbGraphTraversal.ForeColor = AppPalette.TextPrimary;
+            cmbGraphTraversal.FlatStyle = FlatStyle.Flat;
             cmbGraphTraversal.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbGraphTraversal.Items.AddRange(new object[] { "BFS (Breadth-First)", "DFS (Depth-First)", "MST (Min Span Tree)" });
             cmbGraphTraversal.SelectedIndexChanged += GraphTraversalChanged;
             pnlBottom.Controls.Add(cmbGraphTraversal);
 
             lvGraphTraversal = new ListView();
-            lvGraphTraversal.Location = new Point(680, 150);
-            lvGraphTraversal.Size = new Size(630, 45);
+            lvGraphTraversal.Location = new Point(620, 155);
+            lvGraphTraversal.Size = new Size(560, 50);
             lvGraphTraversal.View = View.Details;
             lvGraphTraversal.FullRowSelect = true;
             lvGraphTraversal.GridLines = true;
             lvGraphTraversal.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             lvGraphTraversal.Font = new Font("Segoe UI", 9);
-            lvGraphTraversal.Columns.Add("Step", 80);
-            lvGraphTraversal.Columns.Add("Details", 350);
-            lvGraphTraversal.Columns.Add("Connection Info", 180);
+            lvGraphTraversal.BackColor = AppPalette.CodeBlock;
+            lvGraphTraversal.ForeColor = AppPalette.TextPrimary;
+            lvGraphTraversal.BorderStyle = BorderStyle.FixedSingle;
+            lvGraphTraversal.Columns.Add("Step", 70);
+            lvGraphTraversal.Columns.Add("Details", 310);
+            lvGraphTraversal.Columns.Add("Connection Info", 150);
             pnlBottom.Controls.Add(lvGraphTraversal);
 
             cmbGraphTraversal.SelectedIndex = 0;
@@ -399,10 +465,10 @@ namespace Sidequest_municiple_app {
         
         private void SetupDataStructureHints() {
             lblDataStructureHints = new Label();
-            lblDataStructureHints.Location = new Point(30, 830);
-            lblDataStructureHints.Size = new Size(1340, 30);
+            lblDataStructureHints.Location = new Point(330, 925);
+            lblDataStructureHints.Size = new Size(1210, 20);
             lblDataStructureHints.Font = new Font("Segoe UI", 8, FontStyle.Italic);
-            lblDataStructureHints.ForeColor = Color.FromArgb(100, 100, 100);
+            lblDataStructureHints.ForeColor = AppPalette.TextMuted;
             lblDataStructureHints.Text = "Active Algorithms: BST (ID search) | AVL Tree (balanced sort) | Red-Black Tree (category sort) | " +
                 "Basic Tree (hierarchy) | Binary Tree (insertion order) | Heap (priority) | Graph (relationships) | BFS/DFS (traversal) | MST (network)";
             Controls.Add(lblDataStructureHints);

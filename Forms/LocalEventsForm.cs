@@ -80,7 +80,7 @@ namespace Sidequest_municiple_app
                 Size = new Size(240, 25),
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Font = new Font("Segoe UI", 9),
-                BackColor = AppPalette.Input,
+                BackColor = AppPalette.CodeBlock,
                 ForeColor = AppPalette.TextPrimary,
                 FlatStyle = FlatStyle.Flat
             };
@@ -103,7 +103,7 @@ namespace Sidequest_municiple_app
                 Format = DateTimePickerFormat.Short,
                 Enabled = false,
                 CalendarForeColor = AppPalette.TextPrimary,
-                CalendarMonthBackground = AppPalette.Input
+                CalendarMonthBackground = AppPalette.CodeBlock
             };
             Controls.Add(dtpDate);
 
@@ -133,7 +133,7 @@ namespace Sidequest_municiple_app
                 Location = new Point(560, 122),
                 Size = new Size(300, 25),
                 Font = new Font("Segoe UI", 9),
-                BackColor = AppPalette.Input,
+                BackColor = AppPalette.CodeBlock,
                 ForeColor = AppPalette.TextPrimary,
                 BorderStyle = BorderStyle.FixedSingle
             };
@@ -150,8 +150,7 @@ namespace Sidequest_municiple_app
                 Font = new Font("Segoe UI", 9, FontStyle.Bold),
                 ForeColor = AppPalette.TextOnAccent
             };
-            btnSearch.FlatAppearance.BorderColor = AppPalette.Border;
-            btnSearch.FlatAppearance.BorderSize = 1;
+            btnSearch.FlatAppearance.BorderSize = 0;
             btnSearch.UseVisualStyleBackColor = false;
             btnSearch.Click += BtnSearch_Click;
             Controls.Add(btnSearch);
@@ -161,13 +160,13 @@ namespace Sidequest_municiple_app
                 Text = "Clear",
                 Location = new Point(140, 200),
                 Size = new Size(110, 32),
-                BackColor = AppPalette.SurfaceAlt,
+                BackColor = AppPalette.Surface,
                 FlatStyle = FlatStyle.Flat,
                 Font = new Font("Segoe UI", 9),
                 ForeColor = AppPalette.TextPrimary
             };
             btnClear.FlatAppearance.BorderColor = AppPalette.Border;
-            btnClear.FlatAppearance.BorderSize = 1;
+            btnClear.FlatAppearance.BorderSize = 2;
             btnClear.UseVisualStyleBackColor = false;
             btnClear.Click += BtnClear_Click;
             Controls.Add(btnClear);

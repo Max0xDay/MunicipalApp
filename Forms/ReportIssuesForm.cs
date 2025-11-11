@@ -55,7 +55,7 @@ namespace Sidequest_municiple_app {
             txtLocation.Location = new Point(120, 30);
             txtLocation.Size = new Size(300, 25);
             txtLocation.Font = new Font("Segoe UI", 10);
-            txtLocation.BackColor = AppPalette.Input;
+            txtLocation.BackColor = AppPalette.CodeBlock;
             txtLocation.ForeColor = AppPalette.TextPrimary;
             txtLocation.BorderStyle = BorderStyle.FixedSingle;
             txtLocation.TextChanged += Input_Changed;
@@ -74,7 +74,7 @@ namespace Sidequest_municiple_app {
             cmbCategory.Size = new Size(300, 25);
             cmbCategory.Font = new Font("Segoe UI", 10);
             cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbCategory.BackColor = AppPalette.Input;
+            cmbCategory.BackColor = AppPalette.CodeBlock;
             cmbCategory.ForeColor = AppPalette.TextPrimary;
             cmbCategory.FlatStyle = FlatStyle.Flat;
             cmbCategory.Items.AddRange(new object[] { "Sanitation", "Roads", "Utilities", "Water", "Electricity" });
@@ -93,7 +93,7 @@ namespace Sidequest_municiple_app {
             txtDescription.Location = new Point(120, 130);
             txtDescription.Size = new Size(400, 120);
             txtDescription.Font = new Font("Segoe UI", 10);
-            txtDescription.BackColor = AppPalette.Input;
+            txtDescription.BackColor = AppPalette.CodeBlock;
             txtDescription.ForeColor = AppPalette.TextPrimary;
             txtDescription.TextChanged += Input_Changed;
             Controls.Add(txtDescription);
@@ -110,10 +110,10 @@ namespace Sidequest_municiple_app {
             btnAttachment.Text = "Browse Files...";
             btnAttachment.Location = new Point(120, 270);
             btnAttachment.Size = new Size(120, 30);
-            btnAttachment.BackColor = AppPalette.SurfaceAlt;
+            btnAttachment.BackColor = AppPalette.Surface;
             btnAttachment.FlatStyle = FlatStyle.Flat;
             btnAttachment.FlatAppearance.BorderColor = AppPalette.Border;
-            btnAttachment.FlatAppearance.BorderSize = 1;
+            btnAttachment.FlatAppearance.BorderSize = 2;
             btnAttachment.ForeColor = AppPalette.TextPrimary;
             btnAttachment.Font = new Font("Segoe UI", 9);
             btnAttachment.UseVisualStyleBackColor = false;
@@ -126,8 +126,7 @@ namespace Sidequest_municiple_app {
             btnSubmit.Size = new Size(120, 35);
             btnSubmit.BackColor = AppPalette.AccentPrimary;
             btnSubmit.FlatStyle = FlatStyle.Flat;
-            btnSubmit.FlatAppearance.BorderColor = AppPalette.Border;
-            btnSubmit.FlatAppearance.BorderSize = 1;
+            btnSubmit.FlatAppearance.BorderSize = 0;
             btnSubmit.ForeColor = AppPalette.TextOnAccent;
             btnSubmit.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             btnSubmit.UseVisualStyleBackColor = false;
@@ -138,10 +137,9 @@ namespace Sidequest_municiple_app {
             btnAdmin.Text = "Admin";
             btnAdmin.Location = new Point(580, 520);
             btnAdmin.Size = new Size(80, 30);
-            btnAdmin.BackColor = AppPalette.AccentSecondary;
+            btnAdmin.BackColor = AppPalette.AccentPrimary;
             btnAdmin.FlatStyle = FlatStyle.Flat;
-            btnAdmin.FlatAppearance.BorderColor = AppPalette.Border;
-            btnAdmin.FlatAppearance.BorderSize = 1;
+            btnAdmin.FlatAppearance.BorderSize = 0;
             btnAdmin.ForeColor = AppPalette.TextOnAccent;
             btnAdmin.Font = new Font("Segoe UI", 9);
             btnAdmin.UseVisualStyleBackColor = false;
@@ -171,13 +169,12 @@ namespace Sidequest_municiple_app {
             btnWhatsApp.Text = "WhatsApp";
             btnWhatsApp.Location = new Point(10, 40);
             btnWhatsApp.Size = new Size(80, 25);
-            btnWhatsApp.BackColor = AppPalette.AccentSecondary;
+            btnWhatsApp.BackColor = AppPalette.AccentPrimary;
             btnWhatsApp.Font = new Font("Segoe UI", 8);
             btnWhatsApp.UseVisualStyleBackColor = false;
             btnWhatsApp.ForeColor = AppPalette.TextOnAccent;
             btnWhatsApp.FlatStyle = FlatStyle.Flat;
-            btnWhatsApp.FlatAppearance.BorderColor = AppPalette.Border;
-            btnWhatsApp.FlatAppearance.BorderSize = 1;
+            btnWhatsApp.FlatAppearance.BorderSize = 0;
             btnWhatsApp.Click += BtnShare_Click;
             panelSocialMedia.Controls.Add(btnWhatsApp);
 
@@ -190,8 +187,7 @@ namespace Sidequest_municiple_app {
             btnEmail.UseVisualStyleBackColor = false;
             btnEmail.ForeColor = AppPalette.TextOnAccent;
             btnEmail.FlatStyle = FlatStyle.Flat;
-            btnEmail.FlatAppearance.BorderColor = AppPalette.Border;
-            btnEmail.FlatAppearance.BorderSize = 1;
+            btnEmail.FlatAppearance.BorderSize = 0;
             btnEmail.Click += BtnShare_Click;
             panelSocialMedia.Controls.Add(btnEmail);
 
@@ -199,13 +195,13 @@ namespace Sidequest_municiple_app {
             btnSMS.Text = "SMS";
             btnSMS.Location = new Point(190, 40);
             btnSMS.Size = new Size(80, 25);
-            btnSMS.BackColor = AppPalette.AccentMuted;
+            btnSMS.BackColor = AppPalette.Surface;
             btnSMS.Font = new Font("Segoe UI", 8);
             btnSMS.UseVisualStyleBackColor = false;
             btnSMS.ForeColor = AppPalette.TextPrimary;
             btnSMS.FlatStyle = FlatStyle.Flat;
             btnSMS.FlatAppearance.BorderColor = AppPalette.Border;
-            btnSMS.FlatAppearance.BorderSize = 1;
+            btnSMS.FlatAppearance.BorderSize = 2;
             btnSMS.Click += BtnShare_Click;
             panelSocialMedia.Controls.Add(btnSMS);
 
