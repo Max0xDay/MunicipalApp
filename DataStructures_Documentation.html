@@ -388,6 +388,7 @@
             <a class="nav-item" onclick="scrollToSection('trees')">Tree Structures</a>
             <a class="nav-item" onclick="scrollToSection('graph')">Graph Structure</a>
             <a class="nav-item" onclick="scrollToSection('heap')">Heap Structure</a>
+            <a class="nav-item" onclick="scrollToSection('trie')">Trie Structure</a>
             <a class="nav-item" onclick="scrollToSection('queue')">Queue Structure</a>
             <a class="nav-item" onclick="scrollToSection('complexity')">Complexity Analysis</a>
         </div>
@@ -439,7 +440,7 @@
 
             <div class="relationship-grid">
                 <div class="algo-card">
-                    <h4>8 Node Types</h4>
+                    <h4>9 Node Types</h4>
                     <span class="badge badge-primary">AVLNode</span>
                     <span class="badge badge-primary">BSTNode</span>
                     <span class="badge badge-primary">BinaryTreeNode</span>
@@ -448,9 +449,10 @@
                     <span class="badge badge-primary">GraphNode</span>
                     <span class="badge badge-primary">GraphEdge</span>
                     <span class="badge badge-primary">TreeNode</span>
+                    <span class="badge badge-primary">TrieNode</span>
                 </div>
                 <div class="algo-card">
-                    <h4>7 Data Structures</h4>
+                    <h4>8 Data Structures</h4>
                     <span class="badge">ServiceRequestAVL</span>
                     <span class="badge">ServiceRequestBST</span>
                     <span class="badge">ServiceRequestBinaryTree</span>
@@ -458,6 +460,7 @@
                     <span class="badge">ServiceRequestHeap</span>
                     <span class="badge">ServiceRequestGraph</span>
                     <span class="badge">ServiceRequestTree</span>
+                    <span class="badge">IssuePredictionTrie</span>
                 </div>
                 <div class="algo-card">
                     <h4>1 Utility Structure</h4>
@@ -472,7 +475,7 @@
 
             <div class="card">
                 <h3>Type Categories</h3>
-                <p>The Sidequest Municipal App defines 25 custom data types across four major categories: Models, Data Structure Nodes, Data Structure Implementations, and Utilities. This section provides a comprehensive registry of every custom type with precise file locations.</p>
+                <p>The Sidequest Municipal App defines 27 custom data types across four major categories: Models, Data Structure Nodes, Data Structure Implementations, and Utilities. This section provides a comprehensive registry of every custom type with precise file locations.</p>
             </div>
 
             <div class="card card-accent">
@@ -522,7 +525,7 @@
             </div>
 
             <div class="card">
-                <h3>Data Structure Node Types (8 classes, 1 enum)</h3>
+                <h3>Data Structure Node Types (9 classes, 1 enum)</h3>
                 <table class="complexity-table">
                     <thead>
                         <tr>
@@ -582,6 +585,12 @@
                             <td>N-ary tree node with variable child list</td>
                         </tr>
                         <tr>
+                            <td><span class="highlight-primary">TrieNode</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/TrieNode.cs</td>
+                            <td>Prefix tree node for autocomplete suggestions with frequency tracking</td>
+                        </tr>
+                        <tr>
                             <td><span class="highlight-primary">NodeColor</span></td>
                             <td>Enum</td>
                             <td>DataStructures/RedBlackNode.cs</td>
@@ -592,7 +601,7 @@
             </div>
 
             <div class="card card-accent">
-                <h3>Data Structure Implementation Types (7 classes, 1 generic class)</h3>
+                <h3>Data Structure Implementation Types (8 classes, 1 generic class)</h3>
                 <table class="complexity-table">
                     <thead>
                         <tr>
@@ -644,6 +653,12 @@
                             <td>Class</td>
                             <td>DataStructures/ServiceRequestHeap.cs</td>
                             <td>Priority-based min-heap for urgent ticket extraction</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">IssuePredictionTrie</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/IssuePredictionTrie.cs</td>
+                            <td>Prefix tree for autocomplete issue descriptions with frequency-based ranking</td>
                         </tr>
                         <tr>
                             <td><span class="highlight-primary">PriorityCategoryQueue&lt;T&gt;</span></td>
@@ -716,7 +731,7 @@
                 <div class="algo-card">
                     <h4>Type Distribution</h4>
                     <ul>
-                        <li><span class="highlight-secondary">Classes:</span> 19 public classes</li>
+                        <li><span class="highlight-secondary">Classes:</span> 21 public classes</li>
                         <li><span class="highlight-secondary">Generic Classes:</span> 1 generic class</li>
                         <li><span class="highlight-secondary">Static Classes:</span> 1 static utility class</li>
                         <li><span class="highlight-secondary">Enumerations:</span> 3 enums</li>
@@ -737,7 +752,7 @@
                 <div class="algo-card">
                     <h4>Type Accessibility</h4>
                     <ul>
-                        <li><span class="highlight-secondary">Public:</span> 22 types accessible throughout application</li>
+                        <li><span class="highlight-secondary">Public:</span> 24 types accessible throughout application</li>
                         <li><span class="highlight-secondary">Internal:</span> 3 types restricted to containing class</li>
                         <li>All public types are referenced across multiple forms and components</li>
                     </ul>
@@ -768,7 +783,7 @@ Models/ (3 classes, 2 enums)<br>
     ├── Issue.cs<br>
     └── LocalEvent.cs<br>
 <br>
-DataStructures/ (8 node classes, 7 implementation classes, 1 generic class, 1 enum)<br>
+DataStructures/ (9 node classes, 8 implementation classes, 1 generic class, 1 enum)<br>
     ├── AVLNode.cs<br>
     ├── BinaryTreeNode.cs<br>
     ├── BSTNode.cs<br>
@@ -777,6 +792,7 @@ DataStructures/ (8 node classes, 7 implementation classes, 1 generic class, 1 en
     ├── GraphNode.cs<br>
     ├── GraphEdge.cs<br>
     ├── TreeNode.cs<br>
+    ├── TrieNode.cs<br>
     ├── ServiceRequestAVL.cs<br>
     ├── ServiceRequestBST.cs<br>
     ├── ServiceRequestBinaryTree.cs<br>
@@ -784,12 +800,13 @@ DataStructures/ (8 node classes, 7 implementation classes, 1 generic class, 1 en
     ├── ServiceRequestTree.cs<br>
     ├── ServiceRequestGraph.cs<br>
     ├── ServiceRequestHeap.cs<br>
+    ├── IssuePredictionTrie.cs<br>
     └── PriorityCategoryQueue.cs<br>
 <br>
 Utilities/ (1 static class)<br>
     └── AppPalette.cs<br>
 <br>
-<span class="highlight-primary">Total: 25 custom types across 20 files</span>
+<span class="highlight-primary">Total: 27 custom types across 22 files</span>
                 </div>
             </div>
         </section>
@@ -1079,6 +1096,55 @@ Utilities/ (1 static class)<br>
                     <div class="card card-accent">
                         <h4>File Reference</h4>
                         <p><span class="highlight-primary">DataStructures/TreeNode.cs</span> (77 lines)</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="collapsible">TrieNode - Prefix Tree Character Node</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Represents a single character position in a prefix tree for predictive text suggestions in municipal issue descriptions.</p>
+
+                    <h4>Properties</h4>
+                    <div class="code-block">
+<span class="property">Dictionary&lt;char, TrieNode&gt; Children</span> - Child branches for next letters<br>
+<span class="property">bool IsEndOfWord</span> - Marks terminal node for valid suggestion<br>
+<span class="property">string FullSuggestion</span> - Complete phrase at terminal node<br>
+<span class="property">int Frequency</span> - Usage count for ranking completions
+                    </div>
+
+                    <h4>Key Methods</h4>
+                    <ul>
+                        <li><span class="highlight-primary">HasChild(char c)</span> - Checks if character path exists (case-insensitive)</li>
+                        <li><span class="highlight-primary">GetChild(char c)</span> - Retrieves child node for character</li>
+                        <li><span class="highlight-primary">AddChild(char c, TrieNode)</span> - Creates new character branch</li>
+                    </ul>
+
+                    <h4>Application Usage</h4>
+                    <p>Used by <span class="highlight-secondary">IssuePredictionTrie</span> to build the skeleton of the predictive text engine. Each node holds a character position, enabling letter-by-letter traversal as users type into the ReportIssues form. Terminal nodes store frequency counts and full suggestion strings like "Burst Pipe" or "Broken Street Light" for ranking by actual resident submission patterns.</p>
+
+                    <div class="tree-diagram">
+                        <div class="node-visual">Root</div><br>
+                        <div class="flow-diagram">
+                            <div class="node-visual">B</div>
+                            <div class="node-visual">P</div>
+                            <div class="node-visual">S</div>
+                        </div><br>
+                        <div class="flow-diagram">
+                            <div class="node-visual">u</div>
+                            <div class="node-visual">o</div>
+                        </div><br>
+                        <div class="flow-diagram">
+                            <div class="node-visual">r</div>
+                            <div class="node-visual">t</div>
+                        </div><br>
+                        <div class="node-visual accent">s = "Burst Pipe" (freq: 15)</div>
+                    </div>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/TrieNode.cs</span> (47 lines)</p>
                     </div>
                 </div>
             </div>
@@ -1531,6 +1597,132 @@ Right child of i: <span class="highlight-primary">i * 2 + 2</span>
             </div>
         </section>
 
+        <section id="trie" class="section">
+            <h2>Trie Structure - Prefix-Based Autocomplete</h2>
+
+            <button class="collapsible">IssuePredictionTrie - Smart Suggestion Engine</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Provides prefix-based autocomplete suggestions for municipal issue descriptions, accelerating user input with context-aware predictions in the ReportIssues form.</p>
+
+                    <h4>Core Features</h4>
+                    <ul>
+                        <li>Prefix tree seeded with 42 common municipal complaints</li>
+                        <li>Dynamic learning from resident submissions</li>
+                        <li>Frequency-based ranking of suggestions</li>
+                        <li>Returns top 5 suggestions sorted by usage patterns</li>
+                        <li>Case-insensitive matching for user convenience</li>
+                        <li>Minimum 5-character learning threshold</li>
+                    </ul>
+
+                    <h4>Key Operations</h4>
+                    <div class="code-block">
+<span class="type">void</span> <span class="highlight-primary">Insert</span>(string, int frequency) - O(m) where m = string length<br>
+<span class="type">List&lt;string&gt;</span> <span class="highlight-primary">GetSuggestions</span>(string prefix, int max) - O(p + n) p=prefix, n=matches<br>
+<span class="type">string</span> <span class="highlight-primary">GetTopSuggestion</span>(string prefix) - O(p + n log n) for top match<br>
+<span class="type">void</span> <span class="highlight-primary">LearnFromInput</span>(string input) - O(m) adds new phrases dynamically<br>
+<span class="type">bool</span> <span class="highlight-primary">HasSuggestions</span>(string prefix) - O(p) checks prefix validity<br>
+<span class="type">int</span> <span class="highlight-primary">GetSuggestionCount</span>() - O(1) total stored suggestions
+                    </div>
+
+                    <h4>Initialization - Common Municipal Issues</h4>
+                    <p>Seeded with 42 standardized municipal issue phrases for immediate usefulness:</p>
+                    <div class="relationship-grid">
+                        <div class="algo-card">
+                            <h4>Water & Utilities</h4>
+                            <ul>
+                                <li>Burst Pipe / Water Main</li>
+                                <li>Leaking Water Main / Pipe</li>
+                                <li>No Water Supply</li>
+                                <li>Water Leak</li>
+                                <li>Broken Water Meter</li>
+                            </ul>
+                        </div>
+                        <div class="algo-card">
+                            <h4>Roads & Infrastructure</h4>
+                            <ul>
+                                <li>Pothole Damage / Multiple Potholes</li>
+                                <li>Damaged Road Surface / Pavement</li>
+                                <li>Cracked Road / Pavement</li>
+                                <li>Missing Manhole Cover</li>
+                                <li>Sinkhole</li>
+                            </ul>
+                        </div>
+                        <div class="algo-card">
+                            <h4>Lighting & Power</h4>
+                            <ul>
+                                <li>Broken / Faulty Street Light</li>
+                                <li>Broken Traffic Light</li>
+                                <li>Traffic Signal Malfunction</li>
+                                <li>No Electricity</li>
+                                <li>Power Outage / Failure</li>
+                            </ul>
+                        </div>
+                        <div class="algo-card">
+                            <h4>Waste & Environment</h4>
+                            <ul>
+                                <li>Overflowing Bin / Rubbish</li>
+                                <li>Uncollected Waste / Rubbish</li>
+                                <li>Illegal Dumping</li>
+                                <li>Blocked Drain / Sewer</li>
+                                <li>Sewage Leak / Spill</li>
+                            </ul>
+                        </div>
+                        <div class="algo-card">
+                            <h4>Other Services</h4>
+                            <ul>
+                                <li>Fallen Tree / Overgrown Vegetation</li>
+                                <li>Graffiti / Property Vandalism</li>
+                                <li>Stray / Dead Animals</li>
+                                <li>Storm Damage</li>
+                                <li>Noise Complaint</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h4>Suggestion Retrieval Algorithm</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">Step 1:</span> Traverse trie letter-by-letter to prefix endpoint</li>
+                        <li><span class="highlight-secondary">Step 2:</span> Recursively collect all terminal suggestions from subtree</li>
+                        <li><span class="highlight-secondary">Step 3:</span> Sort by frequency (descending), then by length (ascending)</li>
+                        <li><span class="highlight-secondary">Step 4:</span> Return top N results (default: 5)</li>
+                        <li><span class="highlight-secondary">Empty prefix:</span> Returns empty list (requires user input)</li>
+                        <li><span class="highlight-secondary">No match:</span> Returns empty list (prefix not in trie)</li>
+                    </ul>
+
+                    <h4>Dynamic Learning Mechanism</h4>
+                    <p>When users submit custom issue descriptions (5+ characters), the system automatically inserts them into the trie with frequency 1. Repeated submissions increment the frequency counter, causing popular phrases to bubble up in future suggestions. This creates a self-improving prediction system tailored to the specific municipality's most common issues.</p>
+
+                    <h4>Application Context</h4>
+                    <p>The ReportIssues form integrates this trie for real-time autocomplete as users type issue descriptions. After typing just two letters like "Bu", the system instantly suggests "Burst Pipe" and "Burst Water Main" ranked by how often residents have submitted those phrases. This standardizes issue descriptions across reports, streamlining ticket categorization and dispatch routing for municipal staff.</p>
+
+                    <div class="tree-diagram">
+                        <h4>Trie Traversal Example</h4>
+                        <p>User types "bro" → System suggests:</p>
+                        <div class="flow-diagram">
+                            <div class="node-visual accent">1. Broken Street Light (freq: 23)</div>
+                        </div>
+                        <div class="flow-diagram">
+                            <div class="node-visual accent">2. Broken Traffic Light (freq: 18)</div>
+                        </div>
+                        <div class="flow-diagram">
+                            <div class="node-visual">3. Broken Pavement (freq: 12)</div>
+                        </div>
+                        <div class="flow-diagram">
+                            <div class="node-visual">4. Broken Water Meter (freq: 7)</div>
+                        </div>
+                    </div>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/IssuePredictionTrie.cs</span> (194 lines)</p>
+                        <p>Depends on: <span class="highlight-secondary">TrieNode.cs</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="complexity" class="section">
             <h2>Complexity Analysis - Performance Characteristics</h2>
 
@@ -1603,6 +1795,13 @@ Right child of i: <span class="highlight-primary">i * 2 + 2</span>
                             <td>O(log k) dequeue</td>
                             <td>Not applicable</td>
                         </tr>
+                        <tr>
+                            <td><span class="highlight-primary">IssuePredictionTrie</span></td>
+                            <td>O(m)</td>
+                            <td>O(p + n)</td>
+                            <td>Not implemented</td>
+                            <td>O(s) all suggestions</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -1667,6 +1866,12 @@ Right child of i: <span class="highlight-primary">i * 2 + 2</span>
                             <td>O(k)</td>
                             <td>k = number of priority tiers</td>
                         </tr>
+                        <tr>
+                            <td><span class="highlight-primary">Trie Structure</span></td>
+                            <td>O(n * m)</td>
+                            <td>O(p) recursion</td>
+                            <td>Dictionary per node + frequency map</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -1680,6 +1885,7 @@ Right child of i: <span class="highlight-primary">i * 2 + 2</span>
                         <li><span class="highlight-secondary">Red-Black</span> - Category clustering with balance</li>
                         <li><span class="highlight-secondary">Heap</span> - Priority-based extraction</li>
                         <li><span class="highlight-secondary">Graph</span> - Relationship discovery</li>
+                        <li><span class="highlight-secondary">Trie</span> - Prefix-based autocomplete, predictive text</li>
                     </ul>
                 </div>
 
@@ -1690,6 +1896,7 @@ Right child of i: <span class="highlight-primary">i * 2 + 2</span>
                         <li><span class="highlight-secondary">Binary Tree</span> - No ordering, O(n) search always</li>
                         <li><span class="highlight-secondary">Graph</span> - Dense graphs increase edge traversal</li>
                         <li><span class="highlight-secondary">AVL</span> - ID search requires full traversal</li>
+                        <li><span class="highlight-secondary">Trie</span> - Memory overhead with many unique strings</li>
                     </ul>
                 </div>
 
@@ -1700,52 +1907,11 @@ Right child of i: <span class="highlight-primary">i * 2 + 2</span>
                         <li><span class="highlight-secondary">Red-Black</span> - Recoloring + rotations (6 cases)</li>
                         <li><span class="highlight-secondary">Heap</span> - Heapify up/down after modifications</li>
                         <li><span class="highlight-secondary">BST</span> - No balancing</li>
+                        <li><span class="highlight-secondary">Trie</span> - No balancing needed</li>
                     </ul>
                 </div>
             </div>
         </section>
-
-        <div class="section">
-            <h2>File Structure Summary</h2>
-            <div class="card">
-                <h3>DataStructures Folder Contents</h3>
-                <div class="code-block">
-DataStructures/<br>
-├── Nodes (8 files)<br>
-│   ├── AVLNode.cs (59 lines)<br>
-│   ├── BinaryTreeNode.cs (53 lines)<br>
-│   ├── BSTNode.cs (53 lines)<br>
-│   ├── RedBlackNode.cs (60 lines)<br>
-│   ├── HeapNode.cs (47 lines)<br>
-│   ├── GraphNode.cs (76 lines)<br>
-│   ├── GraphEdge.cs (44 lines)<br>
-│   └── TreeNode.cs (77 lines)<br>
-├── Implementations (7 files)<br>
-│   ├── ServiceRequestAVL.cs (177 lines)<br>
-│   ├── ServiceRequestBST.cs (155 lines)<br>
-│   ├── ServiceRequestBinaryTree.cs (145 lines)<br>
-│   ├── ServiceRequestRedBlackTree.cs (239 lines)<br>
-│   ├── ServiceRequestTree.cs (99 lines)<br>
-│   ├── ServiceRequestGraph.cs (294 lines)<br>
-│   └── ServiceRequestHeap.cs (141 lines)<br>
-└── Utilities (1 file)<br>
-    └── PriorityCategoryQueue.cs (91 lines)<br>
-<br>
-<span class="highlight-primary">Total: 16 files, approximately 1,610 lines of code</span>
-                </div>
-            </div>
-
-            <div class="card card-accent">
-                <h3>Dependencies</h3>
-                <ul>
-                    <li>All structures depend on <span class="highlight-primary">ServiceRequest</span> model (Models/ServiceRequest.cs)</li>
-                    <li>ServiceRequestGraph uses internal <span class="highlight-primary">RelationshipKey</span> struct and comparer</li>
-                    <li>All structures reside in <span class="highlight-primary">Sidequest_municiple_app</span> namespace</li>
-                    <li>No external NuGet dependencies required</li>
-                    <li>Standard .NET Framework collections: List, Dictionary, Queue, Stack, SortedDictionary</li>
-                </ul>
-            </div>
-        </div>
 
         <button class="back-to-top" onclick="scrollToTop()">↑</button>
     </div>
