@@ -14,12 +14,16 @@ namespace Sidequest_municiple_app
         private CheckBox chkFilterByDate;
         private Button btnSearch;
         private Button btnClear;
+        private Button btnBack;
         private Label lblTitle;
         private Label lblFilters;
         private Label lblCategory;
         private Label lblDate;
         private TextBox txtSearch;
         private Label lblSearch;
+        private Label lblEventCount;
+        private Panel pnlHeader;
+        private Panel pnlFilters;
 
         private Dictionary<string, List<LocalEvent>> eventsByCategory;
         private SortedDictionary<DateTime, List<LocalEvent>> eventsByDate;
@@ -40,153 +44,242 @@ namespace Sidequest_municiple_app
         private void SetupForm()
         {
             Text = "Local Events and Announcements";
-            Size = new Size(900, 620);
+            Size = new Size(1250, 800);
             StartPosition = FormStartPosition.CenterScreen;
             BackColor = AppPalette.Background;
+            FormBorderStyle = FormBorderStyle.Sizable;
+            MinimumSize = new Size(1250, 800);
 
+            // Main Title
             lblTitle = new Label
             {
                 Text = "Local Events and Announcements",
-                Font = new Font("Segoe UI", 16, FontStyle.Bold),
-                ForeColor = AppPalette.TextPrimary,
+                Font = new Font("Segoe UI", 22, FontStyle.Bold),
+                ForeColor = AppPalette.TextHeading,
                 AutoSize = true,
-                Location = new Point(20, 20)
+                Location = new Point(50, 30)
             };
             Controls.Add(lblTitle);
 
+            // Header Panel with Stats
+            pnlHeader = new Panel
+            {
+                Location = new Point(50, 70),
+                Size = new Size(950, 40),
+                BackColor = AppPalette.CodeBlock,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            Controls.Add(pnlHeader);
+
+            lblEventCount = new Label
+            {
+                Text = "Total Events: 0",
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                ForeColor = AppPalette.TextHeading,
+                AutoSize = true,
+                Location = new Point(20, 10)
+            };
+            pnlHeader.Controls.Add(lblEventCount);
+
             lblFilters = new Label
             {
-                Text = "Find events by category and date",
-                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                Text = "Filter and search for upcoming events",
+                Font = new Font("Segoe UI", 10),
+                ForeColor = AppPalette.TextSecondary,
+                AutoSize = true,
+                Location = new Point(180, 11)
+            };
+            pnlHeader.Controls.Add(lblFilters);
+
+            // Back Button Panel
+            Panel pnlTopButtons = new Panel
+            {
+                Location = new Point(1010, 70),
+                Size = new Size(158, 40),
+                BackColor = AppPalette.Surface,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            Controls.Add(pnlTopButtons);
+
+            btnBack = new Button
+            {
+                Text = "Back",
+                Size = new Size(140, 30),
+                Location = new Point(5, 5),
+                BackColor = AppPalette.Surface,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = AppPalette.TextPrimary,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnBack.FlatAppearance.BorderColor = AppPalette.Border;
+            btnBack.FlatAppearance.BorderSize = 2;
+            btnBack.UseVisualStyleBackColor = false;
+            btnBack.Click += (s, e) => Close();
+            pnlTopButtons.Controls.Add(btnBack);
+
+            // Filter Panel
+            pnlFilters = new Panel
+            {
+                Location = new Point(50, 125),
+                Size = new Size(1118, 120),
+                BackColor = AppPalette.Surface,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            Controls.Add(pnlFilters);
+
+            // Search Section
+            lblSearch = new Label
+            {
+                Text = "Search Events:",
+                Font = new Font("Segoe UI", 9),
                 ForeColor = AppPalette.TextPrimary,
                 AutoSize = true,
-                Location = new Point(20, 60)
+                Location = new Point(20, 18)
             };
-            Controls.Add(lblFilters);
+            pnlFilters.Controls.Add(lblSearch);
 
+            txtSearch = new TextBox
+            {
+                Location = new Point(20, 38),
+                Size = new Size(350, 25),
+                Font = new Font("Segoe UI", 10),
+                BackColor = AppPalette.CodeBlock,
+                ForeColor = AppPalette.TextPrimary,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            txtSearch.TextChanged += TxtSearch_TextChanged;
+            pnlFilters.Controls.Add(txtSearch);
+
+            // Category Filter
             lblCategory = new Label
             {
                 Text = "Category:",
-                Font = new Font("Segoe UI", 9, FontStyle.Regular),
-                ForeColor = AppPalette.TextSecondary,
+                Font = new Font("Segoe UI", 9),
+                ForeColor = AppPalette.TextPrimary,
                 AutoSize = true,
-                Location = new Point(20, 100)
+                Location = new Point(390, 18)
             };
-            Controls.Add(lblCategory);
+            pnlFilters.Controls.Add(lblCategory);
 
             cmbCategory = new ComboBox
             {
-                Location = new Point(20, 122),
-                Size = new Size(240, 25),
+                Location = new Point(390, 38),
+                Size = new Size(180, 25),
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Font = new Font("Segoe UI", 9),
                 BackColor = AppPalette.CodeBlock,
                 ForeColor = AppPalette.TextPrimary,
                 FlatStyle = FlatStyle.Flat
             };
-            Controls.Add(cmbCategory);
+            cmbCategory.SelectedIndexChanged += (s, e) => ApplyFilters();
+            pnlFilters.Controls.Add(cmbCategory);
 
+            // Date Filter
             lblDate = new Label
             {
-                Text = "Date:",
-                Font = new Font("Segoe UI", 9, FontStyle.Regular),
-                ForeColor = AppPalette.TextSecondary,
+                Text = "Filter by Date:",
+                Font = new Font("Segoe UI", 9),
+                ForeColor = AppPalette.TextPrimary,
                 AutoSize = true,
-                Location = new Point(320, 100)
+                Location = new Point(590, 18)
             };
-            Controls.Add(lblDate);
-
-            dtpDate = new DateTimePicker
-            {
-                Location = new Point(320, 122),
-                Size = new Size(200, 25),
-                Format = DateTimePickerFormat.Short,
-                Enabled = false,
-                CalendarForeColor = AppPalette.TextPrimary,
-                CalendarMonthBackground = AppPalette.CodeBlock
-            };
-            Controls.Add(dtpDate);
+            pnlFilters.Controls.Add(lblDate);
 
             chkFilterByDate = new CheckBox
             {
-                Text = "Filter by selected date",
+                Text = "Enable Date Filter",
                 AutoSize = true,
-                Location = new Point(320, 160),
+                Location = new Point(590, 38),
                 Font = new Font("Segoe UI", 9),
-                ForeColor = AppPalette.TextSecondary
+                ForeColor = AppPalette.TextPrimary
             };
             chkFilterByDate.CheckedChanged += ChkFilterByDate_CheckedChanged;
-            Controls.Add(chkFilterByDate);
+            pnlFilters.Controls.Add(chkFilterByDate);
 
-            lblSearch = new Label
+            dtpDate = new DateTimePicker
             {
-                Text = "Search:",
-                Font = new Font("Segoe UI", 9, FontStyle.Regular),
-                ForeColor = AppPalette.TextSecondary,
-                AutoSize = true,
-                Location = new Point(560, 100)
+                Location = new Point(730, 36),
+                Size = new Size(180, 25),
+                Format = DateTimePickerFormat.Short,
+                Enabled = false,
+                CalendarForeColor = AppPalette.TextPrimary,
+                CalendarMonthBackground = AppPalette.CodeBlock,
+                Font = new Font("Segoe UI", 9)
             };
-            Controls.Add(lblSearch);
+            pnlFilters.Controls.Add(dtpDate);
 
-            txtSearch = new TextBox
-            {
-                Location = new Point(560, 122),
-                Size = new Size(300, 25),
-                Font = new Font("Segoe UI", 9),
-                BackColor = AppPalette.CodeBlock,
-                ForeColor = AppPalette.TextPrimary,
-                BorderStyle = BorderStyle.FixedSingle
-            };
-            txtSearch.TextChanged += TxtSearch_TextChanged;
-            Controls.Add(txtSearch);
-
+            // Action Buttons
             btnSearch = new Button
             {
-                Text = "Search",
-                Location = new Point(20, 200),
+                Text = "Apply Filters",
+                Location = new Point(20, 75),
                 Size = new Size(110, 32),
                 BackColor = AppPalette.AccentPrimary,
                 FlatStyle = FlatStyle.Flat,
                 Font = new Font("Segoe UI", 9, FontStyle.Bold),
-                ForeColor = AppPalette.TextOnAccent
+                ForeColor = AppPalette.TextOnAccent,
+                Cursor = Cursors.Hand
             };
             btnSearch.FlatAppearance.BorderSize = 0;
             btnSearch.UseVisualStyleBackColor = false;
             btnSearch.Click += BtnSearch_Click;
-            Controls.Add(btnSearch);
+            btnSearch.MouseEnter += (s, e) => btnSearch.BackColor = AppPalette.AccentHover;
+            btnSearch.MouseLeave += (s, e) => btnSearch.BackColor = AppPalette.AccentPrimary;
+            pnlFilters.Controls.Add(btnSearch);
 
             btnClear = new Button
             {
-                Text = "Clear",
-                Location = new Point(140, 200),
+                Text = "Clear All",
+                Location = new Point(140, 75),
                 Size = new Size(110, 32),
                 BackColor = AppPalette.Surface,
                 FlatStyle = FlatStyle.Flat,
                 Font = new Font("Segoe UI", 9),
-                ForeColor = AppPalette.TextPrimary
+                ForeColor = AppPalette.TextPrimary,
+                Cursor = Cursors.Hand
             };
             btnClear.FlatAppearance.BorderColor = AppPalette.Border;
             btnClear.FlatAppearance.BorderSize = 2;
             btnClear.UseVisualStyleBackColor = false;
             btnClear.Click += BtnClear_Click;
-            Controls.Add(btnClear);
+            pnlFilters.Controls.Add(btnClear);
 
+            // Events ListView
             lvEvents = new ListView
             {
-                Location = new Point(20, 250),
-                Size = new Size(840, 320),
+                Location = new Point(50, 260),
+                Size = new Size(1118, 480),
                 View = View.Details,
                 FullRowSelect = true,
-                GridLines = false,
+                GridLines = true,
                 HideSelection = false,
                 BorderStyle = BorderStyle.FixedSingle,
-                BackColor = AppPalette.Surface,
-                ForeColor = AppPalette.TextPrimary
+                BackColor = AppPalette.CodeBlock,
+                ForeColor = AppPalette.TextPrimary,
+                Font = new Font("Segoe UI", 9),
+                AllowColumnReorder = false,
+                MultiSelect = false
             };
-            lvEvents.Columns.Add("Date", 110);
-            lvEvents.Columns.Add("Title", 220);
-            lvEvents.Columns.Add("Category", 140);
-            lvEvents.Columns.Add("Description", 350);
+            lvEvents.Columns.Add("Date", 120);
+            lvEvents.Columns.Add("Event Title", 280);
+            lvEvents.Columns.Add("Category", 150);
+            lvEvents.Columns.Add("Description", 545);
+            
+            // Style the ListView with custom drawing
+            lvEvents.OwnerDraw = true;
+            lvEvents.DrawColumnHeader += (s, e) => {
+                e.Graphics.FillRectangle(new SolidBrush(AppPalette.AccentPrimary), e.Bounds);
+                e.Graphics.DrawString(e.Header.Text, new Font("Segoe UI", 10, FontStyle.Bold), 
+                    new SolidBrush(AppPalette.TextOnAccent), e.Bounds.X + 5, e.Bounds.Y + 5);
+            };
+            lvEvents.DrawItem += (s, e) => {
+                e.DrawDefault = true;
+            };
+            lvEvents.DrawSubItem += (s, e) => {
+                e.DrawDefault = true;
+            };
+            
             Controls.Add(lvEvents);
         }
 
@@ -264,12 +357,20 @@ namespace Sidequest_municiple_app
         private void DisplayEvents(List<LocalEvent> events)
         {
             lvEvents.Items.Clear();
+            
+            // Update event count
+            if (lblEventCount != null)
+            {
+                lblEventCount.Text = string.Format("Total Events: {0}", events.Count);
+            }
+            
             if (events.Count == 0)
             {
-                ListViewItem emptyItem = new ListViewItem("No events match your filters.");
+                ListViewItem emptyItem = new ListViewItem("No events found");
+                emptyItem.SubItems.Add("Try adjusting your filters");
                 emptyItem.SubItems.Add(string.Empty);
                 emptyItem.SubItems.Add(string.Empty);
-                emptyItem.SubItems.Add(string.Empty);
+                emptyItem.ForeColor = AppPalette.TextMuted;
                 lvEvents.Items.Add(emptyItem);
                 return;
             }
@@ -281,6 +382,21 @@ namespace Sidequest_municiple_app
                 item.SubItems.Add(localEvent.Category);
                 item.SubItems.Add(localEvent.Description);
                 item.Tag = localEvent;
+                
+                // Color code by priority
+                if (localEvent.Priority == 1)
+                {
+                    item.ForeColor = Color.FromArgb(220, 50, 50); // High priority - red tint
+                }
+                else if (localEvent.Priority == 2)
+                {
+                    item.ForeColor = AppPalette.TextPrimary;
+                }
+                else
+                {
+                    item.ForeColor = AppPalette.TextSecondary;
+                }
+                
                 lvEvents.Items.Add(item);
             }
         }
@@ -301,7 +417,10 @@ namespace Sidequest_municiple_app
             chkFilterByDate.Checked = false;
             dtpDate.Value = DateTime.Today;
             txtSearch.Clear();
-            lblFilters.Text = "Find events by category and date";
+            if (lblFilters != null)
+            {
+                lblFilters.Text = "Filter and search for upcoming events";
+            }
             DisplayEvents(allEvents.OrderBy(evt => evt.EventDate).ThenBy(evt => evt.Priority).ToList());
         }
 
