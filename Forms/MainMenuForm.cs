@@ -3,10 +3,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Sidequest_municiple_app
-{
-    public partial class MainMenuForm : Form
-    {
+namespace Sidequest_municiple_app {
+    public partial class MainMenuForm : Form {
         private Button btnReportIssues;
         private Button btnLocalEvents;
         private Button btnServiceStatus;
@@ -17,8 +15,7 @@ namespace Sidequest_municiple_app
         private LinkLabel lnkSubmissionGitHub;
         private LinkLabel lnkReadme;
 
-        public MainMenuForm()
-        {
+        public MainMenuForm() {
             InitializeComponent();
             SetupForm();
         }
@@ -247,11 +244,10 @@ namespace Sidequest_municiple_app
         private void LnkReadme_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             try {
                 string readmePath = System.IO.Path.Combine(Application.StartupPath, "..", "..", "README.md");
-                if (System.IO.File.Exists(readmePath)) {
+                if (System.IO.File.Exists(readmePath))
                     Process.Start("notepad.exe", readmePath);
-                } else {
+                else
                     MessageBox.Show("README.md not found in project directory.", "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
             } catch (Exception ex) {
                 MessageBox.Show("Unable to open README: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -261,40 +257,30 @@ namespace Sidequest_municiple_app
             MessageBox.Show("Submission GitHub repository URL will be provided by instructor.", "Submission Repository", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void BtnReportIssues_Click(object sender, EventArgs e)
-        {
+        private void BtnReportIssues_Click(object sender, EventArgs e) {
             ReportIssuesForm reportForm = new ReportIssuesForm();
             reportForm.ShowDialog();
         }
 
-        private void BtnLocalEvents_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void BtnLocalEvents_Click(object sender, EventArgs e) {
+            try {
                 LocalEventsForm eventsForm = new LocalEventsForm();
                 eventsForm.ShowDialog();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show("Unable to open Local Events: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void BtnServiceStatus_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void BtnServiceStatus_Click(object sender, EventArgs e) {
+            try {
                 ServiceRequestStatusForm statusForm = new ServiceRequestStatusForm();
                 statusForm.ShowDialog();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show("Unable to open Service Request Status: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         
-        private void BtnGenerateTestData_Click(object sender, EventArgs e)
-        {
+        private void BtnGenerateTestData_Click(object sender, EventArgs e) {
             DialogResult result = MessageBox.Show(
                 "This will generate test data. Choose:\n\n" +
                 "YES - Generate 100 records (comprehensive test)\n" +
@@ -305,14 +291,11 @@ namespace Sidequest_municiple_app
                 MessageBoxIcon.Question);
 
             if (result == DialogResult.Cancel)
-            {
                 return;
-            }
 
             int recordCount = result == DialogResult.Yes ? 100 : 25;
 
-            try
-            {
+            try {
                 DataSeeder seeder = new DataSeeder();
                 
                 DialogResult clearResult = MessageBox.Show(
@@ -322,9 +305,7 @@ namespace Sidequest_municiple_app
                     MessageBoxIcon.Question);
 
                 if (clearResult == DialogResult.Yes)
-                {
                     seeder.ClearAllData();
-                }
 
                 seeder.SeedData(recordCount);
                 seeder.SeedRelatedIssues(10, 5);
@@ -341,15 +322,12 @@ namespace Sidequest_municiple_app
                     "Success",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show("Error generating test data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             this.SuspendLayout();
             this.AutoScaleDimensions = new SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;

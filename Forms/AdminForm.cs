@@ -119,11 +119,9 @@ namespace Sidequest_municiple_app {
                     );
                 }
 
-                if (issues.Count == 0) {
+                if (issues.Count == 0)
                     dgvIssues.Rows.Add("", "No reports found", "", "", "", "", "", "");
-                }
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 MessageBox.Show("Error loading issues: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

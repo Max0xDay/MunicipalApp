@@ -4,10 +4,8 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Sidequest_municiple_app
-{
-    public class LocalEventsForm : Form
-    {
+namespace Sidequest_municiple_app {
+    public class LocalEventsForm : Form {
         private ListView lvEvents;
         private ComboBox cmbCategory;
         private DateTimePicker dtpDate;
@@ -33,16 +31,15 @@ namespace Sidequest_municiple_app
         private SortedDictionary<string, int> recommendationScores;
         private List<LocalEvent> allEvents;
 
-        public LocalEventsForm()
-        {
+        public LocalEventsForm() {
             InitializeComponent();
             SetupForm();
             InitializeData();
             PopulateFilters();
             DisplayEvents(allEvents.OrderBy(evt => evt.EventDate).ThenBy(evt => evt.Priority).ToList());
         }
-        private void SetupForm()
-        {
+        
+        private void SetupForm() {
             Text = "Local Events and Announcements";
             Size = new Size(1250, 800);
             StartPosition = FormStartPosition.CenterScreen;

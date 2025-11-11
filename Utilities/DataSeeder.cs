@@ -103,8 +103,7 @@ namespace Sidequest_municiple_app {
                     Issue issue = GenerateRandomIssue();
                     dbHelper.SaveIssue(issue);
                 }
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 throw new Exception("Error seeding data: " + ex.Message, ex);
             }
         }
@@ -171,42 +170,33 @@ namespace Sidequest_municiple_app {
         private ServiceRequestStatus GenerateRandomStatus() {
             int randomValue = random.Next(100);
             
-            if (randomValue < 40) {
+            if (randomValue < 40)
                 return ServiceRequestStatus.Pending;
-            }
-            else if (randomValue < 70) {
+            else if (randomValue < 70)
                 return ServiceRequestStatus.InProgress;
-            }
-            else if (randomValue < 95) {
+            else if (randomValue < 95)
                 return ServiceRequestStatus.Completed;
-            }
-            else {
+            else
                 return ServiceRequestStatus.Rejected;
-            }
         }
 
         private ServiceRequestPriority GenerateRandomPriority() {
             int randomValue = random.Next(100);
             
-            if (randomValue < 20) {
+            if (randomValue < 20)
                 return ServiceRequestPriority.Low;
-            }
-            else if (randomValue < 60) {
+            else if (randomValue < 60)
                 return ServiceRequestPriority.Medium;
-            }
-            else if (randomValue < 90) {
+            else if (randomValue < 90)
                 return ServiceRequestPriority.High;
-            }
-            else {
+            else
                 return ServiceRequestPriority.Urgent;
-            }
         }
 
         public void ClearAllData() {
             try {
                 dbHelper.DeleteAllIssues();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 throw new Exception("Error clearing data: " + ex.Message, ex);
             }
         }

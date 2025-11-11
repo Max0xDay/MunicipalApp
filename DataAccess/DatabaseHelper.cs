@@ -17,13 +17,11 @@ namespace Sidequest_municiple_app {
         }
 
         public int SaveIssue(Issue issue) {
-            if (issue == null) {
+            if (issue == null)
                 throw new ArgumentNullException(nameof(issue));
-            }
 
-            if (string.IsNullOrWhiteSpace(issue.UniqueId)) {
+            if (string.IsNullOrWhiteSpace(issue.UniqueId))
                 issue.UniqueId = Guid.NewGuid().ToString();
-            }
 
             try {
                 using (SQLiteConnection connection = CreateConnection()) {
@@ -90,9 +88,8 @@ namespace Sidequest_municiple_app {
         }
 
         public Issue GetIssueByUniqueId(string uniqueId) {
-            if (string.IsNullOrWhiteSpace(uniqueId)) {
+            if (string.IsNullOrWhiteSpace(uniqueId))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(uniqueId));
-            }
 
             try {
                 using (SQLiteConnection connection = CreateConnection()) {
@@ -102,9 +99,8 @@ namespace Sidequest_municiple_app {
                     using (SQLiteCommand command = new SQLiteCommand(sql, connection)) {
                         command.Parameters.AddWithValue("@uniqueId", uniqueId);
                         using (SQLiteDataReader reader = command.ExecuteReader()) {
-                            if (!reader.Read()) {
+                            if (!reader.Read())
                                 return null;
-                            }
 
                             Issue issue = new Issue();
                             issue.Id = reader.GetInt32(0);
@@ -130,9 +126,8 @@ namespace Sidequest_municiple_app {
         }
 
         public void UpdateIssueStatus(string uniqueId, ServiceRequestStatus status, ServiceRequestPriority priority) {
-            if (string.IsNullOrWhiteSpace(uniqueId)) {
+            if (string.IsNullOrWhiteSpace(uniqueId))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(uniqueId));
-            }
 
             try {
                 using (SQLiteConnection connection = CreateConnection()) {
@@ -190,29 +185,25 @@ namespace Sidequest_municiple_app {
         }
 
         private DateTime ParseDate(string value) {
-            if (string.IsNullOrWhiteSpace(value)) {
+            if (string.IsNullOrWhiteSpace(value))
                 return DateTime.Now;
-            }
 
-            if (DateTime.TryParse(value, out DateTime parsed)) {
+            if (DateTime.TryParse(value, out DateTime parsed))
                 return parsed;
-            }
 
             return DateTime.Now;
         }
 
         private ServiceRequestStatus ParseStatus(string value) {
-            if (Enum.TryParse(value, true, out ServiceRequestStatus status)) {
+            if (Enum.TryParse(value, true, out ServiceRequestStatus status))
                 return status;
-            }
 
             return ServiceRequestStatus.Pending;
         }
 
         private ServiceRequestPriority ParsePriority(int value) {
-            if (Enum.IsDefined(typeof(ServiceRequestPriority), value)) {
+            if (Enum.IsDefined(typeof(ServiceRequestPriority), value))
                 return (ServiceRequestPriority)value;
-            }
 
             return ServiceRequestPriority.Medium;
         }
