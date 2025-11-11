@@ -29,4 +29,3 @@ echo Build Complete
 echo ========================================
 echo.
 
-pause
