@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Day PROG7312 Project Breakdown - Municipal App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            color: #e4e4e4;
+            line-height: 1.8;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: #222222;
+            border-right: 1px solid #3a3a3a;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 30px 0;
+        }
+
+        .sidebar-header {
+            padding: 0 25px 25px 25px;
+            border-bottom: 1px solid #3a3a3a;
+            margin-bottom: 25px;
+        }
+
+        .sidebar-title {
+            color: #cccccc;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-subtitle {
+            color: #999999;
+            font-size: 0.85em;
+        }
+
+        .nav-section {
+            margin-bottom: 25px;
+        }
+
+        .nav-section-title {
+            color: #999999;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 25px 10px 25px;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 12px 25px;
+            color: #b4b4b4;
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: #2c2c2c;
+            color: #e4e4e4;
+            border-left-color: #0066cc;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 50px 80px;
+            max-width: 1600px;
+        }
+
+        header {
+            background: #222222;
+            padding: 40px;
+            border: 1px solid #3a3a3a;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .made-by {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            color: #999999;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        h1 {
+            color: #cccccc;
+            font-size: 2.5em;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        h2 {
+            color: #cccccc;
+            font-size: 2em;
+            margin: 60px 0 30px 0;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #3a3a3a;
+            font-weight: 600;
+        }
+
+        h3 {
+            color: #cccccc;
+            font-size: 1.4em;
+            margin: 30px 0 20px 0;
+            font-weight: 600;
+        }
+
+        h4 {
+            color: #b4b4b4;
+            font-size: 1.1em;
+            margin: 25px 0 15px 0;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #999999;
+            font-size: 1.1em;
+        }
+
+        .section {
+            background: #2c2c2c;
+            padding: 50px;
+            border: 1px solid #3a3a3a;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: #222222;
+            padding: 30px;
+            border: 1px solid #3a3a3a;
+            margin: 30px 0;
+        }
+
+        .card-accent {
+            border-left: 3px solid #0066cc;
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            padding: 25px;
+            border: 1px solid #3a3a3a;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        .property {
+            color: #0066cc;
+            font-weight: 600;
+        }
+
+        .type {
+            color: #999999;
+            font-weight: 600;
+        }
+
+        .highlight-primary {
+            color: #0066cc;
+            font-weight: 600;
+        }
+
+        .highlight-secondary {
+            color: #cccccc;
+            font-weight: 600;
+        }
+
+        .tree-diagram {
+            background: #1a1a1a;
+            padding: 40px;
+            border: 1px solid #3a3a3a;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .node-visual {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #222222;
+            border: 1px solid #3a3a3a;
+            margin: 15px;
+            font-weight: 600;
+            color: #e4e4e4;
+            min-width: 120px;
+        }
+
+        .node-visual.accent {
+            border-color: #0066cc;
+            color: #0066cc;
+        }
+
+        .collapsible {
+            background: #222222;
+            color: #cccccc;
+            cursor: pointer;
+            padding: 20px;
+            width: 100%;
+            border: 1px solid #3a3a3a;
+            text-align: left;
+            outline: none;
+            font-size: 1.15em;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        .collapsible:hover {
+            background: #2a2a2a;
+        }
+
+        .collapsible:after {
+            content: '\002B';
+            color: #999999;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+
+        .collapsible.active:after {
+            content: "\2212";
+        }
+
+        .content {
+            max-height: 0;
+            overflow: hidden;
+            background: #222222;
+            border: 1px solid #3a3a3a;
+            border-top: none;
+        }
+
+        .content-inner {
+            padding: 30px;
+        }
+
+        .complexity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        .complexity-table th {
+            background: #222222;
+            color: #cccccc;
+            padding: 15px;
+            border: 1px solid #3a3a3a;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .complexity-table td {
+            background: #1a1a1a;
+            padding: 12px 15px;
+            border: 1px solid #3a3a3a;
+            color: #e4e4e4;
+        }
+
+        .complexity-table tr:hover td {
+            background: #222222;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 5px;
+            background: #222222;
+            border: 1px solid #3a3a3a;
+            color: #b4b4b4;
+        }
+
+        .badge-primary {
+            border-color: #0066cc;
+            color: #0066cc;
+        }
+
+        .relationship-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .algo-card {
+            background: #222222;
+            padding: 30px;
+            border: 1px solid #3a3a3a;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 15px;
+        }
+
+        li {
+            margin: 12px 0;
+            color: #e4e4e4;
+        }
+
+        .visual-connector {
+            color: #999999;
+            font-size: 1.5em;
+            margin: 15px;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: #0066cc;
+            color: #ffffff;
+            padding: 15px 20px;
+            border: 1px solid #0066cc;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .back-to-top:hover {
+            background: #0052a3;
+            border-color: #0052a3;
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        p {
+            margin: 15px 0;
+            color: #e4e4e4;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3a3a3a;
+            border: 1px solid #2c2c2c;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a4a4a;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">Municipal App</div>
+            <div class="sidebar-subtitle">PROG7312 Project Breakdown</div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Main Sections</div>
+            <a class="nav-item" onclick="scrollToSection('overview')">Overview</a>
+            <a class="nav-item" onclick="scrollToSection('datatypes')">Data Types</a>
+            <a class="nav-item" onclick="scrollToSection('nodes')">Node Structures</a>
+            <a class="nav-item" onclick="scrollToSection('trees')">Tree Structures</a>
+            <a class="nav-item" onclick="scrollToSection('graph')">Graph Structure</a>
+            <a class="nav-item" onclick="scrollToSection('heap')">Heap Structure</a>
+            <a class="nav-item" onclick="scrollToSection('queue')">Queue Structure</a>
+            <a class="nav-item" onclick="scrollToSection('complexity')">Complexity Analysis</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <div class="made-by">Made by Max Day</div>
+            <h1>Max Day PROG7312 Project Breakdown</h1>
+            <p class="subtitle">Municipal App - Complete Technical Reference</p>
+        </header>
+
+        <section id="overview" class="section">
+            <h2>Overview - Data Structure Ecosystem</h2>
+
+            <div class="card">
+                <h3>Purpose and Architecture</h3>
+                <p>The Sidequest Municipal App implements a sophisticated data structure ecosystem designed to manage municipal service requests efficiently. The architecture separates concerns into <span class="highlight-primary">node components</span> (fundamental building blocks) and <span class="highlight-secondary">implementation structures</span> (complete data structures).</p>
+            </div>
+
+            <div class="card card-accent">
+                <h3>Core Entity: ServiceRequest</h3>
+                <div class="code-block">
+<span class="type">public class</span> ServiceRequest {<br>
+    <span class="property">string UniqueID</span><br>
+    <span class="property">string Location</span><br>
+    <span class="property">string Category</span><br>
+    <span class="property">string Description</span><br>
+    <span class="property">string AttachmentPath</span><br>
+    <span class="property">DateTime DateSubmitted</span><br>
+    <span class="property">ServiceRequestStatus Status</span><br>
+    <span class="property">ServiceRequestPriority Priority</span><br>
+    <span class="property">List&lt;string&gt; RelatedRequestIDs</span><br>
+}
+                </div>
+                <p>All data structures in the application revolve around the ServiceRequest entity, which represents a municipal service request with location, category, description, attachments, submission date, status, and priority.</p>
+            </div>
+
+            <div class="tree-diagram">
+                <h3>Structure Hierarchy</h3>
+                <div class="flow-diagram">
+                    <div class="node-visual">ServiceRequest</div>
+                    <span class="visual-connector">→</span>
+                    <div class="node-visual accent">Node Components</div>
+                    <span class="visual-connector">→</span>
+                    <div class="node-visual">Data Structures</div>
+                </div>
+            </div>
+
+            <div class="relationship-grid">
+                <div class="algo-card">
+                    <h4>8 Node Types</h4>
+                    <span class="badge badge-primary">AVLNode</span>
+                    <span class="badge badge-primary">BSTNode</span>
+                    <span class="badge badge-primary">BinaryTreeNode</span>
+                    <span class="badge badge-primary">RedBlackNode</span>
+                    <span class="badge badge-primary">HeapNode</span>
+                    <span class="badge badge-primary">GraphNode</span>
+                    <span class="badge badge-primary">GraphEdge</span>
+                    <span class="badge badge-primary">TreeNode</span>
+                </div>
+                <div class="algo-card">
+                    <h4>7 Data Structures</h4>
+                    <span class="badge">ServiceRequestAVL</span>
+                    <span class="badge">ServiceRequestBST</span>
+                    <span class="badge">ServiceRequestBinaryTree</span>
+                    <span class="badge">ServiceRequestRedBlackTree</span>
+                    <span class="badge">ServiceRequestHeap</span>
+                    <span class="badge">ServiceRequestGraph</span>
+                    <span class="badge">ServiceRequestTree</span>
+                </div>
+                <div class="algo-card">
+                    <h4>1 Utility Structure</h4>
+                    <span class="badge badge-primary">PriorityCategoryQueue</span>
+                    <p style="margin-top: 15px;">Generic priority queue with FIFO ordering within priority tiers</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="datatypes" class="section">
+            <h2>Data Types - Custom Type Registry</h2>
+
+            <div class="card">
+                <h3>Type Categories</h3>
+                <p>The Sidequest Municipal App defines 25 custom data types across four major categories: Models, Data Structure Nodes, Data Structure Implementations, and Utilities. This section provides a comprehensive registry of every custom type with precise file locations.</p>
+            </div>
+
+            <div class="card card-accent">
+                <h3>Model Classes (3 classes, 2 enums)</h3>
+                <table class="complexity-table">
+                    <thead>
+                        <tr>
+                            <th>Type Name</th>
+                            <th>Type Kind</th>
+                            <th>File Location</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequest</span></td>
+                            <td>Class</td>
+                            <td>Models/ServiceRequest.cs</td>
+                            <td>Primary entity for municipal service requests with full lifecycle tracking</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">Issue</span></td>
+                            <td>Class</td>
+                            <td>Models/Issue.cs</td>
+                            <td>Legacy entity for reported issues, compatible with ServiceRequest</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">LocalEvent</span></td>
+                            <td>Class</td>
+                            <td>Models/LocalEvent.cs</td>
+                            <td>Represents municipal events with title, category, date, and priority</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestStatus</span></td>
+                            <td>Enum</td>
+                            <td>Models/ServiceRequest.cs</td>
+                            <td>Status values: Pending, InProgress, Completed, Rejected</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestPriority</span></td>
+                            <td>Enum</td>
+                            <td>Models/ServiceRequest.cs</td>
+                            <td>Priority levels: Low (1), Medium (2), High (3), Urgent (4)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>Data Structure Node Types (8 classes, 1 enum)</h3>
+                <table class="complexity-table">
+                    <thead>
+                        <tr>
+                            <th>Type Name</th>
+                            <th>Type Kind</th>
+                            <th>File Location</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="highlight-primary">AVLNode</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/AVLNode.cs</td>
+                            <td>Self-balancing tree node with height tracking</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">BinaryTreeNode</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/BinaryTreeNode.cs</td>
+                            <td>Basic binary tree node with level tracking</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">BSTNode</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/BSTNode.cs</td>
+                            <td>Binary search tree node for sorted ordering</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">RedBlackNode</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/RedBlackNode.cs</td>
+                            <td>Red-black tree node with color property and parent reference</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">HeapNode</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/HeapNode.cs</td>
+                            <td>Priority queue node with timestamp for tie-breaking</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">GraphNode</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/GraphNode.cs</td>
+                            <td>Graph vertex with adjacency dictionary for edge management</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">GraphEdge</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/GraphEdge.cs</td>
+                            <td>Weighted connection between graph nodes</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">TreeNode</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/TreeNode.cs</td>
+                            <td>N-ary tree node with variable child list</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">NodeColor</span></td>
+                            <td>Enum</td>
+                            <td>DataStructures/RedBlackNode.cs</td>
+                            <td>Color enumeration for red-black trees: Red, Black</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card card-accent">
+                <h3>Data Structure Implementation Types (7 classes, 1 generic class)</h3>
+                <table class="complexity-table">
+                    <thead>
+                        <tr>
+                            <th>Type Name</th>
+                            <th>Type Kind</th>
+                            <th>File Location</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestAVL</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/ServiceRequestAVL.cs</td>
+                            <td>Self-balancing AVL tree for chronological ordering</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestBST</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/ServiceRequestBST.cs</td>
+                            <td>Binary search tree for ID-based lookups</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestBinaryTree</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/ServiceRequestBinaryTree.cs</td>
+                            <td>Complete binary tree with multiple traversal methods</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestRedBlackTree</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/ServiceRequestRedBlackTree.cs</td>
+                            <td>Category-indexed red-black tree with strict balancing</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestTree</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/ServiceRequestTree.cs</td>
+                            <td>Three-tier hierarchical taxonomy tree</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestGraph</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/ServiceRequestGraph.cs</td>
+                            <td>Undirected weighted graph for relationship tracking</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestHeap</span></td>
+                            <td>Class</td>
+                            <td>DataStructures/ServiceRequestHeap.cs</td>
+                            <td>Priority-based min-heap for urgent ticket extraction</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">PriorityCategoryQueue&lt;T&gt;</span></td>
+                            <td>Generic Class</td>
+                            <td>DataStructures/PriorityCategoryQueue.cs</td>
+                            <td>Multi-tier priority queue with FIFO ordering per tier</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>Utility Types (1 static class)</h3>
+                <table class="complexity-table">
+                    <thead>
+                        <tr>
+                            <th>Type Name</th>
+                            <th>Type Kind</th>
+                            <th>File Location</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="highlight-primary">AppPalette</span></td>
+                            <td>Static Class</td>
+                            <td>Utilities/AppPalette.cs</td>
+                            <td>Centralized color palette for consistent UI theming</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card card-accent">
+                <h3>Internal Types (3 types)</h3>
+                <p>The following types are defined as internal implementation details within other classes:</p>
+                <table class="complexity-table">
+                    <thead>
+                        <tr>
+                            <th>Type Name</th>
+                            <th>Type Kind</th>
+                            <th>Defined In</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="highlight-primary">SubmissionComparer</span></td>
+                            <td>Sealed Class</td>
+                            <td>DataStructures/ServiceRequestAVL.cs</td>
+                            <td>Internal comparer for sorting by DateSubmitted then UniqueID</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">RelationshipKey</span></td>
+                            <td>Struct</td>
+                            <td>DataStructures/ServiceRequestGraph.cs</td>
+                            <td>Internal key for grouping requests by (Category, Location) pairs</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">RelationshipKeyComparer</span></td>
+                            <td>Sealed Class</td>
+                            <td>DataStructures/ServiceRequestGraph.cs</td>
+                            <td>Internal equality comparer for RelationshipKey structs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="relationship-grid">
+                <div class="algo-card">
+                    <h4>Type Distribution</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">Classes:</span> 19 public classes</li>
+                        <li><span class="highlight-secondary">Generic Classes:</span> 1 generic class</li>
+                        <li><span class="highlight-secondary">Static Classes:</span> 1 static utility class</li>
+                        <li><span class="highlight-secondary">Enumerations:</span> 3 enums</li>
+                        <li><span class="highlight-secondary">Structs:</span> 1 internal struct</li>
+                        <li><span class="highlight-secondary">Internal Classes:</span> 2 sealed internal classes</li>
+                    </ul>
+                </div>
+
+                <div class="algo-card">
+                    <h4>Primary Namespaces</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">Sidequest_municiple_app</span> - All types reside in this root namespace</li>
+                        <li>No nested namespaces are used</li>
+                        <li>Consistent namespace convention across all files</li>
+                    </ul>
+                </div>
+
+                <div class="algo-card">
+                    <h4>Type Accessibility</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">Public:</span> 22 types accessible throughout application</li>
+                        <li><span class="highlight-secondary">Internal:</span> 3 types restricted to containing class</li>
+                        <li>All public types are referenced across multiple forms and components</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Type Usage Patterns</h3>
+                <div class="code-block">
+Most Used Types:<br>
+    <span class="highlight-primary">ServiceRequest</span> - Referenced by all 7 data structure implementations<br>
+    <span class="highlight-primary">ServiceRequestStatus</span> - Used in ServiceRequest, Issue, and form validation logic<br>
+    <span class="highlight-primary">ServiceRequestPriority</span> - Used in ServiceRequest, Issue, and priority-based sorting<br>
+<br>
+Generic Type Constraints:<br>
+    <span class="highlight-primary">PriorityCategoryQueue&lt;T&gt; where T : class</span> - Requires reference types only<br>
+<br>
+Static Utility Access:<br>
+    <span class="highlight-primary">AppPalette.Background</span> - Accessed via static properties across all forms
+                </div>
+            </div>
+
+            <div class="card card-accent">
+                <h3>File Location Summary</h3>
+                <div class="code-block">
+Models/ (3 classes, 2 enums)<br>
+    ├── ServiceRequest.cs<br>
+    ├── Issue.cs<br>
+    └── LocalEvent.cs<br>
+<br>
+DataStructures/ (8 node classes, 7 implementation classes, 1 generic class, 1 enum)<br>
+    ├── AVLNode.cs<br>
+    ├── BinaryTreeNode.cs<br>
+    ├── BSTNode.cs<br>
+    ├── RedBlackNode.cs<br>
+    ├── HeapNode.cs<br>
+    ├── GraphNode.cs<br>
+    ├── GraphEdge.cs<br>
+    ├── TreeNode.cs<br>
+    ├── ServiceRequestAVL.cs<br>
+    ├── ServiceRequestBST.cs<br>
+    ├── ServiceRequestBinaryTree.cs<br>
+    ├── ServiceRequestRedBlackTree.cs<br>
+    ├── ServiceRequestTree.cs<br>
+    ├── ServiceRequestGraph.cs<br>
+    ├── ServiceRequestHeap.cs<br>
+    └── PriorityCategoryQueue.cs<br>
+<br>
+Utilities/ (1 static class)<br>
+    └── AppPalette.cs<br>
+<br>
+<span class="highlight-primary">Total: 25 custom types across 20 files</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="nodes" class="section">
+            <h2>Node Structures - Building Blocks</h2>
+
+            <button class="collapsible">AVLNode - Self-Balancing Node</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Maintains balanced binary search trees with automatic height tracking and balance factor calculation.</p>
+
+                    <h4>Properties</h4>
+                    <div class="code-block">
+<span class="property">ServiceRequest Value</span> - The service request data<br>
+<span class="property">string Key</span> - Cached UniqueID for fast comparisons<br>
+<span class="property">AVLNode Left</span> - Left child reference<br>
+<span class="property">AVLNode Right</span> - Right child reference<br>
+<span class="property">int Height</span> - Cached height for O(1) balance calculations
+                    </div>
+
+                    <h4>Key Methods</h4>
+                    <ul>
+                        <li><span class="highlight-primary">UpdateHeight()</span> - Recalculates height from children</li>
+                        <li><span class="highlight-primary">GetBalance()</span> - Returns balance factor (left height - right height)</li>
+                        <li><span class="highlight-primary">UpdateValue(ServiceRequest)</span> - Updates the stored service request</li>
+                    </ul>
+
+                    <h4>Application Usage</h4>
+                    <p>Used by <span class="highlight-secondary">ServiceRequestAVL</span> for chronologically ordered service requests with guaranteed O(log n) operations. The ServiceRequestStatusForm relies on AVL trees for balanced searches and sorted views when filtering or validating records.</p>
+
+                    <div class="tree-diagram">
+                        <div class="node-visual">Root (H=3)</div><br>
+                        <div class="flow-diagram">
+                            <div class="node-visual">Left (H=2)</div>
+                            <span class="visual-connector">←</span>
+                            <div class="node-visual accent">Parent</div>
+                            <span class="visual-connector">→</span>
+                            <div class="node-visual">Right (H=1)</div>
+                        </div>
+                    </div>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/AVLNode.cs</span> (59 lines)</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="collapsible">BinaryTreeNode - Basic Tree Node</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Provides a straightforward container for service requests in a complete binary tree with level tracking.</p>
+
+                    <h4>Properties</h4>
+                    <div class="code-block">
+<span class="property">ServiceRequest Value</span> - The service request data<br>
+<span class="property">BinaryTreeNode Left</span> - Left child reference<br>
+<span class="property">BinaryTreeNode Right</span> - Right child reference<br>
+<span class="property">int Level</span> - Depth level in the tree (0 for root)
+                    </div>
+
+                    <h4>Key Methods</h4>
+                    <ul>
+                        <li><span class="highlight-primary">UpdateValue(ServiceRequest)</span> - Updates the stored request</li>
+                        <li><span class="highlight-primary">IsLeaf()</span> - Returns true if node has no children</li>
+                        <li><span class="highlight-primary">HasTwoChildren()</span> - Returns true if both children exist</li>
+                    </ul>
+
+                    <h4>Application Usage</h4>
+                    <p>Used by <span class="highlight-secondary">ServiceRequestBinaryTree</span> for breadth-first insertion. Unlike self-balancing variants, this accepts requests in arrival order. The ServiceRequestStatusForm uses this for showcasing alternative traversal strategies (preorder, inorder, postorder) for analytics and debugging views.</p>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/BinaryTreeNode.cs</span> (53 lines)</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="collapsible">BSTNode - Binary Search Tree Node</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Building blocks for binary search trees that maintain sorted order by unique request ID.</p>
+
+                    <h4>Properties</h4>
+                    <div class="code-block">
+<span class="property">ServiceRequest Value</span> - The service request data<br>
+<span class="property">string Key</span> - Cached UniqueID for sorting<br>
+<span class="property">BSTNode Left</span> - Left child (smaller keys)<br>
+<span class="property">BSTNode Right</span> - Right child (larger keys)
+                    </div>
+
+                    <h4>Key Methods</h4>
+                    <ul>
+                        <li><span class="highlight-primary">CompareTo(string key)</span> - Case-insensitive key comparison</li>
+                        <li><span class="highlight-primary">UpdateValue(ServiceRequest)</span> - Updates the stored request</li>
+                    </ul>
+
+                    <h4>Application Usage</h4>
+                    <p>Used by <span class="highlight-secondary">ServiceRequestBST</span> for fast ID-based lookups and deletions. The ServiceRequestStatusForm leverages this for instant in-memory access without database latency, enabling fast searches and sorted listings.</p>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/BSTNode.cs</span> (53 lines)</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="collapsible">RedBlackNode - Balanced Tree Node with Color</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Enforces red-black tree coloring invariants for guaranteed logarithmic depth with category-based indexing.</p>
+
+                    <h4>Properties</h4>
+                    <div class="code-block">
+<span class="property">string Key</span> - Category from ServiceRequest<br>
+<span class="property">ServiceRequest Value</span> - The service request data<br>
+<span class="property">NodeColor Color</span> - Red or Black for balance enforcement<br>
+<span class="property">RedBlackNode Left</span> - Left child<br>
+<span class="property">RedBlackNode Right</span> - Right child<br>
+<span class="property">RedBlackNode Parent</span> - Parent reference for rotations
+                    </div>
+
+                    <h4>Key Methods</h4>
+                    <ul>
+                        <li><span class="highlight-primary">UpdateValue(ServiceRequest)</span> - Updates the stored request</li>
+                        <li><span class="highlight-primary">IsRed()</span> - Returns true if node is red</li>
+                        <li><span class="highlight-primary">IsBlack()</span> - Returns true if node is black</li>
+                    </ul>
+
+                    <h4>Application Usage</h4>
+                    <p>Used by <span class="highlight-secondary">ServiceRequestRedBlackTree</span> for category-based indexing with strict balancing guarantees. The bidirectional parent-child linkage enables rotation logic without losing context. ServiceRequestStatusForm uses this for stable category queries and color-annotated visualizations.</p>
+
+                    <div class="tree-diagram">
+                        <div class="node-visual">Black Root</div><br>
+                        <div class="flow-diagram">
+                            <div class="node-visual accent">Red Child</div>
+                            <span class="visual-connector">←</span>
+                            <div class="node-visual">Black Parent</div>
+                            <span class="visual-connector">→</span>
+                            <div class="node-visual accent">Red Child</div>
+                        </div>
+                    </div>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/RedBlackNode.cs</span> (60 lines)</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="collapsible">HeapNode - Priority Queue Node</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Wraps service requests with priority metadata for efficient min-heap operations and triage.</p>
+
+                    <h4>Properties</h4>
+                    <div class="code-block">
+<span class="property">ServiceRequest Value</span> - The service request data<br>
+<span class="property">int Priority</span> - Normalized priority score for heap ordering<br>
+<span class="property">DateTime EnqueuedAt</span> - Timestamp for tie-breaking
+                    </div>
+
+                    <h4>Key Methods</h4>
+                    <ul>
+                        <li><span class="highlight-primary">UpdatePriority(int)</span> - Changes priority value</li>
+                        <li><span class="highlight-primary">UpdateValue(ServiceRequest)</span> - Updates the stored request</li>
+                    </ul>
+
+                    <h4>Application Usage</h4>
+                    <p>Used by <span class="highlight-secondary">ServiceRequestHeap</span> for priority-based extraction. The EnqueuedAt timestamp ensures earlier arrivals win ties. ServiceRequestStatusForm renders these in priority list views, governing which issues bubble to top during municipal emergencies.</p>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/HeapNode.cs</span> (47 lines)</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="collapsible">GraphNode - Network Vertex</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Represents vertices in a graph, each wrapping a service request with adjacency information.</p>
+
+                    <h4>Properties</h4>
+                    <div class="code-block">
+<span class="property">ServiceRequest Value</span> - The service request data<br>
+<span class="property">string Key</span> - Cached UniqueID for adjacency hashing<br>
+<span class="property">IReadOnlyCollection&lt;GraphEdge&gt; Edges</span> - Outbound edges<br>
+<span class="property">private Dictionary&lt;string, GraphEdge&gt; adjacency</span> - Fast edge lookup
+                    </div>
+
+                    <h4>Key Methods</h4>
+                    <ul>
+                        <li><span class="highlight-primary">Connect(GraphNode, double)</span> - Creates weighted edge to target</li>
+                        <li><span class="highlight-primary">Disconnect(string)</span> - Removes edge by key</li>
+                        <li><span class="highlight-primary">HasEdge(string)</span> - Checks for edge existence</li>
+                        <li><span class="highlight-primary">UpdateValue(ServiceRequest)</span> - Updates the stored request</li>
+                    </ul>
+
+                    <h4>Application Usage</h4>
+                    <p>Used by <span class="highlight-secondary">ServiceRequestGraph</span> to track relationships between municipal incidents. ServiceRequestStatusForm uses graph nodes to display related requests and traversal previews, showing how incidents influence each other across the city.</p>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/GraphNode.cs</span> (76 lines)</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="collapsible">GraphEdge - Weighted Connection</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Represents weighted connections between service request nodes in the graph structure.</p>
+
+                    <h4>Properties</h4>
+                    <div class="code-block">
+<span class="property">GraphNode Source</span> - Origin node<br>
+<span class="property">GraphNode Target</span> - Destination node<br>
+<span class="property">double Weight</span> - Connection strength/similarity
+                    </div>
+
+                    <h4>Key Methods</h4>
+                    <ul>
+                        <li><span class="highlight-primary">UpdateWeight(double)</span> - Modifies edge weight</li>
+                    </ul>
+
+                    <h4>Application Usage</h4>
+                    <p>Used by <span class="highlight-secondary">ServiceRequestGraph</span> to encode relationships like shared categories, overlapping locations, or follow-up connections. The traversal panel reads weights to explain why requests travel together and how they influence prioritization overlays.</p>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/GraphEdge.cs</span> (44 lines)</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="collapsible">TreeNode - N-ary Hierarchy Node</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Scaffolds arbitrary-arity hierarchy for municipal service requests organized by category and priority.</p>
+
+                    <h4>Properties</h4>
+                    <div class="code-block">
+<span class="property">string Key</span> - Node identifier (category, priority, or ID)<br>
+<span class="property">ServiceRequest Value</span> - Service request (null for internal nodes)<br>
+<span class="property">TreeNode Parent</span> - Parent reference for depth queries<br>
+<span class="property">List&lt;TreeNode&gt; Children</span> - Variable child list
+                    </div>
+
+                    <h4>Key Methods</h4>
+                    <ul>
+                        <li><span class="highlight-primary">AddChild(string, ServiceRequest)</span> - Creates and attaches child</li>
+                        <li><span class="highlight-primary">FindChild(string)</span> - Locates child by key</li>
+                        <li><span class="highlight-primary">GetDepth()</span> - Calculates depth from root</li>
+                        <li><span class="highlight-primary">IsLeaf()</span> - Returns true if no children</li>
+                    </ul>
+
+                    <h4>Application Usage</h4>
+                    <p>Used by <span class="highlight-secondary">ServiceRequestTree</span> to construct three-tier hierarchy: root → categories → priorities → requests. ServiceRequestStatusForm walks this for collapsible tree views, allowing operators to drill into problem domains without flat scrolling.</p>
+
+                    <div class="tree-diagram">
+                        <div class="node-visual">Municipal Services</div><br>
+                        <div class="flow-diagram">
+                            <div class="node-visual">Category 1</div>
+                            <div class="node-visual">Category 2</div>
+                            <div class="node-visual">Category 3</div>
+                        </div><br>
+                        <div class="flow-diagram">
+                            <div class="node-visual accent">High Priority</div>
+                            <div class="node-visual accent">Medium Priority</div>
+                        </div><br>
+                        <div class="flow-diagram">
+                            <div class="node-visual">Request 1</div>
+                            <div class="node-visual">Request 2</div>
+                        </div>
+                    </div>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/TreeNode.cs</span> (77 lines)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="trees" class="section">
+            <h2>Tree Structures - Hierarchical Data Management</h2>
+
+            <button class="collapsible">ServiceRequestAVL - Self-Balancing Chronological Tree</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Maintains a self-balancing AVL tree for chronologically ordered service requests with guaranteed O(log n) operations.</p>
+
+                    <h4>Core Features</h4>
+                    <ul>
+                        <li>Custom <span class="highlight-primary">SubmissionComparer</span> sorts by DateSubmitted, then UniqueID</li>
+                        <li>Automatic rotations maintain height balance</li>
+                        <li>In-order traversal yields chronologically sorted results</li>
+                        <li>FindById uses iterative in-order traversal for lookups</li>
+                    </ul>
+
+                    <h4>Key Operations</h4>
+                    <div class="code-block">
+<span class="type">void</span> <span class="highlight-primary">Insert</span>(ServiceRequest) - O(log n) insertion with rotations<br>
+<span class="type">ServiceRequest</span> <span class="highlight-primary">FindById</span>(string) - O(n) iterative search<br>
+<span class="type">IReadOnlyList</span> <span class="highlight-primary">InOrder</span>() - O(n) chronological traversal<br>
+<span class="type">void</span> <span class="highlight-primary">Clear</span>() - O(1) tree reset
+                    </div>
+
+                    <h4>Rotation Logic</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">RotateLeft(AVLNode)</span> - Left rotation for right-heavy trees</li>
+                        <li><span class="highlight-secondary">RotateRight(AVLNode)</span> - Right rotation for left-heavy trees</li>
+                        <li>Balance factor threshold: |balance| > 1 triggers rotation</li>
+                        <li>Handles Left-Left, Left-Right, Right-Right, Right-Left cases</li>
+                    </ul>
+
+                    <h4>Application Context</h4>
+                    <p>ServiceRequestStatusForm uses this for consistent chronological ordering during filtering and validation. Every refresh seeds the tree from SQLite database. The statistics panel validates tree health using AVL properties.</p>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/ServiceRequestAVL.cs</span> (177 lines)</p>
+                        <p>Depends on: <span class="highlight-secondary">AVLNode.cs</span>, <span class="highlight-secondary">ServiceRequest.cs</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="collapsible">ServiceRequestBST - Binary Search Tree by ID</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Implements classic binary search tree for fast ID-based lookups, insertions, and deletions.</p>
+
+                    <h4>Core Features</h4>
+                    <ul>
+                        <li>Sorted by UniqueID with case-insensitive comparison</li>
+                        <li>Standard BST insertion (no balancing)</li>
+                        <li>Complete deletion with three-case logic</li>
+                        <li>Iterative in-order traversal for sorted output</li>
+                    </ul>
+
+                    <h4>Key Operations</h4>
+                    <div class="code-block">
+<span class="type">void</span> <span class="highlight-primary">Insert</span>(ServiceRequest) - O(h) insertion where h = height<br>
+<span class="type">ServiceRequest</span> <span class="highlight-primary">Find</span>(string) - O(h) iterative search<br>
+<span class="type">bool</span> <span class="highlight-primary">Delete</span>(string) - O(h) deletion with successor replacement<br>
+<span class="type">IReadOnlyList</span> <span class="highlight-primary">InOrder</span>() - O(n) sorted traversal<br>
+<span class="type">void</span> <span class="highlight-primary">Clear</span>() - O(1) tree reset
+                    </div>
+
+                    <h4>Deletion Cases</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">Leaf node</span> - Simply remove</li>
+                        <li><span class="highlight-secondary">One child</span> - Replace with child</li>
+                        <li><span class="highlight-secondary">Two children</span> - Replace with in-order successor</li>
+                    </ul>
+
+                    <h4>Application Context</h4>
+                    <p>ServiceRequestStatusForm mirrors the dataset in memory for instant lookups without database latency. Enables fast searches and supports sorted table exports. No balancing means worst-case O(n) for skewed insertion patterns.</p>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/ServiceRequestBST.cs</span> (155 lines)</p>
+                        <p>Depends on: <span class="highlight-secondary">BSTNode.cs</span>, <span class="highlight-secondary">ServiceRequest.cs</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="collapsible">ServiceRequestBinaryTree - Complete Binary Tree</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Manages complete binary tree with breadth-first insertion, showcasing traversal patterns without ordering guarantees.</p>
+
+                    <h4>Core Features</h4>
+                    <ul>
+                        <li>Breadth-first insertion fills level-by-level</li>
+                        <li>No key comparisons - pure insertion order</li>
+                        <li>Four traversal methods for educational comparison</li>
+                        <li>Level tracking in each node</li>
+                    </ul>
+
+                    <h4>Key Operations</h4>
+                    <div class="code-block">
+<span class="type">void</span> <span class="highlight-primary">Insert</span>(ServiceRequest) - O(n) breadth-first insertion<br>
+<span class="type">IReadOnlyList</span> <span class="highlight-primary">LevelOrder</span>() - O(n) breadth-first traversal<br>
+<span class="type">IReadOnlyList</span> <span class="highlight-primary">PreOrder</span>() - O(n) root-left-right traversal<br>
+<span class="type">IReadOnlyList</span> <span class="highlight-primary">InOrder</span>() - O(n) left-root-right traversal<br>
+<span class="type">IReadOnlyList</span> <span class="highlight-primary">PostOrder</span>() - O(n) left-right-root traversal<br>
+<span class="type">void</span> <span class="highlight-primary">Clear</span>() - O(1) tree reset
+                    </div>
+
+                    <h4>Traversal Strategies</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">PreOrder</span> - Recursive: visit root, traverse left, traverse right</li>
+                        <li><span class="highlight-secondary">InOrder</span> - Recursive: traverse left, visit root, traverse right</li>
+                        <li><span class="highlight-secondary">PostOrder</span> - Recursive: traverse left, traverse right, visit root</li>
+                        <li><span class="highlight-secondary">LevelOrder</span> - Iterative queue-based breadth-first</li>
+                    </ul>
+
+                    <h4>Application Context</h4>
+                    <p>ServiceRequestStatusForm uses this for algorithm comparison panels. Never rebalances, allowing operators to visualize how different traversals reveal patterns in unordered datasets. Pedagogical tool alongside sophisticated structures.</p>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/ServiceRequestBinaryTree.cs</span> (145 lines)</p>
+                        <p>Depends on: <span class="highlight-secondary">BinaryTreeNode.cs</span>, <span class="highlight-secondary">ServiceRequest.cs</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="collapsible">ServiceRequestRedBlackTree - Category-Indexed Balanced Tree</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Maintains red-black tree indexed by category with strict color invariants for guaranteed O(log n) operations.</p>
+
+                    <h4>Core Features</h4>
+                    <ul>
+                        <li>Keys on ServiceRequest.Category for category clustering</li>
+                        <li>Red-black properties enforce logarithmic depth</li>
+                        <li>Uncle checks and rotations during insertion</li>
+                        <li>Parent references enable context-aware rotations</li>
+                        <li>Color-annotated node snapshots for visualization</li>
+                    </ul>
+
+                    <h4>Key Operations</h4>
+                    <div class="code-block">
+<span class="type">void</span> <span class="highlight-primary">Insert</span>(ServiceRequest) - O(log n) insertion with recoloring<br>
+<span class="type">ServiceRequest</span> <span class="highlight-primary">Find</span>(string category) - O(log n) category search<br>
+<span class="type">IReadOnlyList</span> <span class="highlight-primary">InOrder</span>() - O(n) sorted traversal<br>
+<span class="type">IReadOnlyList&lt;RedBlackNode&gt;</span> <span class="highlight-primary">GetNodesWithColors</span>() - O(n) visualization data<br>
+<span class="type">void</span> <span class="highlight-primary">Clear</span>() - O(1) tree reset
+                    </div>
+
+                    <h4>Red-Black Properties</h4>
+                    <ol>
+                        <li>Every node is red or black</li>
+                        <li>Root is always black</li>
+                        <li>All leaves (null) are black</li>
+                        <li>Red nodes have black children (no consecutive reds)</li>
+                        <li>All paths from root to leaves have same black height</li>
+                    </ol>
+
+                    <h4>Insertion Fix Strategy</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">Case 1: Red Uncle</span> - Recolor parent, uncle, grandparent</li>
+                        <li><span class="highlight-secondary">Case 2: Black Uncle (Triangle)</span> - Rotate to Line case</li>
+                        <li><span class="highlight-secondary">Case 3: Black Uncle (Line)</span> - Rotate and recolor</li>
+                        <li>Handles both left and right subtree violations</li>
+                    </ul>
+
+                    <h4>Application Context</h4>
+                    <p>ServiceRequestStatusForm uses this when category-driven navigation matters more than chronology. During refreshes, loads from SQLite and inserts by category. Color annotations feed visualization widgets showing rotation mechanics and balance maintenance.</p>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/ServiceRequestRedBlackTree.cs</span> (239 lines)</p>
+                        <p>Depends on: <span class="highlight-secondary">RedBlackNode.cs</span>, <span class="highlight-secondary">ServiceRequest.cs</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="collapsible">ServiceRequestTree - N-ary Hierarchical Tree</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Organizes municipal tickets into three-tier taxonomy: root → categories → priorities → requests.</p>
+
+                    <h4>Core Features</h4>
+                    <ul>
+                        <li>Root node: "Municipal Services"</li>
+                        <li>Level 1: Categories (Sanitation, Roads, Utilities, etc.)</li>
+                        <li>Level 2: Priorities (Low, Medium, High, Urgent)</li>
+                        <li>Level 3: Individual ServiceRequests</li>
+                        <li>Dynamic intermediate node creation</li>
+                    </ul>
+
+                    <h4>Key Operations</h4>
+                    <div class="code-block">
+<span class="type">void</span> <span class="highlight-primary">Insert</span>(ServiceRequest) - O(h) insertion with node creation<br>
+<span class="type">IReadOnlyList</span> <span class="highlight-primary">GetAll</span>() - O(n) collect all requests<br>
+<span class="type">IReadOnlyList&lt;TreeNode&gt;</span> <span class="highlight-primary">GetHierarchy</span>() - O(n) collect all nodes<br>
+<span class="type">void</span> <span class="highlight-primary">Clear</span>() - O(1) tree reset
+                    </div>
+
+                    <h4>Insertion Logic</h4>
+                    <ol>
+                        <li>Find or create category node under root</li>
+                        <li>Find or create priority node under category</li>
+                        <li>Add request node under priority</li>
+                        <li>Uses "Uncategorized" for missing categories</li>
+                    </ol>
+
+                    <h4>Application Context</h4>
+                    <p>ServiceRequestStatusForm leverages this for hierarchical collapsible views. Operators expand categories to see priorities, then expand priorities for individual tickets. Adapts to new categories without hardcoded assumptions. Feeds tree-view widgets that simplify navigation across large workloads.</p>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/ServiceRequestTree.cs</span> (99 lines)</p>
+                        <p>Depends on: <span class="highlight-secondary">TreeNode.cs</span>, <span class="highlight-secondary">ServiceRequest.cs</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="graph" class="section">
+            <h2>Graph Structure - Relationship Network</h2>
+
+            <button class="collapsible">ServiceRequestGraph - Network of Related Incidents</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Manages network of municipal tickets with weighted relationships, revealing how service requests relate and influence each other.</p>
+
+                    <h4>Core Features</h4>
+                    <ul>
+                        <li>Undirected weighted graph</li>
+                        <li>Automatic relationship building by category and location</li>
+                        <li>Breadth-first and depth-first traversals</li>
+                        <li>Minimum spanning tree computation (Prim's algorithm)</li>
+                        <li>Related request tracking in ServiceRequest.RelatedRequestIDs</li>
+                    </ul>
+
+                    <h4>Key Operations</h4>
+                    <div class="code-block">
+<span class="type">GraphNode</span> <span class="highlight-primary">AddOrUpdate</span>(ServiceRequest) - O(1) node insertion<br>
+<span class="type">bool</span> <span class="highlight-primary">AddRelationship</span>(string, string, double) - O(1) edge creation<br>
+<span class="type">void</span> <span class="highlight-primary">BuildRelationships</span>(IEnumerable) - O(n²) batch relationship building<br>
+<span class="type">IReadOnlyList</span> <span class="highlight-primary">BreadthFirst</span>(string, int depth) - O(V+E) traversal<br>
+<span class="type">IReadOnlyList</span> <span class="highlight-primary">DepthFirst</span>(string) - O(V+E) traversal<br>
+<span class="type">IReadOnlyList</span> <span class="highlight-primary">GetRelatedRequests</span>(string) - O(1) neighbor lookup<br>
+<span class="type">IReadOnlyList&lt;GraphEdge&gt;</span> <span class="highlight-primary">MinimumSpanningTree</span>(string) - O(E log V) Prim's MST<br>
+<span class="type">void</span> <span class="highlight-primary">Clear</span>() - O(1) graph reset
+                    </div>
+
+                    <h4>Relationship Building Algorithm</h4>
+                    <ol>
+                        <li>Clear all existing RelatedRequestIDs</li>
+                        <li>Group requests by (Category, Location) pairs</li>
+                        <li>Within each group, connect all pairs with weight 1.0</li>
+                        <li>Update RelatedRequestIDs bidirectionally</li>
+                        <li>Trim excess capacity in lists</li>
+                    </ol>
+
+                    <h4>Traversal Implementations</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">BreadthFirst</span> - Queue-based with depth limit, HashSet for visited tracking</li>
+                        <li><span class="highlight-secondary">DepthFirst</span> - Stack-based, ordered by key descending for determinism</li>
+                        <li>Both use StringComparer.OrdinalIgnoreCase for case-insensitive keys</li>
+                    </ul>
+
+                    <h4>Minimum Spanning Tree</h4>
+                    <ul>
+                        <li>Prim's algorithm with manual edge extraction</li>
+                        <li>Maintains visited set and candidate edge list</li>
+                        <li>ExtractMinimumEdge handles weight ties with lexicographic key comparison</li>
+                        <li>Returns edges forming MST, excludes cycles</li>
+                    </ul>
+
+                    <h4>Application Context</h4>
+                    <p>ServiceRequestStatusForm pumps records from SQLite during refresh cycles, builds adjacency lists, then displays related requests, graph traversals, and MST visualizations. Helps citizens understand which incidents are linked and where efficient resolution pathways exist.</p>
+
+                    <div class="tree-diagram">
+                        <h4>Example Graph Structure</h4>
+                        <div class="flow-diagram">
+                            <div class="node-visual">Request A<br>Category: Roads<br>Location: Main St</div>
+                            <span class="visual-connector">— 1.0 —</span>
+                            <div class="node-visual">Request B<br>Category: Roads<br>Location: Main St</div>
+                        </div>
+                        <div class="flow-diagram">
+                            <span class="visual-connector" style="transform: rotate(90deg);">— 1.0 —</span>
+                        </div>
+                        <div class="flow-diagram">
+                            <div class="node-visual accent">Request C<br>Category: Roads<br>Location: Main St</div>
+                        </div>
+                    </div>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/ServiceRequestGraph.cs</span> (294 lines)</p>
+                        <p>Depends on: <span class="highlight-secondary">GraphNode.cs</span>, <span class="highlight-secondary">GraphEdge.cs</span>, <span class="highlight-secondary">ServiceRequest.cs</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="heap" class="section">
+            <h2>Heap Structure - Priority Management</h2>
+
+            <button class="collapsible">ServiceRequestHeap - Priority-Based Min-Heap</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Implements min-heap for priority-based extraction, ensuring highest-priority tickets are always accessible in O(1) time.</p>
+
+                    <h4>Core Features</h4>
+                    <ul>
+                        <li>Array-based binary heap using List&lt;HeapNode&gt;</li>
+                        <li>Higher priority values bubble up (max-heap behavior for urgency)</li>
+                        <li>Timestamp-based tie-breaking favors earlier submissions</li>
+                        <li>HeapifyUp and HeapifyDown maintain heap property</li>
+                        <li>GetOrderedSnapshot for sorted views without destructive extraction</li>
+                    </ul>
+
+                    <h4>Key Operations</h4>
+                    <div class="code-block">
+<span class="type">void</span> <span class="highlight-primary">Insert</span>(ServiceRequest) - O(log n) insertion with bubble-up<br>
+<span class="type">ServiceRequest</span> <span class="highlight-primary">Peek</span>() - O(1) view highest priority<br>
+<span class="type">ServiceRequest</span> <span class="highlight-primary">Extract</span>() - O(log n) remove highest priority<br>
+<span class="type">IReadOnlyList</span> <span class="highlight-primary">GetOrderedSnapshot</span>() - O(n log n) sorted copy<br>
+<span class="type">void</span> <span class="highlight-primary">Clear</span>() - O(1) heap reset
+                    </div>
+
+                    <h4>Heap Property</h4>
+                    <p>For max-heap behavior (higher priority = more urgent):</p>
+                    <ul>
+                        <li>Parent priority >= child priority</li>
+                        <li>If priorities equal, earlier EnqueuedAt wins</li>
+                        <li>Root always contains highest priority request</li>
+                    </ul>
+
+                    <h4>Heapify Algorithms</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">HeapifyUp</span> - After insertion, bubble new node up until heap property restored</li>
+                        <li><span class="highlight-secondary">HeapifyDown</span> - After extraction, trickle root replacement down to correct position</li>
+                        <li><span class="highlight-secondary">IsHigherPriority</span> - Compares nodes: priority first, then EnqueuedAt for ties</li>
+                    </ul>
+
+                    <h4>Array Indexing</h4>
+                    <div class="code-block">
+Parent of index i: <span class="highlight-primary">(i - 1) / 2</span><br>
+Left child of i: <span class="highlight-primary">i * 2 + 1</span><br>
+Right child of i: <span class="highlight-primary">i * 2 + 2</span>
+                    </div>
+
+                    <h4>Application Context</h4>
+                    <p>ServiceRequestStatusForm uses priority widget to spotlight top municipal fires. Heap recalculates after status changes, revealing urgent tickets without database re-queries. Ensures dispatch decisions stay agile during emergencies.</p>
+
+                    <div class="tree-diagram">
+                        <h4>Heap Visualization</h4>
+                        <div class="node-visual accent">Urgent (4)</div><br>
+                        <div class="flow-diagram">
+                            <div class="node-visual">High (3)</div>
+                            <span class="visual-connector">←</span>
+                            <div class="node-visual accent">Root</div>
+                            <span class="visual-connector">→</span>
+                            <div class="node-visual">Medium (2)</div>
+                        </div><br>
+                        <div class="flow-diagram">
+                            <div class="node-visual">Low (1)</div>
+                            <div class="node-visual">Low (1)</div>
+                        </div>
+                    </div>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/ServiceRequestHeap.cs</span> (141 lines)</p>
+                        <p>Depends on: <span class="highlight-secondary">HeapNode.cs</span>, <span class="highlight-secondary">ServiceRequest.cs</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="queue" class="section">
+            <h2>Queue Structure - Multi-Tier Priority</h2>
+
+            <button class="collapsible">PriorityCategoryQueue - Generic Priority Queue with FIFO Tiers</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h4>Purpose</h4>
+                    <p>Generic multi-level priority queue maintaining FIFO ordering within each priority tier, ensuring fair processing of same-priority items.</p>
+
+                    <h4>Core Features</h4>
+                    <ul>
+                        <li>Generic type parameter: PriorityCategoryQueue&lt;T&gt; where T : class</li>
+                        <li>SortedDictionary&lt;int, Queue&lt;T&gt;&gt; for priority lanes</li>
+                        <li>Lower integer = higher priority (dequeues first)</li>
+                        <li>FIFO within each priority level</li>
+                        <li>Automatic lane creation and cleanup</li>
+                    </ul>
+
+                    <h4>Key Operations</h4>
+                    <div class="code-block">
+<span class="type">void</span> <span class="highlight-primary">Enqueue</span>(T item, int priority) - O(log k) where k = active priorities<br>
+<span class="type">T</span> <span class="highlight-primary">Dequeue</span>() - O(log k) remove highest priority item<br>
+<span class="type">T</span> <span class="highlight-primary">Peek</span>() - O(log k) view highest priority item<br>
+<span class="type">bool</span> <span class="highlight-primary">Contains</span>(int priority) - O(log k) priority existence check<br>
+<span class="type">int</span> <span class="highlight-primary">GetPriorityCount</span>(int) - O(log k) items in priority tier<br>
+<span class="type">IEnumerable&lt;int&gt;</span> <span class="highlight-primary">GetActivePriorities</span>() - O(k) all active priority levels<br>
+<span class="type">void</span> <span class="highlight-primary">Clear</span>() - O(1) queue reset<br>
+<span class="type">int</span> <span class="highlight-primary">Count</span> - O(1) total item count
+                    </div>
+
+                    <h4>Data Structure Design</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">priorityQueues</span> - SortedDictionary maps priority to Queue&lt;T&gt;</li>
+                        <li><span class="highlight-secondary">priorityCounts</span> - Dictionary tracks count per priority for fast lookup</li>
+                        <li>Automatic lane removal when empty</li>
+                        <li>SortedDictionary.Keys.First() gives highest priority in O(log k)</li>
+                    </ul>
+
+                    <h4>Fairness Guarantee</h4>
+                    <p>Unlike a single heap where ties are arbitrary, this structure ensures items with equal priority are processed in submission order. Critical for municipal support to avoid blindsiding frontline staff.</p>
+
+                    <h4>Application Context</h4>
+                    <p>Backs ServiceRequestHeap when easy priority grouping with FIFO semantics is needed. ServiceRequestStatusForm reads snapshots for priority sidebar, communicating both urgency and fairness without database overhead.</p>
+
+                    <div class="tree-diagram">
+                        <h4>Priority Lane Structure</h4>
+                        <div class="flow-diagram">
+                            <div class="node-visual accent">Priority 1 (Urgent)<br>Queue: [A, B, C]</div>
+                        </div>
+                        <div class="flow-diagram">
+                            <div class="node-visual">Priority 2 (High)<br>Queue: [D, E]</div>
+                        </div>
+                        <div class="flow-diagram">
+                            <div class="node-visual">Priority 3 (Medium)<br>Queue: [F]</div>
+                        </div>
+                    </div>
+
+                    <div class="card card-accent">
+                        <h4>File Reference</h4>
+                        <p><span class="highlight-primary">DataStructures/PriorityCategoryQueue.cs</span> (91 lines)</p>
+                        <p>Generic utility class, no dependencies on ServiceRequest</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="complexity" class="section">
+            <h2>Complexity Analysis - Performance Characteristics</h2>
+
+            <div class="card">
+                <h3>Time Complexity Summary</h3>
+                <table class="complexity-table">
+                    <thead>
+                        <tr>
+                            <th>Data Structure</th>
+                            <th>Insert</th>
+                            <th>Search</th>
+                            <th>Delete</th>
+                            <th>Traversal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestAVL</span></td>
+                            <td>O(log n)</td>
+                            <td>O(n) worst</td>
+                            <td>Not implemented</td>
+                            <td>O(n)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestBST</span></td>
+                            <td>O(h) avg O(log n)</td>
+                            <td>O(h) avg O(log n)</td>
+                            <td>O(h) avg O(log n)</td>
+                            <td>O(n)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestBinaryTree</span></td>
+                            <td>O(n)</td>
+                            <td>O(n)</td>
+                            <td>Not implemented</td>
+                            <td>O(n)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestRedBlackTree</span></td>
+                            <td>O(log n)</td>
+                            <td>O(log n)</td>
+                            <td>Not implemented</td>
+                            <td>O(n)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestTree</span></td>
+                            <td>O(h) h = 3</td>
+                            <td>O(n)</td>
+                            <td>Not implemented</td>
+                            <td>O(n)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestGraph</span></td>
+                            <td>O(1)</td>
+                            <td>O(1) by ID</td>
+                            <td>Not implemented</td>
+                            <td>O(V+E)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">ServiceRequestHeap</span></td>
+                            <td>O(log n)</td>
+                            <td>O(1) peek</td>
+                            <td>O(log n) extract</td>
+                            <td>O(n log n) snapshot</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">PriorityCategoryQueue</span></td>
+                            <td>O(log k)</td>
+                            <td>O(log k) peek</td>
+                            <td>O(log k) dequeue</td>
+                            <td>Not applicable</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card card-accent">
+                <h3>Space Complexity</h3>
+                <table class="complexity-table">
+                    <thead>
+                        <tr>
+                            <th>Data Structure</th>
+                            <th>Storage</th>
+                            <th>Auxiliary Space</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="highlight-primary">AVL Node</span></td>
+                            <td>O(n)</td>
+                            <td>O(log n) stack</td>
+                            <td>Height cached per node</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">BST Node</span></td>
+                            <td>O(n)</td>
+                            <td>O(h) stack</td>
+                            <td>No balancing overhead</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">Binary Tree Node</span></td>
+                            <td>O(n)</td>
+                            <td>O(w) queue</td>
+                            <td>Level tracking per node</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">Red-Black Node</span></td>
+                            <td>O(n)</td>
+                            <td>O(log n) stack</td>
+                            <td>Parent pointer + color bit</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">Tree Node</span></td>
+                            <td>O(n)</td>
+                            <td>O(h) recursion</td>
+                            <td>Variable child list</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">Graph Node</span></td>
+                            <td>O(V+E)</td>
+                            <td>O(V) visited set</td>
+                            <td>Adjacency dictionary per node</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">Heap Node</span></td>
+                            <td>O(n)</td>
+                            <td>O(1)</td>
+                            <td>Array-based heap</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight-primary">Priority Queue</span></td>
+                            <td>O(n)</td>
+                            <td>O(k)</td>
+                            <td>k = number of priority tiers</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="relationship-grid">
+                <div class="algo-card">
+                    <h4>Best Use Cases</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">AVL</span> - Frequent searches, balanced guarantees</li>
+                        <li><span class="highlight-secondary">BST</span> - Simple implementation, random insertions</li>
+                        <li><span class="highlight-secondary">Red-Black</span> - Category clustering with balance</li>
+                        <li><span class="highlight-secondary">Heap</span> - Priority-based extraction</li>
+                        <li><span class="highlight-secondary">Graph</span> - Relationship discovery</li>
+                    </ul>
+                </div>
+
+                <div class="algo-card">
+                    <h4>Worst Case Scenarios</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">BST</span> - Sorted input degenerates to O(n) list</li>
+                        <li><span class="highlight-secondary">Binary Tree</span> - No ordering, O(n) search always</li>
+                        <li><span class="highlight-secondary">Graph</span> - Dense graphs increase edge traversal</li>
+                        <li><span class="highlight-secondary">AVL</span> - ID search requires full traversal</li>
+                    </ul>
+                </div>
+
+                <div class="algo-card">
+                    <h4>Balancing Mechanisms</h4>
+                    <ul>
+                        <li><span class="highlight-secondary">AVL</span> - Rotations after insert (4 cases)</li>
+                        <li><span class="highlight-secondary">Red-Black</span> - Recoloring + rotations (6 cases)</li>
+                        <li><span class="highlight-secondary">Heap</span> - Heapify up/down after modifications</li>
+                        <li><span class="highlight-secondary">BST</span> - No balancing</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="section">
+            <h2>File Structure Summary</h2>
+            <div class="card">
+                <h3>DataStructures Folder Contents</h3>
+                <div class="code-block">
+DataStructures/<br>
+├── Nodes (8 files)<br>
+│   ├── AVLNode.cs (59 lines)<br>
+│   ├── BinaryTreeNode.cs (53 lines)<br>
+│   ├── BSTNode.cs (53 lines)<br>
+│   ├── RedBlackNode.cs (60 lines)<br>
+│   ├── HeapNode.cs (47 lines)<br>
+│   ├── GraphNode.cs (76 lines)<br>
+│   ├── GraphEdge.cs (44 lines)<br>
+│   └── TreeNode.cs (77 lines)<br>
+├── Implementations (7 files)<br>
+│   ├── ServiceRequestAVL.cs (177 lines)<br>
+│   ├── ServiceRequestBST.cs (155 lines)<br>
+│   ├── ServiceRequestBinaryTree.cs (145 lines)<br>
+│   ├── ServiceRequestRedBlackTree.cs (239 lines)<br>
+│   ├── ServiceRequestTree.cs (99 lines)<br>
+│   ├── ServiceRequestGraph.cs (294 lines)<br>
+│   └── ServiceRequestHeap.cs (141 lines)<br>
+└── Utilities (1 file)<br>
+    └── PriorityCategoryQueue.cs (91 lines)<br>
+<br>
+<span class="highlight-primary">Total: 16 files, approximately 1,610 lines of code</span>
+                </div>
+            </div>
+
+            <div class="card card-accent">
+                <h3>Dependencies</h3>
+                <ul>
+                    <li>All structures depend on <span class="highlight-primary">ServiceRequest</span> model (Models/ServiceRequest.cs)</li>
+                    <li>ServiceRequestGraph uses internal <span class="highlight-primary">RelationshipKey</span> struct and comparer</li>
+                    <li>All structures reside in <span class="highlight-primary">Sidequest_municiple_app</span> namespace</li>
+                    <li>No external NuGet dependencies required</li>
+                    <li>Standard .NET Framework collections: List, Dictionary, Queue, Stack, SortedDictionary</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="back-to-top" onclick="scrollToTop()">↑</button>
+    </div>
+
+    <script>
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const collapsibles = document.getElementsByClassName('collapsible');
+
+            for (let i = 0; i < collapsibles.length; i++) {
+                collapsibles[i].addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const content = this.nextElementSibling;
+
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                    }
+                });
+            }
+
+            const backToTopButton = document.querySelector('.back-to-top');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.style.display = 'block';
+                } else {
+                    backToTopButton.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
