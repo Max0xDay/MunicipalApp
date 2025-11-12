@@ -229,7 +229,7 @@ namespace Sidequest_municiple_app {
             lnkSubmissionGitHub.LinkBehavior = LinkBehavior.HoverUnderline;
             lnkSubmissionGitHub.AutoSize = true;
             lnkSubmissionGitHub.Location = new Point(180, 65);
-            lnkSubmissionGitHub.LinkClicked += LnkSubmissionGitHub_LinkClicked;
+            lnkSubmissionGitHub.LinkClicked += (s, e) => Process.Start("https://github.com/VCSTDN2024/prog7312-poe-ML0Day0VC");
             pnlFooter.Controls.Add(lnkSubmissionGitHub);
 
             Label lblNote = new Label();
